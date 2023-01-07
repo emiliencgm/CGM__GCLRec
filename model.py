@@ -280,4 +280,3 @@ class GCLRec(LightGCN):
 
     def xxx(self):
         pass
-

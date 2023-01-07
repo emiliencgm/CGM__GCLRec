@@ -57,6 +57,8 @@ config['loss'] = args.loss
 config['augment'] = args.augment
 config['alpha'] = args.alpha
 config['epoch_only_pop_for_BCloss'] = args.epoch_only_pop_for_BCloss
+config['Centroid_mode'] = args.Centroid_mode
+config['CommonNeighbor_mode'] = args.CommonNeighbor_mode
 #备注
 config['comment'] = args.comment
 #加载预训练的embedding

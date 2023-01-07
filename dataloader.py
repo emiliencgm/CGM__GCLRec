@@ -45,6 +45,9 @@ class dataset(Dataset):
 
         self._TrainPop_item = {}#item's popularity (degree) in the training dataset
         self._TrainPop_user = {}#user's popularity (degree) in the training dataset
+        
+        self._allPos = {}
+        self._allPos_item = {}
 
         with open(train_file) as f:
             for l in f.readlines():
@@ -64,10 +67,18 @@ class dataset(Dataset):
                             self._TrainPop_item[item] += 1
                         else:
                             self._TrainPop_item[item] = 1
+                        
+                        if item in self._allPos_item.keys():
+                            self._allPos_item[item].append(uid)
+                        else:
+                            self._allPos_item[item] = [uid]
+
                     if uid in self._TrainPop_user.keys():
                         self._TrainPop_user[uid] += len(items)
                     else:
                         self._TrainPop_user[uid] = len(items)
+
+                    self._allPos[uid] = items
                     #================Pop=================#
         self.trainUniqueUsers = np.array(trainUniqueUsers)
         self.trainUser = np.array(trainUser)
@@ -120,9 +131,10 @@ class dataset(Dataset):
         # (users,items), bipartite graph
         self.UserItemNet = csr_matrix((np.ones(len(self.trainUser)), (self.trainUser, self.trainItem)), shape=(self.n_user, self.m_item))
         # pre-calculate
-        self._allPos = self.getUserPosItems(list(range(self.n_user)))
+        # self._allPos = self.getUserPosItems(list(range(self.n_user)))
+        # self._allPos_item = self.getItemPosUsers(list(range(self.m_item)))
         self.__testDict = self.__build_test()
-        
+        self._edge_indices = self.get_edge_indices()
         #将计算邻接矩阵的过程提前
         self.getSparseGraph()
 
@@ -155,6 +167,10 @@ class dataset(Dataset):
     @property
     def allPos(self):
         return self._allPos
+    
+    @property
+    def allPos_item(self):
+        return self._allPos_item
 
     @property
     def TrainPop_item(self):
@@ -169,6 +185,15 @@ class dataset(Dataset):
         dict of users' popularity(degree) in training set
         '''
         return self._TrainPop_user
+    
+    @property
+    def edge_indices(self):
+        '''
+        Edge's indice start from 1.\n
+        Minus 1 while using, so that -1 means no edge.\n
+        It's sparse, .to_dense() if many indices are needed.
+        '''
+        return self._edge_indices
 
 
     def _convert_sp_mat_to_sp_tensor(self, X):
@@ -270,6 +295,23 @@ class dataset(Dataset):
             posItems.append(self.UserItemNet[user].nonzero()[1])
         return posItems 
         
+    def getItemPosUsers(self, items):
+        posUsers = []
+        for item in items:
+            posUsers.append(self.UserItemNet[:,item].nonzero()[0])
+        return posUsers 
+
+    def get_edge_indices(self):
+        '''
+        edge's indices start from 1, so that 0 means no edge\n
+        -1 when use this index
+        '''
+        index = torch.stack([torch.tensor(self.trainUser), torch.tensor(self.trainItem)])
+        val =torch.arange(len(self.trainItem)) + 1
+        edge_indice = torch.sparse.FloatTensor(index, val, (self.n_user, self.m_item))
+        edge_indice = edge_indice.coalesce()
+        return edge_indice
+
     '''
     Dataset的所有子类都应该重写方法__len__(), __getitem__()
     '''

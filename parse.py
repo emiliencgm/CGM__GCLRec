@@ -50,6 +50,8 @@ def parse_args():
     parser.add_argument('--augment', type=str, default='No', help="Augmentation")
     parser.add_argument('--alpha', type=float, default=0.5, help="alpha for balancing loss terms OR weighting pop_loss & bc_loss in BC loss")
     parser.add_argument('--epoch_only_pop_for_BCloss', type=int, default=5, help="popularity embedding trainging ONLY for BC loss")
+    parser.add_argument('--Centroid_mode', type=str, default='Degree', help="Centroid mode: Degree, PageRank, Eigenvector")
+    parser.add_argument('--CommonNeighbor_mode', type=str, default='SC', help="Common Neighbor mode: JS, SC, CN, LHN")
 
 
     return parser.parse_args()

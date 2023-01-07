@@ -28,13 +28,16 @@ print('==========config==========')
 pprint(world.config)
 print('==========config==========')
 
+cprint('[DATALOADER--START]')
 datasetpath = join(world.DATA_PATH, world.config['dataset'])
 dataset = dataloader.dataset(world.config, datasetpath)
+cprint('[DATALOADER--END]')
+
 cprint('[PRECALCULATE--START]')
 start = time.time()
 precal = precalcul.precalculate(world.config, dataset)
 end = time.time()
-print('cost : ',end-start)
+print('precal cost : ',end-start)
 cprint('[PRECALCULATE--END]')
 
 models = {'LightGCN':model.LightGCN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec}

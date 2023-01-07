@@ -275,4 +275,3 @@ class Adaptive_softmax_loss():
         else:
             raise TypeError('modeError')
 
-
