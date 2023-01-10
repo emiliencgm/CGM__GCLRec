@@ -20,10 +20,13 @@ class precalculate():
     def __init__(self, config, dataset):
         
         self.P = Pop(dataset)
+        self.C = None
+        self.CN = None
         
-        self.C = Centroid(dataset, self.P)
-
-        self.CN = CommonNeighbor(dataset)
+        if config['adaptive_method'] in ['centroid']:
+            self.C = Centroid(dataset, self.P)
+        if config['adaptive_method'] in ['commonNeighbor']:
+            self.CN = CommonNeighbor(dataset)
         
     @property
     def popularity(self):
@@ -232,17 +235,25 @@ class Centroid():
     def __init__(self, dataset:dataset, pop:Pop):
         self.dataset = dataset
         self.pop = pop
-        self.mode = world.config['Centroid_mode']
+        self.mode = world.config['centroid_mode']
 
         #nodes_out == edge_index[0]
         #nodes_in == edge_index[1]
         self.nodes_out = torch.cat((torch.tensor(self.dataset._trainUser), torch.tensor(self.dataset._trainItem+self.dataset.n_users)))
         self.nodes_in =  torch.cat((torch.tensor(self.dataset._trainItem+self.dataset.n_users), torch.tensor(self.dataset._trainUser)))
-        
-        self._degree_item = torch.tensor(self.pop.item_pop_degree_label) #item's popularity (degree) in the training dataset
-        self._degree_user = torch.tensor(self.pop.user_pop_degree_label) #user's popularity (degree) in the training dataset
-        self._pagerank_user, self._pagerank_item = self.compute_pr()
-        self._eigenvector_user, self._eigenvector_item = self.eigenvector_centrality()
+        if world.config['centroid_mode'] == 'degree':
+            self._degree_item = torch.tensor(self.pop.item_pop_degree_label) #item's popularity (degree) in the training dataset
+            self._degree_user = torch.tensor(self.pop.user_pop_degree_label) #user's popularity (degree) in the training dataset
+            self._degree_item = self._degree_item.to(world.device)
+            self._degree_user = self._degree_user.to(world.device)
+        elif world.config['centroid_mode'] == 'pagerank':
+            self._pagerank_user, self._pagerank_item = self.compute_pr()
+            self._pagerank_user, self._pagerank_item = self._pagerank_user.to(world.device), self._pagerank_item.to(world.device)
+        elif world.config['centroid_mode'] == 'eigenvector':
+            self._eigenvector_user, self._eigenvector_item = self.eigenvector_centrality()
+            self._eigenvector_user, self._eigenvector_item = self._eigenvector_user.to(world.device), self._eigenvector_item.to(world.device)
+        else:
+            raise TypeError('centroid mode not implemented')
         # look = torch.tensor([0,1,2,3,4,5,6,7,8,9,10,11,12])
         # print('degree_user', self._degree_user[look])
         # print('degree_item', self._degree_item[look])
@@ -308,32 +319,32 @@ class Centroid():
         
 
     
-    def cal_centroid_weights_all(self, centroid_user, centroid_item, aggr='mean', mode='GCA'):
-        '''
-        return weights: torch.tensor([w_edge_1, ..., w_edge_n])\n
-        egde indiced by  self.nodes_out(row) --- self.nodes_in(col)\n
-        outputs should selected by indices of edges !!!
-        '''
-        Centrality = torch.cat(centroid_user, centroid_item)
-        Centrality_row = Centrality[self.nodes_out].to(torch.float32)
-        Centrality_col = Centrality[self.nodes_in].to(torch.float32)
-        s_row = torch.log(Centrality_row)
-        s_col = torch.log(Centrality_col)
-        if aggr == 'sink':
-            s = s_col
-        elif aggr == 'source':
-            s = s_row
-        elif aggr == 'mean':
-            s = (s_col + s_row) * 0.5
-        else:
-            s = s_col
+    # def cal_centroid_weights_all(self, centroid_user, centroid_item, aggr='mean', mode='GCA'):
+    #     '''
+    #     return weights: torch.tensor([w_edge_1, ..., w_edge_n])\n
+    #     egde indiced by  self.nodes_out(row) --- self.nodes_in(col)\n
+    #     outputs should selected by indices of edges !!!
+    #     '''
+    #     Centrality = torch.cat(centroid_user, centroid_item)
+    #     Centrality_row = Centrality[self.nodes_out].to(torch.float32)
+    #     Centrality_col = Centrality[self.nodes_in].to(torch.float32)
+    #     s_row = torch.log(Centrality_row)
+    #     s_col = torch.log(Centrality_col)
+    #     if aggr == 'sink':
+    #         s = s_col
+    #     elif aggr == 'source':
+    #         s = s_row
+    #     elif aggr == 'mean':
+    #         s = (s_col + s_row) * 0.5
+    #     else:
+    #         s = s_col
         
-        if mode == 'GCA':
-            weights = (s.max() - s) / (s.max() - s.mean())
-        else:
-            weights = s
+    #     if mode == 'GCA':
+    #         weights = (s.max() - s) / (s.max() - s.mean())
+    #     else:
+    #         weights = s
         
-        return weights
+    #     return weights
 
     def cal_centroid_weights_batch(self, batch_user:torch.Tensor, batch_item:torch.Tensor, centroid='degree', aggr='mean', mode='GCA'):
         '''
@@ -341,7 +352,7 @@ class Centroid():
         return weights: torch.tensor([w_edge_1, ..., w_edge_n])\n
         egde indiced by  self.nodes_out(row) --- self.nodes_in(col)\n
         edge between users and items are not guaranteed by this function.
-        '''
+        ''' 
         if centroid == 'degree':
             centroid_user = self._degree_user[batch_user]
             centroid_item = self._degree_item[batch_item]
@@ -411,9 +422,10 @@ class Centroid():
 class CommonNeighbor():
     def __init__(self, dataset:dataset):
         self.dataset = dataset
-        self.mode = world.config['CommonNeighbor_mode']
+        self.mode = world.config['commonNeighbor_mode']
         mat_sp = self.CN_simi_unsymmetry_mat_sp(mode = self.mode)
         print('shape test :',mat_sp.indices().shape,'== [2,',2*self.dataset.trainDataSize,']')
+        #self.CN_simi_mat_sp = mat_sp.to(world.device)
         self.CN_simi_mat_sp = mat_sp
 
     def CN_simi_unsymmetry_mat(self, mode='SC'):

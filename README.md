@@ -11,6 +11,8 @@
 9. 增加更多常见baseline，如MF
 10. 考虑除homophily外，无连接的节点之间的重要性度量方法
 11. tensorboard的展示方法
+12. 优化cpu和cuda的计算量分配
+13. torch_sparse稀疏张量的快速批量索引
 ## 使用方法
 1. 建立目录如格式：
 CGM__GCLRec:
