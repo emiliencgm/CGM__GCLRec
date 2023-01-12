@@ -198,8 +198,8 @@ class Adaptive_softmax_loss():
         # return self.config['weight_decay']*reg_loss + 1.0*loss1 + self.config['lambda1']*loss2 + self.config['lambda1']*loss3 
         
         reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
-        #loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
-        loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, None, None, None, None)
+        loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
+        #loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, None, None, None, None)
         if not (aug_users1 is None):
             loss2 = self.calculate_loss(aug_users1[batch_user], aug_users2[batch_user], aug_users2, None, None, None, None)
             loss3 = self.calculate_loss(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2, None, None, None, None)
