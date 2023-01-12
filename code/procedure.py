@@ -159,6 +159,7 @@ class Test():
         Recmodel = Recmodel.eval()
         max_K = max(world.config['topks'])
         CORES = multiprocessing.cpu_count() // 2
+        # CORES = multiprocessing.cpu_count()
         if multicore == 1:
             pool = multiprocessing.Pool(CORES)
         results = {'precision': np.zeros(len(world.config['topks'])),

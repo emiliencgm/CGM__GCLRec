@@ -8,6 +8,7 @@ import dataloader
 import precalcul
 import world
 from world import cprint
+from world import cprint_rare
 import model
 import augment
 import loss
@@ -65,15 +66,18 @@ quantify = visual.Quantify(dataset, Recmodel, precal)
 
 
 try:
-    best_result = 0.
+    best_result_recall = 0.
+    best_result_ndcg = 0.
     stopping_step = 0
 
     for epoch in range(world.config['epochs']):
         start = time.time()
-        if world.config['if_tsne'] == 1 and epoch % world.config['tsne_epoch'] == 0:
+        if world.config['if_visual'] == 1 and epoch % world.config['visual_epoch'] == 0:
             cprint("[Visualization]")
-            quantify.visualize_tsne(epoch)
-            quantify.visualize_double_label(epoch)
+            if world.config['if_tsne'] == 1:
+                quantify.visualize_tsne(epoch)
+            if world.config['if_double_label'] == 1:
+                quantify.visualize_double_label(epoch)
         
         cprint('[AUGMENT]')
         if world.config['model'] in ['SGL']:
@@ -85,15 +89,17 @@ try:
         if epoch % 1== 0:
             cprint("[TEST]")
             result = test.test(dataset, Recmodel, precal, epoch, w, world.config['if_multicore'])
-            if result["recall"] > best_result:
+            if result["recall"] > best_result_recall:
                 stopping_step = 0
-                best_result = result["recall"]
-                print("find a better model")
+                advance = (result["recall"] - best_result_recall)
+                best_result_recall = result["recall"]
+                # print("find a better model")
+                cprint_rare("find a better recall", str(best_result_recall), extra='++'+str(advance))                
                 #torch.save(Recmodel.state_dict(), weight_file)
             else:
                 stopping_step += 1
                 if stopping_step >= world.config['early_stop_steps']:
-                    print(f"early stop triggerd at epoch {epoch}, best recall: {best_result}")
+                    print(f"early stop triggerd at epoch {epoch}, best recall: {best_result_recall}")
                     break
         during = time.time() - start
         print(f"time cost of epoch {epoch}: ", during)

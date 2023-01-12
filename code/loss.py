@@ -10,6 +10,7 @@ import torch
 import torch.nn.functional as F
 import world
 from augment import Homophily
+import numpy as np
 #=============================================================BPR loss============================================================#
 class BPR_loss():
     def __init__(self, config, model:LightGCN, precalculate:precalculate, homophily:Homophily):
@@ -197,7 +198,8 @@ class Adaptive_softmax_loss():
         # return self.config['weight_decay']*reg_loss + 1.0*loss1 + self.config['lambda1']*loss2 + self.config['lambda1']*loss3 
         
         reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
-        loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
+        #loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
+        loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, None, None, None, None)
         if not (aug_users1 is None):
             loss2 = self.calculate_loss(aug_users1[batch_user], aug_users2[batch_user], aug_users2, None, None, None, None)
             loss3 = self.calculate_loss(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2, None, None, None, None)
@@ -210,7 +212,7 @@ class Adaptive_softmax_loss():
 
     def calculate_loss(self, batch_target_emb, batch_pos_emb, batch_negs_emb, batch_target, batch_pos, method, mode):
         '''
-        input : embeddings, not index
+        input : embeddings, not index.
         '''
         # '''
         # pos_term = self.alpha * self.sim_adaptive(batch_target, batch_pos) / self.tau
@@ -230,7 +232,7 @@ class Adaptive_softmax_loss():
             #Adaptive coef between User and Item
             pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
             ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+(pos_ratings_margin))
-            #reliable ==> big margin ==> small theta ==> big simi between u,i 
+            #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
         else:
             ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7)))
         
@@ -253,7 +255,8 @@ class Adaptive_softmax_loss():
     def get_coef_adaptive(self, batch_user, batch_pos_item, method='centroid', mode='eigenvector'):
         '''
         input: index batch_user & batch_pos_item\n
-        return tensor([adaptive coefficient of u_n-i_n])
+        return tensor([adaptive coefficient of u_n-i_n])\n
+        the bigger, the more reliable, the more important
         '''
         with torch.no_grad():
             if method == 'homophily':
@@ -270,10 +273,14 @@ class Adaptive_softmax_loss():
                 #commonNeighbor weights are not symmetry.
                 #And index of item starts from n_users.
                 n_users = self.model.num_users
-                dense = self.precal.common_neighbor.CN_simi_mat_sp.to_dense()
-                batch_weight1 = dense[batch_user, batch_pos_item+n_users]
-                batch_weight2 = dense[batch_pos_item+n_users, batch_user]
+                csr_matrix_CN_simi = self.precal.common_neighbor.CN_simi_mat_sp
+                batch_user, batch_pos_item = np.array(batch_user.cpu()), np.array(batch_pos_item.cpu())
+                batch_weight1 = csr_matrix_CN_simi[batch_user, batch_pos_item+n_users]
+                batch_weight2 = csr_matrix_CN_simi[batch_pos_item+n_users, batch_user]
+                batch_weight1 = torch.tensor(np.array(batch_weight1).reshape((-1,)))
+                batch_weight2 = torch.tensor(np.array(batch_weight2).reshape((-1,)))
                 batch_weight = (batch_weight1 + batch_weight2) * 0.5
+                batch_weight = batch_weight.to(world.device)
                 # mat = self.precal.common_neighbor.CN_simi_mat_sp
                 # batch_weight = []
                 # for i in range(len(batch_user)):
@@ -292,5 +299,5 @@ class Adaptive_softmax_loss():
 
             batch_weight = torch.sigmoid(batch_weight)
 
-        return batch_weight.to(world.device)
+        return batch_weight
 

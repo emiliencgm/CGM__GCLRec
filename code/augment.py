@@ -13,13 +13,15 @@ import torch
 import torch.nn.functional as F
 from sklearn.cluster import KMeans
 from precalcul import precalculate
+import time
+from k_means import kmeans
 
 
 class Homophily:
     def __init__(self, model:LightGCN):
         self.model = model
         
-    def get_homophily_batch(self, batch_user:torch.Tensor, batch_item:torch.Tensor, mode='in_batch'):
+    def get_homophily_batch(self, batch_user:torch.Tensor, batch_item:torch.Tensor, mode='not_in_batch'):
         '''
         return prob distribution of users and items in batch.
         '''
@@ -31,17 +33,20 @@ class Homophily:
                 embs_KMeans = torch.cat((self.model.embedding_user(batch_user), self.model.embedding_item(batch_item)), dim=0)
             else:
                 embs_KMeans = torch.cat((self.model.embedding_user.weight, self.model.embedding_item.weight), dim=0)
-            embs_KMeans_numpy = embs_KMeans.cpu().numpy()#.detach()
-            kmeans = KMeans(n_clusters=ncluster, random_state=0).fit(embs_KMeans_numpy)
-            #cluster_labels = kmeans.labels_
-            #homo = (cluster_labels[edge_index[0]] == cluster_labels[edge_index[1]])
-            centroids = torch.FloatTensor(kmeans.cluster_centers_).to(world.device)
+            # embs_KMeans_numpy = embs_KMeans.cpu().numpy()#.detach()
+            # kmeans_sk = KMeans(n_clusters=ncluster, random_state=0).fit(embs_KMeans_numpy)
+            # #cluster_labels = kmeans.labels_
+            # #homo = (cluster_labels[edge_index[0]] == cluster_labels[edge_index[1]])
+            # centroids_sk = torch.FloatTensor(kmeans_sk.cluster_centers_).to(world.device)
+            cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
+            centroids = cluster_centers.to(world.device)
             logits = []
             embs_batch = torch.cat((self.model.embedding_user(batch_user), self.model.embedding_item(batch_item)), dim=0)
             for c in centroids:
                 logits.append((-torch.square(embs_batch - c).sum(1)/sigma).view(-1, 1))
             logits = torch.cat(logits, axis=1)
             probs = F.softmax(logits, dim=1)
+            #probs = F.normalize(logits, dim=1)# TODO
             #loss = F.l1_loss(probs[edge_index[0]], probs[edge_index[1]])
             batch_user_prob, batch_item_prob = torch.split(probs, [batch_user.shape[0], batch_item.shape[0]])
         return batch_user_prob, batch_item_prob

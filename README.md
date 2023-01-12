@@ -11,8 +11,10 @@
 9. 增加更多常见baseline，如MF
 10. 考虑除homophily外，无连接的节点之间的重要性度量方法
 11. tensorboard的展示方法
-12. 优化cpu和cuda的计算量分配
-13. torch_sparse稀疏张量的快速批量索引
+12. 优化cpu和cuda的计算量分配; 调整计算adaptive_coef等时不同数据（包括batch_user等索引）所处的设备
+13. commonNeighbor的torch_sparse稀疏张量的快速批量索引
+14. homophily的KMeans加速（莫名其妙地自己加速了……），以及考察使用全部/部分embedding进行聚类的效果的差异
+15. user/item分开聚类？
 ## 使用方法
 1. 建立目录如格式：
 CGM__GCLRec:

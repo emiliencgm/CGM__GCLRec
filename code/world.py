@@ -46,7 +46,7 @@ config['if_big_matrix'] = args.if_big_matrix
 config['n_fold'] = args.n_fold
 config['p_drop'] = args.p_drop
 config['perplexity'] = args.perplexity
-config['tsne_epoch'] = args.tsne_epoch
+config['visual_epoch'] = args.visual_epoch
 config['if_double_label'] = args.if_double_label
 config['if_tsne'] = args.if_tsne 
 config['tsne_group'] = eval(args.tsne_group)
@@ -65,6 +65,7 @@ config['adaptive_method'] = args.adaptive_method
 config['epsilon_GCLRec'] = args.epsilon_GCLRec
 config['w_GCLRec'] = args.w_GCLRec
 config['k_aug'] = args.k_aug
+config['if_visual'] = args.if_visual
 #备注
 config['comment'] = args.comment
 #加载预训练的embedding
@@ -75,11 +76,12 @@ config['item_emb'] = 0
 log = {}
 
 LogItems = ['model', 'loss', 'alpha', 'temp_tau', 'comment']
+ArchitectureItems = ['model', 'dataset', 'seed', 'loss', 'augment', 'centroid_mode', 'commonNeighbor_mode', 'adaptive_method', 'init_method', 'perplexity']
+HyperparameterItems = ['temp_tau', 'alpha', 'lr', 'weight_decay', 'lambda1', 'n_cluster', 'sigma_gausse', 'eps_SimGCL', 'epsilon_GCLRec', 'w_GCLRec', 'k_aug', 'epoch_only_pop_for_BCloss']
 for key in LogItems:
     log[key] = config[key]
 
 
-#TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!记得修改根目录
 ROOT_PATH = "/home/cgm/code/GCLRec"
 ROOT_PATH = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
 CODE_PATH = join(ROOT_PATH, 'code')
@@ -123,6 +125,12 @@ def cprint(words : str):
     #print(words)
     print(f"\033[0;30;43m{words}\033[0m")
 
+def cprint_rare(desc, val, extra=None):
+    #print(words)
+    if extra is None:
+        print(f"\033[5;37;44m{desc}\033[0m", f"\033[0;37;44m{val}\033[0m")
+    else:
+        print(f"\033[5;37;44m{desc}\033[0m", f"\033[0;37;44m{val}\033[0m", f"\033[0;37;44m{extra}\033[0m")
 
 
 

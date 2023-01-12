@@ -14,6 +14,7 @@ from tqdm import tqdm
 import torch.nn.functional as F
 import os
 import time
+from scipy.sparse import csr_matrix
 
 #=============================================================Overall Precalculate============================================================#
 class precalculate():
@@ -241,15 +242,15 @@ class Centroid():
         #nodes_in == edge_index[1]
         self.nodes_out = torch.cat((torch.tensor(self.dataset._trainUser), torch.tensor(self.dataset._trainItem+self.dataset.n_users)))
         self.nodes_in =  torch.cat((torch.tensor(self.dataset._trainItem+self.dataset.n_users), torch.tensor(self.dataset._trainUser)))
-        if world.config['centroid_mode'] == 'degree':
+        if world.config['centroid_mode'] in ['degree']:
             self._degree_item = torch.tensor(self.pop.item_pop_degree_label) #item's popularity (degree) in the training dataset
             self._degree_user = torch.tensor(self.pop.user_pop_degree_label) #user's popularity (degree) in the training dataset
             self._degree_item = self._degree_item.to(world.device)
             self._degree_user = self._degree_user.to(world.device)
-        elif world.config['centroid_mode'] == 'pagerank':
+        elif world.config['centroid_mode'] in ['pagerank']:
             self._pagerank_user, self._pagerank_item = self.compute_pr()
             self._pagerank_user, self._pagerank_item = self._pagerank_user.to(world.device), self._pagerank_item.to(world.device)
-        elif world.config['centroid_mode'] == 'eigenvector':
+        elif world.config['centroid_mode'] in ['eigenvector']:
             self._eigenvector_user, self._eigenvector_item = self.eigenvector_centrality()
             self._eigenvector_user, self._eigenvector_item = self._eigenvector_user.to(world.device), self._eigenvector_item.to(world.device)
         else:
@@ -424,85 +425,85 @@ class CommonNeighbor():
         self.dataset = dataset
         self.mode = world.config['commonNeighbor_mode']
         mat_sp = self.CN_simi_unsymmetry_mat_sp(mode = self.mode)
-        print('shape test :',mat_sp.indices().shape,'== [2,',2*self.dataset.trainDataSize,']')
-        #self.CN_simi_mat_sp = mat_sp.to(world.device)
+        print('shape test :',mat_sp.nonzero()[0].shape[0],'==',2*self.dataset.trainDataSize)
+        # self.CN_simi_mat_sp = mat_sp.to(world.device)
         self.CN_simi_mat_sp = mat_sp
 
-    def CN_simi_unsymmetry_mat(self, mode='SC'):
-        """
-        return SPARSE edge_weight:\n
-        edge_weight[i,j] = importance of i to j\n
-        |0        u_to_i|\n
-        |i_to_u        0|\n
-        Not symmetry !
-        """
-        start = time.time()
-        precal_path = os.path.join(world.PRECALPATH,'CommonNeighbor')
-        precal_path = os.path.join(precal_path, f'{mode}')
-        #precal_path = os.path.join(precal_path, 'CommonNeighbor.pt')
-        if os.path.exists(os.path.join(precal_path, 'CommonNeighbor.pt')):
-            print(f'Loading CommonNeighbor.pt from {precal_path}')
-            precal_path = os.path.join(precal_path, 'CommonNeighbor.pt')
-            edge_weight = torch.load(precal_path)
-        else:
-            n_users = self.dataset.n_users
-            n_items = self.dataset.m_items
-            user_item_graph = self.dataset.Graph.cpu().to_dense()[:n_users, n_users:]
-            user_item_graph[user_item_graph > 0] = 1
+    # def CN_simi_unsymmetry_mat(self, mode='SC'):
+    #     """
+    #     return SPARSE edge_weight:\n
+    #     edge_weight[i,j] = importance of i to j\n
+    #     |0        u_to_i|\n
+    #     |i_to_u        0|\n
+    #     Not symmetry !
+    #     """
+    #     start = time.time()
+    #     precal_path = os.path.join(world.PRECALPATH,'CommonNeighbor')
+    #     precal_path = os.path.join(precal_path, f'{mode}')
+    #     #precal_path = os.path.join(precal_path, 'CommonNeighbor.pt')
+    #     if os.path.exists(os.path.join(precal_path, 'CommonNeighbor.pt')):
+    #         print(f'Loading CommonNeighbor.pt from {precal_path}')
+    #         precal_path = os.path.join(precal_path, 'CommonNeighbor.pt')
+    #         edge_weight = torch.load(precal_path)
+    #     else:
+    #         n_users = self.dataset.n_users
+    #         n_items = self.dataset.m_items
+    #         user_item_graph = self.dataset.Graph.cpu().to_dense()[:n_users, n_users:]
+    #         user_item_graph[user_item_graph > 0] = 1
 
-            edge_weight = torch.zeros((n_users + n_items, n_users + n_items))
+    #         edge_weight = torch.zeros((n_users + n_items, n_users + n_items))
 
-            for i in tqdm(range(n_items), desc=f'Calculating importance of users to item in mode {mode}'):
-                users = user_item_graph[:, i].nonzero().squeeze(-1)
+    #         for i in tqdm(range(n_items), desc=f'Calculating importance of users to item in mode {mode}'):
+    #             users = user_item_graph[:, i].nonzero().squeeze(-1)
 
-                items = user_item_graph[users]
-                user_user_cap = torch.matmul(items, items.t())
-                user_user_cup = items.sum(dim=1) + items.sum(dim=1).unsqueeze(-1)
+    #             items = user_item_graph[users]
+    #             user_user_cap = torch.matmul(items, items.t())
+    #             user_user_cup = items.sum(dim=1) + items.sum(dim=1).unsqueeze(-1)
 
-                if mode == 'JS':
-                    simi = (user_user_cap / (user_user_cup - user_user_cap)).mean(dim=1)
-                elif mode == 'CN':
-                    simi =  user_user_cap.mean(dim=1)
-                elif mode == 'SC':
-                    simi = (user_user_cap / ((items.sum(dim=1) * items.sum(dim=1).unsqueeze(-1))**0.5)).mean(dim=1)
-                elif mode == 'LHN':
-                    simi = (user_user_cap / ((items.sum(dim=1) * items.sum(dim=1).unsqueeze(-1)))).mean(dim=1)
-                else:
-                    raise TypeError('No demanded Common Neighbor Method')
+    #             if mode == 'JS':
+    #                 simi = (user_user_cap / (user_user_cup - user_user_cap)).mean(dim=1)
+    #             elif mode == 'CN':
+    #                 simi =  user_user_cap.mean(dim=1)
+    #             elif mode == 'SC':
+    #                 simi = (user_user_cap / ((items.sum(dim=1) * items.sum(dim=1).unsqueeze(-1))**0.5)).mean(dim=1)
+    #             elif mode == 'LHN':
+    #                 simi = (user_user_cap / ((items.sum(dim=1) * items.sum(dim=1).unsqueeze(-1)))).mean(dim=1)
+    #             else:
+    #                 raise TypeError('No demanded Common Neighbor Method')
 
-                edge_weight[users, i + n_users] = simi
+    #             edge_weight[users, i + n_users] = simi
 
-            for i in tqdm(range(n_users), desc=f'Calculating importance of items to user in mode {mode}'):
-                items = user_item_graph[i, :].nonzero().squeeze(-1)
+    #         for i in tqdm(range(n_users), desc=f'Calculating importance of items to user in mode {mode}'):
+    #             items = user_item_graph[i, :].nonzero().squeeze(-1)
 
-                users = user_item_graph[:, items].t()
-                item_item_cap = torch.matmul(users, users.t())
-                item_item_cup = users.sum(dim=1) + users.sum(dim=1).unsqueeze(-1)
+    #             users = user_item_graph[:, items].t()
+    #             item_item_cap = torch.matmul(users, users.t())
+    #             item_item_cup = users.sum(dim=1) + users.sum(dim=1).unsqueeze(-1)
 
-                if mode == 'JS':
-                    simi = (item_item_cap / (item_item_cup - item_item_cap)).mean(dim=1)
-                elif mode == 'CN':
-                    simi =  item_item_cap.mean(dim=1)
-                elif mode == 'SC':
-                    simi = (item_item_cap / ((users.sum(dim=1) * users.sum(dim=1).unsqueeze(-1))**0.5)).mean(dim=1)
-                elif mode == 'LHN':
-                    simi = (item_item_cap / ((users.sum(dim=1) * users.sum(dim=1).unsqueeze(-1)))).mean(dim=1)
-                else:
-                    raise TypeError('No demanded Common Neighbor Method')
+    #             if mode == 'JS':
+    #                 simi = (item_item_cap / (item_item_cup - item_item_cap)).mean(dim=1)
+    #             elif mode == 'CN':
+    #                 simi =  item_item_cap.mean(dim=1)
+    #             elif mode == 'SC':
+    #                 simi = (item_item_cap / ((users.sum(dim=1) * users.sum(dim=1).unsqueeze(-1))**0.5)).mean(dim=1)
+    #             elif mode == 'LHN':
+    #                 simi = (item_item_cap / ((users.sum(dim=1) * users.sum(dim=1).unsqueeze(-1)))).mean(dim=1)
+    #             else:
+    #                 raise TypeError('No demanded Common Neighbor Method')
 
-                edge_weight[items + n_users, i] = simi
-            if not os.path.exists(precal_path):
-                os.makedirs(precal_path, exist_ok=True)
-            precal_path = os.path.join(precal_path, 'CommonNeighbor.pt')
-            edge_weight = edge_weight.to_sparse()
-            edge_weight = edge_weight.coalesce()
-            torch.save(edge_weight, precal_path)
-            print(f'Save CommonNeighbor.pt to {precal_path}')
+    #             edge_weight[items + n_users, i] = simi
+    #         if not os.path.exists(precal_path):
+    #             os.makedirs(precal_path, exist_ok=True)
+    #         precal_path = os.path.join(precal_path, 'CommonNeighbor.pt')
+    #         edge_weight = edge_weight.to_sparse()
+    #         edge_weight = edge_weight.coalesce()
+    #         torch.save(edge_weight, precal_path)
+    #         print(f'Save CommonNeighbor.pt to {precal_path}')
         
-        edge_weight = edge_weight.coalesce()
-        end = time.time()
-        print('CN_simi_unsymmetry_mat cost: ',end-start)
-        return edge_weight
+    #     edge_weight = edge_weight.coalesce()
+    #     end = time.time()
+    #     print('CN_simi_unsymmetry_mat cost: ',end-start)
+    #     return edge_weight
 
 
     def CN_simi_unsymmetry_mat_sp(self, mode='SC'):
@@ -586,9 +587,11 @@ class CommonNeighbor():
                 val = torch.cat((val, simi))
             row = row.long()
             col = col.long()
-            index = torch.stack([row, col])
-            edge_weight = torch.sparse.FloatTensor(index, val, (n_users + n_items, n_users + n_items))
-            edge_weight = edge_weight.coalesce()
+            # index = torch.stack([row, col])
+            # edge_weight = torch.sparse.FloatTensor(index, val, (n_users + n_items, n_users + n_items))
+            # edge_weight = edge_weight.coalesce()
+            edge_weight = csr_matrix((val, (row, col)), shape=(n_users + n_items, n_users + n_items))
+
 
             if not os.path.exists(precal_path):
                 os.makedirs(precal_path, exist_ok=True)
@@ -596,7 +599,7 @@ class CommonNeighbor():
             precal_path = os.path.join(precal_path, 'CommonNeighbor_sp.pt')
             torch.save(edge_weight, precal_path)
             print(f'Save CommonNeighbor_sp.pt to {precal_path}')
-        edge_weight = edge_weight.coalesce()
+        # edge_weight = edge_weight.coalesce()
         end = time.time()
         print('CN_simi_unsymmetry_mat_sp cost: ',end-start)
         return edge_weight
