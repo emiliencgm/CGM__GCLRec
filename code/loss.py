@@ -184,18 +184,6 @@ class Adaptive_softmax_loss():
         self.f = lambda x: torch.exp(x / self.tau)
 
     def adaptive_softmax_loss(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
-        # (users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0) = self.model.getEmbedding(batch_user.long(), batch_pos.long(), batch_neg.long())
-        # reg_loss = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))#/float(len(batch_user))
-        
-        # #loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb)
-        # #loss1 = self.calculate_loss(users_emb, pos_emb, pos_emb)#改为全正样本，分母自动多了自己一项，见BC_loss中loss1的实现
-        # loss1, _ = self.model.bpr_loss(batch_user, batch_pos, batch_neg)
-        # #loss1 = self.info_nce_loss_overall(users_emb, pos_emb, pos_emb)
-        # loss2 = self.calculate_loss(aug_users1[batch_user], aug_users2[batch_user], aug_users2)
-        # loss3 = self.calculate_loss(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2)
-        # #print(batch_user, batch_pos, batch_neg)
-        # #print('reg',reg_loss,'bpr',loss1,'user',loss2,'item',loss3)
-        # return self.config['weight_decay']*reg_loss + 1.0*loss1 + self.config['lambda1']*loss2 + self.config['lambda1']*loss3 
         
         reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
         loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
@@ -214,12 +202,7 @@ class Adaptive_softmax_loss():
         '''
         input : embeddings, not index.
         '''
-        # '''
-        # pos_term = self.alpha * self.sim_adaptive(batch_target, batch_pos) / self.tau
-        # neg_term = self.f(self.sim(batch_target, batch_negs, mode='1:all'))
-        # neg_term = (1-self.alpha) * torch.log(torch.sum(neg_term, 1))
-        # return -torch.sum(pos_term - neg_term)
-        # '''
+
         users_emb = batch_target_emb
         pos_emb = batch_pos_emb
 
@@ -240,15 +223,6 @@ class Adaptive_softmax_loss():
         denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
         #loss = torch.mean(torch.negative(torch.log(numerator/denominator)))
         loss = torch.mean(torch.negative(2*self.alpha * torch.log(numerator) -  2*(1-self.alpha) * torch.log(denominator)))
-
-        # '''
-        # positive_pairs = self.f(self.sim_adaptive(batch_target, batch_pos))
-        # all_sim = self.f(self.sim(batch_target, batch_negs, mode='1:all'))
-        # negative_pairs = torch.sum(all_sim, 1)
-        # loss = -torch.sum(2*self.alpha * torch.log(positive_pairs) - 2*(1-self.alpha) * torch.log(negative_pairs))
-        # #loss = 2.0 * torch.sum(-(self.alpha * torch.log(positive_pairs) - (1-self.alpha) * torch.log(negative_pairs)))
-        # return loss
-        # '''
 
         return loss
 
@@ -281,13 +255,6 @@ class Adaptive_softmax_loss():
                 batch_weight2 = torch.tensor(np.array(batch_weight2).reshape((-1,)))
                 batch_weight = (batch_weight1 + batch_weight2) * 0.5
                 batch_weight = batch_weight.to(world.device)
-                # mat = self.precal.common_neighbor.CN_simi_mat_sp
-                # batch_weight = []
-                # for i in range(len(batch_user)):
-                #     batch_weight1 = mat[batch_user[i], batch_pos_item[i]+n_users]
-                #     batch_weight2 = mat[batch_pos_item[i]+n_users, batch_user[i]]
-                #     batch_weight.append((batch_weight1+batch_weight2)*0.5)
-                # batch_weight = torch.tensor(batch_weight)
 
             elif method == 'mlp':
                 batch_weight = None

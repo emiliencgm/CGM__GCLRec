@@ -15,6 +15,7 @@ from sklearn.cluster import KMeans
 from precalcul import precalculate
 import time
 from k_means import kmeans
+import faiss
 
 
 class Homophily:
@@ -33,13 +34,16 @@ class Homophily:
                 embs_KMeans = torch.cat((self.model.embedding_user(batch_user), self.model.embedding_item(batch_item)), dim=0)
             else:
                 embs_KMeans = torch.cat((self.model.embedding_user.weight, self.model.embedding_item.weight), dim=0)
-            # embs_KMeans_numpy = embs_KMeans.cpu().numpy()#.detach()
-            # kmeans_sk = KMeans(n_clusters=ncluster, random_state=0).fit(embs_KMeans_numpy)
-            # #cluster_labels = kmeans.labels_
-            # #homo = (cluster_labels[edge_index[0]] == cluster_labels[edge_index[1]])
-            # centroids_sk = torch.FloatTensor(kmeans_sk.cluster_centers_).to(world.device)
-            cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
-            centroids = cluster_centers.to(world.device)
+            
+            if ncluster > 99:
+                embs_KMeans_numpy = embs_KMeans.detach().cpu().numpy()
+                kmeans_faiss = faiss.Kmeans(world.config['latent_dim_rec'], ncluster, gpu=True)
+                kmeans_faiss.train(embs_KMeans_numpy)
+                centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
+            else:
+                cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
+                centroids = cluster_centers.to(world.device)            
+            
             logits = []
             embs_batch = torch.cat((self.model.embedding_user(batch_user), self.model.embedding_item(batch_item)), dim=0)
             for c in centroids:
