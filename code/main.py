@@ -58,7 +58,7 @@ total_loss = losss[world.config['loss']](world.config, Recmodel, precal, homophi
 
 w = SummaryWriter(join(world.BOARD_PATH, time.strftime("%m-%d-%Hh%Mm%Ss-") + "-" + str([(key,value)for key,value in world.log.items()])))
 
-optimizer = torch.optim.Adam(Recmodel.parameters(), lr=world.config['lr'])
+optimizer = torch.optim.Adam([{'params': Recmodel.parameters()}, {'params': total_loss.MLP_model.parameters()}], lr=world.config['lr'])
 train = procedure.Train(total_loss)
 test = procedure.Test()
 

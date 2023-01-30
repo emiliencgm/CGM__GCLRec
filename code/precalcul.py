@@ -24,9 +24,9 @@ class precalculate():
         self.C = None
         self.CN = None
         
-        if config['adaptive_method'] in ['centroid']:
+        if config['adaptive_method'] in ['centroid', 'mlp']:
             self.C = Centroid(dataset, self.P)
-        if config['adaptive_method'] in ['commonNeighbor']:
+        if config['adaptive_method'] in ['commonNeighbor', 'mlp']:
             self.CN = CommonNeighbor(dataset)
         
     @property
