@@ -174,15 +174,25 @@ class BC_loss():
 
 #=============================================================Myself Adaptive loss============================================================#
 class MLP(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, in_dim):
         super(MLP, self).__init__()
 
         #1-->2-->2-->1
-        self.linear1=torch.nn.Linear(5,10)
+        self.linear1=torch.nn.Linear(in_dim,3*in_dim)
         self.activation1=torch.nn.ReLU()
-        self.linear2=torch.nn.Linear(10,5)
+        self.linear2=torch.nn.Linear(3*in_dim, in_dim)
         self.activation2=torch.nn.ReLU()
-        self.linear3=torch.nn.Linear(5,1)
+        self.linear3=torch.nn.Linear(in_dim,1)
+
+    def forward(self, x):
+        #TODO Architecture suboptimal
+        x = self.linear1(x)
+        x = self.activation1(x)
+        x = self.linear2(x)
+        x = self.activation2(x)
+        x = self.linear3(x)
+        return x
+
 
 
 class Adaptive_softmax_loss(torch.nn.Module):
@@ -196,15 +206,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
         self.tau = config['temp_tau']
         self.alpha = config['alpha']
         self.f = lambda x: torch.exp(x / self.tau)
-        self.MLP_model = MLP().to(world.device)
-
-    def mlp(self, x):
-        x = self.MLP_model.linear1(x)
-        x = self.MLP_model.activation1(x)
-        x = self.MLP_model.linear2(x)
-        x = self.MLP_model.activation2(x)
-        x = self.MLP_model.linear3(x)
-        return x
+        self.MLP_model = MLP(6).to(world.device)
 
     def adaptive_softmax_loss(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
         
@@ -273,11 +275,24 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_user, batch_pos_item = np.array(batch_user.cpu()), np.array(batch_pos_item.cpu())
             batch_weight1 = csr_matrix_CN_simi[batch_user, batch_pos_item+n_users]
             batch_weight2 = csr_matrix_CN_simi[batch_pos_item+n_users, batch_user]
-            batch_weight1 = torch.tensor(np.array(batch_weight1).reshape((-1,)))
-            batch_weight2 = torch.tensor(np.array(batch_weight2).reshape((-1,)))
-            batch_weight = (batch_weight1 + batch_weight2) * 0.5
-            batch_weight = batch_weight.to(world.device)
-        return batch_weight
+            batch_weight1 = torch.tensor(np.array(batch_weight1).reshape((-1,))).to(world.device)
+            batch_weight2 = torch.tensor(np.array(batch_weight2).reshape((-1,))).to(world.device)
+        return batch_weight1, batch_weight2
+
+    def get_embs(self, batch_user, batch_pos_item):
+        with torch.no_grad():
+            batch_weight_user, batch_weight_item = self.model.embedding_user(batch_user), self.model.embedding_item(batch_pos_item)
+        return batch_weight_user, batch_weight_item
+
+    def get_mlp_input(self, features):
+        '''
+        features = [tensor, tensor, ...]
+        '''
+        U = features[0].unsqueeze(0)
+        for i in range(1,len(features)):
+            U = torch.cat((U, features[i].unsqueeze(0)), dim=0)
+        return U.T
+
 
     def get_coef_adaptive(self, batch_user, batch_pos_item, method='mlp', mode='eigenvector'):
         '''
@@ -292,30 +307,32 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
 
         elif method == 'commonNeighbor':
-            batch_weight = self.get_commonNeighbor(batch_user, batch_pos_item)
+            batch_weight1, batch_weight2 = self.get_commonNeighbor(batch_user, batch_pos_item)
+            batch_weight = (batch_weight1 + batch_weight2)*0.5
 
         elif method == 'mlp':
+            # batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)#TODO problem of grandeur
             batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
-            batch_weight_commonNeighbor = self.get_commonNeighbor(batch_user, batch_pos_item)
-            U = batch_weight_pop_user.unsqueeze(0)
-            U = torch.cat((U, batch_weight_pop_item.unsqueeze(0)), dim=0)
-            U = torch.cat((U, batch_weight_homophily.unsqueeze(0)), dim=0)
-            U = torch.cat((U, batch_weight_centroid.unsqueeze(0)), dim=0)
-            U = torch.cat((U, batch_weight_commonNeighbor.unsqueeze(0)), dim=0)
-            batch_weight = U.T
-            batch_weight = self.mlp(batch_weight)
+            batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
+            features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_homophily, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
+            # with torch.no_grad():
+            #     for i in range(self.config['latent_dim_rec']):
+            #         features.append(batch_weight_emb_user[:,i])
+            #     for i in range(self.config['latent_dim_rec']):
+            #         features.append(batch_weight_emb_item[:,i])
+            
+            batch_weight = self.get_mlp_input(features)
+            batch_weight = self.MLP_model(batch_weight)
 
 
         else:
             batch_weight = None
             raise TypeError('adaptive method not implemented')
 
-        batch_weight = torch.sigmoid(batch_weight)
+        batch_weight = torch.sigmoid(batch_weight)#TODO
         
-
-
         return batch_weight
 
