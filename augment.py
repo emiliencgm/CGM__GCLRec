@@ -55,6 +55,34 @@ class Homophily:
             batch_user_prob, batch_item_prob = torch.split(probs, [batch_user.shape[0], batch_item.shape[0]])
         return batch_user_prob, batch_item_prob
 
+    def get_homophily_batch_any(self, batch_embs1:torch.Tensor, batch_embs2:torch.Tensor):
+        '''
+        return prob distribution of users and items in batch.
+        '''
+        sigma = world.config['sigma_gausse']
+        ncluster = world.config['n_cluster']
+        #edge_index = self.model.dataset.Graph.cpu().indices()
+        embs_KMeans = torch.cat((batch_embs1, batch_embs2), dim=0)
+        
+        if ncluster > 99:
+            embs_KMeans_numpy = embs_KMeans.detach().cpu().numpy()
+            kmeans_faiss = faiss.Kmeans(world.config['latent_dim_rec'], ncluster, gpu=True)
+            kmeans_faiss.train(embs_KMeans_numpy)
+            centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
+        else:
+            cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
+            centroids = cluster_centers.to(world.device)            
+        
+        logits = []
+        for c in centroids:
+            logits.append((-torch.square(embs_KMeans - c).sum(1)/sigma).view(-1, 1))
+        logits = torch.cat(logits, axis=1)
+        probs = F.softmax(logits, dim=1)
+        #probs = F.normalize(logits, dim=1)# TODO
+        #loss = F.l1_loss(probs[edge_index[0]], probs[edge_index[1]])
+        batch_prob1, batch_prob2 = torch.split(probs, [batch_embs1.shape[0], batch_embs2.shape[0]])
+        
+        return batch_prob1, batch_prob2
 
 
 class ED_Uniform():
@@ -163,46 +191,3 @@ class Adaptive_Neighbor_Augment:
         '''
         return 
 
-    def get_coef_adaptive(self, batch_user, batch_pos_item, method='centroid', mode='eigenvector'):
-        '''
-        input: index batch_user & batch_pos_item\n
-        return tensor([adaptive coefficient of u_n-i_n])
-        '''
-        with torch.no_grad():
-            if method == 'homophily':
-                batch_user_prob, batch_item_prob = self.homophily.get_homophily_batch(batch_user, batch_pos_item)
-                #inner_product
-                batch_weight = torch.sum(torch.mul(batch_user_prob, batch_item_prob) ,dim=1)
-                #cos_similarity
-                #batch_weight = F.cosine_similarity(batch_user_prob, batch_item_prob)
-
-            elif method == 'centroid':
-                batch_weight = self.precal.centroid.cal_centroid_weights_batch(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
-
-            elif method == 'commonNeighbor':
-                #commonNeighbor weights are not symmetry.
-                #And index of item starts from n_users.
-                n_users = self.model.num_users
-                dense = self.precal.common_neighbor.CN_simi_mat_sp.to_dense()
-                batch_weight1 = dense[batch_user, batch_pos_item+n_users]
-                batch_weight2 = dense[batch_pos_item+n_users, batch_user]
-                batch_weight = (batch_weight1 + batch_weight2) * 0.5
-                # mat = self.precal.common_neighbor.CN_simi_mat_sp
-                # batch_weight = []
-                # for i in range(len(batch_user)):
-                #     batch_weight1 = mat[batch_user[i], batch_pos_item[i]+n_users]
-                #     batch_weight2 = mat[batch_pos_item[i]+n_users, batch_user[i]]
-                #     batch_weight.append((batch_weight1+batch_weight2)*0.5)
-                # batch_weight = torch.tensor(batch_weight)
-
-            elif method == 'mlp':
-                batch_weight = None
-                raise TypeError('adaptive method not implemented')
-
-            else:
-                batch_weight = None
-                raise TypeError('adaptive method not implemented')
-
-            batch_weight = torch.sigmoid(batch_weight)
-
-        return batch_weight.to(world.device)

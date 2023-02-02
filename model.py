@@ -12,6 +12,8 @@ import numpy as np
 import torch.nn.functional as F
 from dataloader import dataset
 from precalcul import precalculate
+from gtn_propagation import GeneralPropagation
+import torch_sparse
 #=============================================================Basic LightGCN============================================================#
 class LightGCN(nn.Module):
     def __init__(self, config, dataset:dataset, precal:precalculate):
@@ -176,6 +178,31 @@ class LightGCN(nn.Module):
         return loss, reg_loss
 
 
+#=============================================================GTN Encoder============================================================#
+class GTN(LightGCN):
+    def __init__(self, config, dataset:dataset, precal:precalculate):
+        super(GTN, self).__init__(config, dataset, precal)
+
+        self.gp = GeneralPropagation(config['GTN_K'], config['GTN_alpha'], cached=True, args=config)
+
+    def computer(self):
+        users_emb = self.embedding_user.weight
+        items_emb = self.embedding_item.weight
+        all_emb = torch.cat([users_emb, items_emb])
+        graph=self.Graph #Normalized
+        # from GTN
+        x = all_emb
+        rc = graph.indices()
+        r = rc[0]#row
+        c = rc[1]#col
+        val = torch.ones(graph.values().shape[0]).to(world.device)
+        num_nodes = graph.shape[0]
+        edge_index = torch_sparse.SparseTensor(row=r, col=c, value=val, sparse_sizes=(num_nodes, num_nodes))#edge_index和g_dropped是一样的吧？？？
+        emb, embs = self.gp.forward(x, edge_index)#TODO
+        light_out = emb
+
+        users, items = torch.split(light_out, [self.num_users, self.num_items])
+        return users, items
 
 #=============================================================SGL ED & RW============================================================#
 class SGL(LightGCN):

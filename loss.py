@@ -11,6 +11,7 @@ import torch.nn.functional as F
 import world
 from augment import Homophily
 import numpy as np
+import math
 #=============================================================BPR loss============================================================#
 class BPR_loss():
     def __init__(self, config, model:LightGCN, precalculate:precalculate, homophily:Homophily):
@@ -206,7 +207,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
         self.tau = config['temp_tau']
         self.alpha = config['alpha']
         self.f = lambda x: torch.exp(x / self.tau)
-        self.MLP_model = MLP(6).to(world.device)
+        self.MLP_model = MLP(5+2*0).to(world.device)
 
     def adaptive_softmax_loss(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
         
@@ -219,6 +220,8 @@ class Adaptive_softmax_loss(torch.nn.Module):
             loss = self.config['weight_decay']*reg + loss1 + self.config['lambda1']*(loss2 + loss3)
         else:
             loss = self.config['weight_decay']*reg + loss1
+        # loss_homophily = self.calculate_loss_homophily(users_emb, pos_emb)
+        # loss = loss + loss_homophily
         
         return loss
 
@@ -235,21 +238,34 @@ class Adaptive_softmax_loss(torch.nn.Module):
         pos_emb = F.normalize(pos_emb, dim=1)
         
         ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
+        # ratings_margin = self.get_coef_adaptive_all(batch_target_emb.detach(), batch_pos_emb.detach())
+        # ratings = torch.cos(torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))+ratings_margin)
         ratings_diag = torch.diag(ratings)
         if not (method is None):
             #Adaptive coef between User and Item
             pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
-            ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+(pos_ratings_margin))
+            theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
+            M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
+            # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
+            ratings_diag = torch.cos(theta + M)
+            # ratings_diag = ratings_diag * pos_ratings_margin
             #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
         else:
-            ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7)))
-        
+            # pos_ratings_margin = self.get_coef_adaptive_aug(batch_target_emb, batch_pos_emb)
+            # ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7)))
+            pass
         numerator = torch.exp(ratings_diag / self.tau)
         denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
         #loss = torch.mean(torch.negative(torch.log(numerator/denominator)))
         loss = torch.mean(torch.negative(2*self.alpha * torch.log(numerator) -  2*(1-self.alpha) * torch.log(denominator)))
 
         return loss
+
+    def calculate_loss_homophily(self, embs1, embs2):
+        batch_prob1, batch_prob2 = self.homophily.get_homophily_batch_any(embs1, embs2)
+        loss_homophily = 0.5*(torch.nn.functional.kl_div(batch_prob1.log(), batch_prob2, reduction='batchmean') + torch.nn.functional.kl_div(batch_prob2.log(), batch_prob1, reduction='batchmean'))
+        return loss_homophily
+
 
     def get_popdegree(self, batch_user, batch_pos_item):
         with torch.no_grad():
@@ -302,22 +318,26 @@ class Adaptive_softmax_loss(torch.nn.Module):
         '''
         if method == 'homophily':
             batch_weight = self.get_homophily(batch_user, batch_pos_item)
+            batch_weight = 1. * batch_weight 
 
         elif method == 'centroid':
             batch_weight = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
+            batch_weight = 1. * batch_weight
 
         elif method == 'commonNeighbor':
             batch_weight1, batch_weight2 = self.get_commonNeighbor(batch_user, batch_pos_item)
             batch_weight = (batch_weight1 + batch_weight2)*0.5
+            batch_weight = 1. * batch_weight
 
         elif method == 'mlp':
-            # batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
+            batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)#TODO problem of grandeur
-            batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
+            # batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
-            features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_homophily, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
+            features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
+            # features = []
             # with torch.no_grad():
             #     for i in range(self.config['latent_dim_rec']):
             #         features.append(batch_weight_emb_user[:,i])
@@ -327,7 +347,6 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight = self.get_mlp_input(features)
             batch_weight = self.MLP_model(batch_weight)
 
-
         else:
             batch_weight = None
             raise TypeError('adaptive method not implemented')
@@ -335,4 +354,39 @@ class Adaptive_softmax_loss(torch.nn.Module):
         batch_weight = torch.sigmoid(batch_weight)#TODO
         
         return batch_weight
+
+
+    def get_coef_adaptive_aug(self, aug1, aug2):
+        return 0
+
+    def get_coef_adaptive_all(self, embs1, embs2):
+        '''
+        backpropagation only update mlp, not embs, so embs are detached.
+        '''
+        #TODO
+        num_row = embs1.shape[0]
+        num_col = embs2.shape[0]
+        batch_weight = torch.zeros((num_row, num_col))
+        features = torch.zeros(1,128).to(world.device)
+        for row in range(num_row):
+            for col in range(row, num_col):
+                features = torch.cat( (features, torch.cat((embs1[row].unsqueeze(0), embs2[col].unsqueeze(0)), dim=1)), dim=0 )
+        mlp_output = self.MLP_model(features)
+        i = 1
+        for row in range(num_row):
+            for col in range(row, num_col):
+                batch_weight[row,col] = mlp_output[i]
+                batch_weight[col,row] = mlp_output[i]
+                i = i + 1
+
+        # for row in range(num_row):
+        #     for col in range(row, num_col):
+        #         mlp_input = torch.cat((embs1[row], embs2[col]))
+        #         output = self.MLP_model(mlp_input)
+        #         batch_weight[row,col] = output
+        #         batch_weight[col,row] = output
+
+        return batch_weight
+
+        
 

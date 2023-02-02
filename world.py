@@ -66,6 +66,8 @@ config['epsilon_GCLRec'] = args.epsilon_GCLRec
 config['w_GCLRec'] = args.w_GCLRec
 config['k_aug'] = args.k_aug
 config['if_visual'] = args.if_visual
+config['GTN_K'] = args.GTN_K
+config['GTN_alpha'] = args.GTN_alpha
 #备注
 config['comment'] = args.comment
 #加载预训练的embedding

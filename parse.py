@@ -50,6 +50,8 @@ def parse_args():
 
     #Architecture===========================================================================================================================================
     parser.add_argument('--model', type=str, default='GCLRec', help="Now available:\n\
+                                                                    ###LightGCN\n\
+                                                                    ###GTN (K=3, alpha=0.3)\n\
                                                                     ###SGL-ED: Edge Drop (Default drop prob = edge_drop_prob = 0.1 if if_pop==0)\n\
                                                                     ###SGL-RW: Random Walk (num_layers * [sub-EdgeDrop])\n\
                                                                     ###SimGCL: Strong and Simple Non Augmentation Contrastive Model\n\
@@ -60,9 +62,11 @@ def parse_args():
     parser.add_argument('--augment', type=str, default='Adaptive', help="Augmentation")    
     parser.add_argument('--centroid_mode', type=str, default='eigenvector', help="Centroid mode: degree, pagerank, eigenvector")
     parser.add_argument('--commonNeighbor_mode', type=str, default='SC', help="Common Neighbor mode: JS, SC, CN, LHN")
-    parser.add_argument('--adaptive_method', type=str, default='centroid', help="Adaptive coef method: centroid, commonNeighbor, homophily, mlp")
+    parser.add_argument('--adaptive_method', type=str, default='mlp', help="Adaptive coef method: centroid, commonNeighbor, homophily, mlp")
     parser.add_argument('--init_method', type=str, default='Normal', help="UI embeddings init method: Xavier or Normal")
     parser.add_argument('--perplexity', type=int, default=50, help="perplexity for T-SNE")
+    parser.add_argument('--GTN_K', type=int, default=3, help="K in GTN")
+    parser.add_argument('--GTN_alpha', type=float, default=0.3, help="alpha in GTN")
     parser.add_argument('--comment', type=str, default='_', help="comment for the experiment")
     #===========================================================================================================================================
 

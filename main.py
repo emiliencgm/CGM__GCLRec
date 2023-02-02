@@ -42,7 +42,7 @@ end = time.time()
 print('precal cost : ',end-start)
 cprint('[PRECALCULATE--END]')
 
-models = {'LightGCN':model.LightGCN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec}
+models = {'LightGCN':model.LightGCN, 'GTN':model.GTN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec}
 Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
 
 homophily = Homophily(Recmodel)

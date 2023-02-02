@@ -34,7 +34,7 @@ class Train():
 
             if world.config['loss'] == 'BPR':
                 #world.cprint('[FORWARD]')
-                if world.config['model'] in ['LightGCN']:
+                if world.config['model'] in ['LightGCN', 'GTN']:
                     pass
                 l_all = self.loss.bpr_loss(batch_users, batch_pos, batch_neg)
             
@@ -81,7 +81,7 @@ class Train():
                 elif world.config['model'] in ['SimGCL']:
                     aug_users1, aug_items1 = Recmodel.view_computer()
                     aug_users2, aug_items2 = Recmodel.view_computer()
-                elif world.config['model'] in ['LightGCN']:
+                elif world.config['model'] in ['LightGCN', 'GTN']:
                     aug_users1, aug_items1 = None, None
                     aug_users2, aug_items2 = None, None
                 elif world.config['model'] in ['GCLRec']:
@@ -107,7 +107,7 @@ class Train():
             w.add_scalar(f"{world.config['loss']}_Loss/{world.config['dataset']}", l_all, epoch * int(len(batch_users) / world.config['batch_size']) + batch_i)
         aver_loss = aver_loss / (total_batch)
         w.add_scalar(f"Average_{world.config['loss']}_Loss/{world.config['dataset']}", aver_loss, epoch)
-        print(f'EPOCH[{epoch+1}]:loss {aver_loss:.3f}')
+        print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
         return f"loss {aver_loss:.3f}"
 
 class Test():
