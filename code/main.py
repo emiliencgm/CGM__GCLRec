@@ -47,7 +47,7 @@ Recmodel = models[world.config['model']](world.config, dataset, precal).to(world
 
 homophily = Homophily(Recmodel)
 
-augments = {'No':None, 'ED':augment.ED_Uniform, 'RW':augment.RW_Uniform, 'Adaptive':augment.Adaptive_Neighbor_Augment}
+augments = {'No':None, 'ED':augment.ED_Uniform, 'RW':augment.RW_Uniform, 'SVD':augment.SVD_Augment, 'Adaptive':augment.Adaptive_Neighbor_Augment}
 try:
     augmentation = augments[world.config['augment']](world.config, Recmodel, precal, homophily)
 except:

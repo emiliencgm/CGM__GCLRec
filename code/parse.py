@@ -59,7 +59,7 @@ def parse_args():
     parser.add_argument('--dataset', type=str, default='yelp2018', help="dataset:[yelp2018,  amazon-book,  MIND]") 
     parser.add_argument('--seed', type=int, default=2022, help="random seed")
     parser.add_argument('--loss', type=str, default='Adaptive', help="loss function: BPR, BPR_Contrast, BC, Adaptive")
-    parser.add_argument('--augment', type=str, default='Adaptive', help="Augmentation")    
+    parser.add_argument('--augment', type=str, default='Adaptive', help="Augmentation: No, ED, RW, SVD, Adaptivem")    
     parser.add_argument('--centroid_mode', type=str, default='eigenvector', help="Centroid mode: degree, pagerank, eigenvector")
     parser.add_argument('--commonNeighbor_mode', type=str, default='SC', help="Common Neighbor mode: JS, SC, CN, LHN")
     parser.add_argument('--adaptive_method', type=str, default='mlp', help="Adaptive coef method: centroid, commonNeighbor, homophily, mlp")
@@ -67,6 +67,8 @@ def parse_args():
     parser.add_argument('--perplexity', type=int, default=50, help="perplexity for T-SNE")
     parser.add_argument('--GTN_K', type=int, default=3, help="K in GTN")
     parser.add_argument('--GTN_alpha', type=float, default=0.3, help="alpha in GTN")
+    parser.add_argument('--if_SVD', type=int, default=1, help="whether use SVD for augmentation")
+    parser.add_argument('--svd_q', type=int, default=5, help="keep first q singular values for SVD recontrust")
     parser.add_argument('--comment', type=str, default='_', help="comment for the experiment")
     #===========================================================================================================================================
 

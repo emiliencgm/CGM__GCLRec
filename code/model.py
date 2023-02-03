@@ -137,7 +137,8 @@ class LightGCN(nn.Module):
         users_emb_ego = self.embedding_user(users)
         pos_emb_ego = self.embedding_item(pos_items)
         neg_emb_ego = self.embedding_item(neg_items)
-        return users_emb, pos_emb, neg_emb, users_emb_ego, pos_emb_ego, neg_emb_ego, None
+        All_embs = [all_users, all_items]
+        return users_emb, pos_emb, neg_emb, users_emb_ego, pos_emb_ego, neg_emb_ego, All_embs
     
     def bpr_loss(self, users, pos, neg):
         '''

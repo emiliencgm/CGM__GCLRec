@@ -15,6 +15,7 @@ import torch.nn.functional as F
 import os
 import time
 from scipy.sparse import csr_matrix
+import torch_sparse
 
 #=============================================================Overall Precalculate============================================================#
 class precalculate():
@@ -28,6 +29,8 @@ class precalculate():
             self.C = Centroid(dataset, self.P)
         if config['adaptive_method'] in ['commonNeighbor', 'mlp']:
             self.CN = CommonNeighbor(dataset)
+        if config['if_SVD']:
+            self.SVD_Graph = SVD(dataset)
         
     @property
     def popularity(self):
@@ -40,6 +43,10 @@ class precalculate():
     @property
     def common_neighbor(self):
         return self.CN
+
+    @property
+    def svd(self):
+        return self.SVD_Graph
         
 #=============================================================Popularity============================================================#
 class Pop():
@@ -605,4 +612,38 @@ class CommonNeighbor():
         return edge_weight
 
 
-    
+class SVD():
+    def __init__(self, dataset:dataset):
+        graph = dataset.Graph #Normalized
+        svd_q = world.config['svd_q']
+        adj = self.normAdj_2_adj(graph=graph)
+        # self.u_mul_s, self.v_mul_s, self.svd_u_T, self.svd_v_T = self.perform_SVD_origin(adj, svd_q)
+        self.u_mul_s_mul_v_T = self.perform_SVD(adj, svd_q)
+
+    def perform_SVD_origin(self, adj, q):
+        print('Performing SVD...')
+        svd_u,s,svd_v = torch.svd_lowrank(adj,q=q)
+        u_mul_s = svd_u @ torch.diag(s)
+        v_mul_s = svd_v @ torch.diag(s)
+        del adj
+        del s
+        print('SVD done.')
+        return u_mul_s, v_mul_s, svd_u.T, svd_v.T
+
+    def perform_SVD(self, adj, q):
+        print('Performing SVD...')
+        svd_u,s,svd_v = torch.svd_lowrank(adj,q=q)
+        u_mul_s = svd_u @ torch.diag(s)
+        del adj
+        del s
+        print('SVD done.')
+        return u_mul_s @ svd_v.T
+
+    def normAdj_2_adj(self, graph):
+        '''
+        input graph is normalized Adj SparseTensor matrix
+        '''
+        val = torch.ones(graph.values().shape[0]).to(world.device)
+        num_nodes = graph.shape[0]
+        adj = torch.sparse.FloatTensor(graph.indices(), val, torch.Size([num_nodes, num_nodes]))
+        return adj

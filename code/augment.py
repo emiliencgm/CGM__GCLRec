@@ -152,6 +152,53 @@ class RW_Uniform(ED_Uniform):
         self.augAdjMatrix2 =  self.Random_Walk(p_drop)
 
 
+class SVD_Augment():
+    def __init__(self, config, model:LightGCN, precal:precalculate, homophily:Homophily):
+        self.config = config
+        self.model = model
+        self.precal = precal
+        self.n_layers = config['num_layers']
+        self.num_users, self.num_items = self.model.num_users, self.model.num_items
+
+    def reconstruct_graph_computer_origin(self):
+        users_emb = self.model.embedding_user.weight
+        items_emb = self.model.embedding_item.weight
+        embs_u = [users_emb]    
+        embs_i = [items_emb]    
+        for layer in range(self.n_layers):
+            #propagation for user, neighbors are items
+            vt_ei = self.precal.svd.svd_v_T @ embs_i[layer]
+            emb_u = self.precal.svd.u_mul_s @ vt_ei
+            embs_u.append(emb_u)
+            #propagation for item, neighbors are users
+            ut_eu = self.precal.svd.svd_u_T @ embs_u[layer]
+            emb_i = self.precal.svd.v_mul_s @ ut_eu
+            embs_i.append(emb_i)
+
+        embs_u = torch.stack(embs_u, dim=1)
+        light_out_user = torch.mean(embs_u, dim=1)
+        embs_i = torch.stack(embs_i, dim=1)
+        light_out_item = torch.mean(embs_i, dim=1)
+
+
+        return light_out_user, light_out_item
+
+    def reconstruct_graph_computer(self):
+        users_emb = self.model.embedding_user.weight
+        items_emb = self.model.embedding_item.weight
+        all_emb = torch.cat([users_emb, items_emb])
+        embs = [all_emb]
+        graph = self.precal.svd.u_mul_s_mul_v_T
+        for layer in range(self.n_layers):
+            all_emb = torch.sparse.mm(graph, all_emb)
+            embs.append(all_emb)
+        embs = torch.stack(embs, dim=1)
+        light_out = torch.mean(embs, dim=1)
+        users, items = torch.split(light_out, [self.num_users, self.num_items])
+        
+        return users, items
+
+
 
 
 class Adaptive_Neighbor_Augment:
