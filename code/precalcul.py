@@ -435,6 +435,7 @@ class CommonNeighbor():
         print('shape test :',mat_sp.nonzero()[0].shape[0],'==',2*self.dataset.trainDataSize)
         # self.CN_simi_mat_sp = mat_sp.to(world.device)
         self.CN_simi_mat_sp = mat_sp
+        fasdfasfd
 
     # def CN_simi_unsymmetry_mat(self, mode='SC'):
     #     """
