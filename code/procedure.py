@@ -97,6 +97,12 @@ class Train():
                     aug_users1, aug_items1 = torch.split(embs_per_layer_or_all_embs[k], [Recmodel.num_users, Recmodel.num_items])
                     aug_users2, aug_items2 = augmentation.get_adaptive_neighbor_augment(embs_per_layer_or_all_embs, batch_users, batch_pos, batch_neg, k)
                 
+                if world.config['augment'] in ['SVD'] and world.config['model'] in ['LightGCN']: #or world.config['model'] in ['LightGCL']:
+                    #SVD + LightGCN
+                    aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
+                    aug_users2, aug_items2 = augmentation.reconstruct_graph_computer()
+
+
                 if world.config['model'] in ['GCLRec']:
                     l_all = self.loss.adaptive_softmax_loss(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
                 else:

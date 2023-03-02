@@ -155,6 +155,7 @@ class LightGCN(nn.Module):
         neg_scores = torch.sum(neg_scores, dim=1)
         # mean or sum
         loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))#TODO SOFTPLUS()!!!
+        #loss = torch.sum((-(pos_scores - neg_scores)))#TODO SOFTPLUS()!!!
         '''
         self.tau = world.config['temp_tau']
         self.alpha = world.config['alpha']

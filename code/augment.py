@@ -35,7 +35,7 @@ class Homophily:
             else:
                 embs_KMeans = torch.cat((self.model.embedding_user.weight, self.model.embedding_item.weight), dim=0)
             
-            if ncluster > 99:
+            if ncluster > 64:
                 embs_KMeans_numpy = embs_KMeans.detach().cpu().numpy()
                 kmeans_faiss = faiss.Kmeans(world.config['latent_dim_rec'], ncluster, gpu=True)
                 kmeans_faiss.train(embs_KMeans_numpy)
@@ -184,17 +184,18 @@ class SVD_Augment():
         return light_out_user, light_out_item
 
     def reconstruct_graph_computer(self):
-        users_emb = self.model.embedding_user.weight
-        items_emb = self.model.embedding_item.weight
-        all_emb = torch.cat([users_emb, items_emb])
-        embs = [all_emb]
-        graph = self.precal.svd.u_mul_s_mul_v_T
-        for layer in range(self.n_layers):
-            all_emb = torch.sparse.mm(graph, all_emb)
-            embs.append(all_emb)
-        embs = torch.stack(embs, dim=1)
-        light_out = torch.mean(embs, dim=1)
-        users, items = torch.split(light_out, [self.num_users, self.num_items])
+        with torch.no_grad():
+            users_emb = self.model.embedding_user.weight
+            items_emb = self.model.embedding_item.weight
+            all_emb = torch.cat([users_emb, items_emb])
+            embs = [all_emb]
+            graph = self.precal.svd.u_mul_s_mul_v_T
+            for layer in range(self.n_layers):
+                all_emb = torch.sparse.mm(graph, all_emb)
+                embs.append(all_emb)
+            embs = torch.stack(embs, dim=1)
+            light_out = torch.mean(embs, dim=1)
+            users, items = torch.split(light_out, [self.num_users, self.num_items])
         
         return users, items
 
@@ -216,8 +217,16 @@ class Adaptive_Neighbor_Augment:
         return aug_all_users, aug_all_items of selected k-th layer\n
         u'(k) = (1-𝜀)*u(k) + (𝜀(L-k)/L)*u(L) + w Σ w_uv*v(L)
         '''
+        with torch.no_grad():
+            pass
+            #TODO
         aug_embs_k_layer = (1-self.epsilon) * embs_per_layer[k] + (self.epsilon*(self.L-k)/self.L) * embs_per_layer[self.L]
         Sigma = 0
+
+        # low = torch.zeros_like(aug_embs_k_layer).float()
+        # high = torch.ones_like(aug_embs_k_layer).float()
+        # random_noise = torch.distributions.uniform.Uniform(low, high).sample()
+        # noise = torch.mul(torch.sign(aug_embs_k_layer),torch.nn.functional.normalize(random_noise, dim=1))
         
         aug_embs_k_layer = aug_embs_k_layer + self.w * Sigma
 

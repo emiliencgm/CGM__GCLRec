@@ -37,7 +37,7 @@ class BPR_Contrast_loss(BPR_loss):
         reg_loss = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))
         pos_scores = torch.sum(torch.mul(users_emb, pos_emb), dim=1)
         neg_scores = torch.sum(torch.mul(users_emb, neg_emb), dim=1)
-        loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))
+        loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))#TODO softplus
         bprloss = (loss + reg_loss * self.config['weight_decay'])/self.config['batch_size']
         
         contrastloss = self.info_nce_loss_overall(aug_users1[batch_user], aug_users2[batch_user], aug_users2) \
@@ -52,15 +52,15 @@ class BPR_Contrast_loss(BPR_loss):
         f = lambda x: torch.exp(x / self.tau)
         between_sim = f(self.sim(z1, z2))
         all_sim = f(self.sim(z1, z_all))
-        positive_pairs = between_sim
+        positive_pairs = (between_sim)
         negative_pairs = torch.sum(all_sim, 1)
-        loss = torch.sum(-torch.log(positive_pairs / (negative_pairs)))
+        loss = torch.sum(-torch.log(positive_pairs / negative_pairs))#TODO softplus
         #print('positive_pairs / negative_pairs',max(positive_pairs / negative_pairs))
         loss = loss/self.config['batch_size']
         return loss
 
 
-    def sim(self, z1: torch.Tensor, z2: torch.Tensor, mode='cos'):
+    def sim(self, z1: torch.Tensor, z2: torch.Tensor, mode='inner_product'):#TODO
         '''
         计算一个z1和一个z2两个向量的相似度/或者一个z1和多个z2的各自相似度。
         即两个输入的向量数（行数）可能不同。
@@ -68,8 +68,8 @@ class BPR_Contrast_loss(BPR_loss):
         if mode == 'inner_product':
             if z1.size()[0] == z2.size()[0]:
                 #return F.cosine_similarity(z1,z2)
-                x = F.normalize(z1)
-                y = F.normalize(z2)
+                z1 = F.normalize(z1)
+                z2 = F.normalize(z2)
                 return torch.sum(torch.mul(z1,z2) ,dim=1)
             else:
                 z1 = F.normalize(z1)
@@ -184,14 +184,24 @@ class MLP(torch.nn.Module):
         self.linear2=torch.nn.Linear(3*in_dim, in_dim)
         self.activation2=torch.nn.ReLU()
         self.linear3=torch.nn.Linear(in_dim,1)
+        #TODO from CV projector:
+        self.linear = torch.nn.Linear(in_dim,4*in_dim)
+        self.BatchNorm = torch.nn.BatchNorm1d(4*in_dim, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.activation = torch.nn.ReLU()
+        self.linear_out = torch.nn.Linear(4*in_dim, 1)
 
     def forward(self, x):
         #TODO Architecture suboptimal
-        x = self.linear1(x)
-        x = self.activation1(x)
-        x = self.linear2(x)
-        x = self.activation2(x)
-        x = self.linear3(x)
+        # x = self.linear1(x)
+        # x = self.activation1(x)
+        # x = self.linear2(x)
+        # x = self.activation2(x)
+        # x = self.linear3(x)
+        x = self.linear(x)
+        # x = self.BatchNorm(x)
+        x = self.activation(x)
+        x = self.linear_out(x)
+        x = torch.sigmoid(x)
         return x
 
 
@@ -236,7 +246,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
 
         users_emb = F.normalize(users_emb, dim=1)
         pos_emb = F.normalize(pos_emb, dim=1)
-        
+        '''
         ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
         # ratings_margin = self.get_coef_adaptive_all(batch_target_emb.detach(), batch_pos_emb.detach())
         # ratings = torch.cos(torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))+ratings_margin)
@@ -254,12 +264,52 @@ class Adaptive_softmax_loss(torch.nn.Module):
             # pos_ratings_margin = self.get_coef_adaptive_aug(batch_target_emb, batch_pos_emb)
             # ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7)))
             pass
+        '''
+        #-----------------------------DCL--start-------------------------------
+        #TODO 在一次计算中：pos-pairs:{u-i}, neg-pairs:{u-u', u-i'}
+        batch_size = world.config['batch_size']
+        tau_plus = world.config['tau_plus']
+        temperature = world.config['temp_tau']
+        N = batch_size * 2 - 2
+        pos = torch.exp(torch.sum(users_emb * pos_emb, dim=-1) / temperature)
+        #----------adding--BC----------
+        ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
+        pos_adaptive = torch.diag(ratings).squeeze()
+        pos_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode).squeeze()
+        theta = torch.arccos(torch.clamp(pos_adaptive,-1+1e-7,1-1e-7))
+        M = torch.arccos(torch.clamp(pos_margin,-1+1e-7,1-1e-7))
+        # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
+        pos_adaptive = torch.cos(theta + M)
+        pos_adaptive = torch.exp(pos_adaptive / temperature)
+        pos_adaptive = torch.cat([pos_adaptive, pos_adaptive], dim=0)
+        #----------adding--BC----------
+        pos = torch.cat([pos, pos], dim=0)
+        out = torch.cat([users_emb, pos_emb], dim=0)
+        neg = torch.exp(torch.mm(out, out.t().contiguous()) / temperature)
+        mask = self.get_negative_mask(batch_size).cuda()
+        neg = neg.masked_select(mask).view(2 * batch_size, -1)
+        Ng = (-tau_plus * N * pos + neg.sum(dim = -1)) / (1 - tau_plus)
+        # constrain (optional)
+        Ng = torch.clamp(Ng, min = N * np.e**(-1 / temperature))
+        loss = (- torch.log(1.0*pos_adaptive / (pos + Ng) )).mean()
+        #-----------------------------DCL--end-------------------------------
+        '''
         numerator = torch.exp(ratings_diag / self.tau)
         denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
         #loss = torch.mean(torch.negative(torch.log(numerator/denominator)))
-        loss = torch.mean(torch.negative(2*self.alpha * torch.log(numerator) -  2*(1-self.alpha) * torch.log(denominator)))
-
+        loss = torch.mean(torch.negative((2*self.alpha * torch.log(numerator) -  2*(1-self.alpha) * torch.log(denominator))))
+        #TODO trying torch.nn.functional.softplus 
+        '''
         return loss
+
+    def get_negative_mask(self, batch_size):
+        negative_mask = torch.ones((batch_size, 2 * batch_size), dtype=bool)
+        for i in range(batch_size):
+            negative_mask[i, i] = 0
+            negative_mask[i, i + batch_size] = 0
+
+        negative_mask = torch.cat((negative_mask, negative_mask), 0)
+        return negative_mask
 
     def calculate_loss_homophily(self, embs1, embs2):
         batch_prob1, batch_prob2 = self.homophily.get_homophily_batch_any(embs1, embs2)
@@ -333,7 +383,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)#TODO problem of grandeur
-            # batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
+            #batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
             features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
@@ -351,7 +401,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight = None
             raise TypeError('adaptive method not implemented')
 
-        batch_weight = torch.sigmoid(batch_weight)#TODO
+        # batch_weight = torch.sigmoid(batch_weight)#TODO
         
         return batch_weight
 

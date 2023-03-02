@@ -70,6 +70,7 @@ config['GTN_K'] = args.GTN_K
 config['GTN_alpha'] = args.GTN_alpha
 config['if_SVD'] = args.if_SVD
 config['svd_q'] = args.svd_q
+config['tau_plus'] = args.tau_plus
 #备注
 config['comment'] = args.comment
 #加载预训练的embedding

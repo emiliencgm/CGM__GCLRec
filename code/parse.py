@@ -22,6 +22,7 @@ def parse_args():
     parser.add_argument('--epsilon_GCLRec', type=float, default=0.1, help="epsilon for controling augmentation in GCLRec")
     parser.add_argument('--w_GCLRec', type=float, default=0.1, help="w for controling augmentation in GCLRec")
     parser.add_argument('--k_aug', type=int, default=0, help="use k-th layer for augmentation in GCLRec, k in [0,1,2,... L]")
+    parser.add_argument('--tau_plus', type=float, default=0.1, help="tau_plus in DCL: Debiased Contrastive Loss")
     #===========================================================================================================================================
 
     parser.add_argument('--early_stop_steps', type=int, default=20, help="early stop steps")

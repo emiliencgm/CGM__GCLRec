@@ -29,7 +29,7 @@ class precalculate():
             self.C = Centroid(dataset, self.P)
         if config['adaptive_method'] in ['commonNeighbor', 'mlp']:
             self.CN = CommonNeighbor(dataset)
-        if config['if_SVD']:
+        if config['augment'] in ['SVD'] and config['if_SVD']:
             self.SVD_Graph = SVD(dataset)
         
     @property
@@ -435,7 +435,6 @@ class CommonNeighbor():
         print('shape test :',mat_sp.nonzero()[0].shape[0],'==',2*self.dataset.trainDataSize)
         # self.CN_simi_mat_sp = mat_sp.to(world.device)
         self.CN_simi_mat_sp = mat_sp
-        fasdfasfd
 
     # def CN_simi_unsymmetry_mat(self, mode='SC'):
     #     """
@@ -635,10 +634,19 @@ class SVD():
         print('Performing SVD...')
         svd_u,s,svd_v = torch.svd_lowrank(adj,q=q)
         u_mul_s = svd_u @ torch.diag(s)
-        del adj
-        del s
         print('SVD done.')
         return u_mul_s @ svd_v.T
+
+    # def perform_SVD(self, adj, q):
+    #     print('Performing SVD...')
+    #     svd_u, s, svd_v = torch.svd_lowrank(adj,q=q)
+    #     svd_u, svd_v_T = svd_u.to_sparse(), svd_v.T
+    #     u_mul_s = torch.sparse.mm(svd_u, torch.diag(s))
+    #     del adj
+    #     del s
+    #     print('SVD done.')
+    #     # return (u_mul_s @ svd_v.T)
+    #     return torch.sparse.mm(u_mul_s, svd_v_T).to_sparse()
 
     def normAdj_2_adj(self, graph):
         '''
