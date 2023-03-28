@@ -84,6 +84,39 @@ class BPR_Contrast_loss(BPR_loss):
                 z2 = F.normalize(z2)
                 #return ( torch.mm(z1, z2.t()) + 1 ) / 2
                 return torch.mm(z1, z2.t())
+#=============================================================Softmax loss============================================================#
+class Softmax_loss():
+    def __init__(self, config, model:LightGCN, precalculate:precalculate, homophily:Homophily):
+        self.config = config
+        self.model = model
+        self.precalculate = precalculate
+        self.tau = config['temp_tau']
+
+    def softmax_loss(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
+
+        users_emb = F.normalize(users_emb, dim=-1)
+        pos_emb = F.normalize(pos_emb, dim=-1)
+        neg_emb = F.normalize(neg_emb, dim=-1)
+
+        # pos_ratings = torch.sum(users_emb * pos_emb, dim=-1)
+        # neg_ratings = torch.matmul(torch.unsqueeze(users_emb, 1), torch.transpose(neg_emb, 0, 1)).squeeze(dim=1)
+        # ratings = torch.cat([pos_ratings[:, None], neg_ratings], dim=1)
+        ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
+        ratings_diag = torch.diag(ratings)
+
+        numerator = torch.exp(ratings_diag / self.tau)
+        denominator = torch.sum(torch.exp(ratings / self.tau), dim=1)
+
+        # numerator = torch.exp(pos_ratings / self.tau)
+        # denominator = torch.sum(torch.exp(ratings / self.tau), dim=1)
+
+        softmax_loss = torch.mean(torch.negative(torch.log(numerator / denominator)))
+
+        regularizer = 0.5 * torch.norm(userEmb0) ** 2 + 0.5 * torch.norm(posEmb0) ** 2 + 0.5 ** torch.norm(negEmb0)
+        regularizer = regularizer / self.config['batch_size']
+        reg_loss = self.config['weight_decay'] * regularizer
+
+        return softmax_loss + reg_loss
 
 #=============================================================BC loss============================================================#       
 class BC_loss():
@@ -246,7 +279,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
 
         users_emb = F.normalize(users_emb, dim=1)
         pos_emb = F.normalize(pos_emb, dim=1)
-        '''
+        
         ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
         # ratings_margin = self.get_coef_adaptive_all(batch_target_emb.detach(), batch_pos_emb.detach())
         # ratings = torch.cos(torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))+ratings_margin)
@@ -264,6 +297,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
             # pos_ratings_margin = self.get_coef_adaptive_aug(batch_target_emb, batch_pos_emb)
             # ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7)))
             pass
+        
         '''
         #-----------------------------DCL--start-------------------------------
         #TODO 在一次计算中：pos-pairs:{u-i}, neg-pairs:{u-u', u-i'}
@@ -294,12 +328,13 @@ class Adaptive_softmax_loss(torch.nn.Module):
         loss = (- torch.log(1.0*pos_adaptive / (pos + Ng) )).mean()
         #-----------------------------DCL--end-------------------------------
         '''
+        
         numerator = torch.exp(ratings_diag / self.tau)
         denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
         #loss = torch.mean(torch.negative(torch.log(numerator/denominator)))
         loss = torch.mean(torch.negative((2*self.alpha * torch.log(numerator) -  2*(1-self.alpha) * torch.log(denominator))))
         #TODO trying torch.nn.functional.softplus 
-        '''
+        
         return loss
 
     def get_negative_mask(self, batch_size):

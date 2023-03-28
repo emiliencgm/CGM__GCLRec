@@ -68,6 +68,19 @@ class Train():
                 else:
                     l_all = self.loss.bpr_contrast_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
 
+            elif world.config['loss'] == 'Softmax':
+                users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs= Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
+
+                if world.config['model'] in ['LightGCN']:
+                    aug_users1, aug_items1 = None, None
+                    aug_users2, aug_items2 = None, None
+                else:
+                    aug_users1, aug_items1 = None, None
+                    aug_users2, aug_items2 = None, None
+
+                l_all = self.loss.softmax_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+
+
             
             elif world.config['loss'] == 'BC':
                 if epoch < world.config['epoch_only_pop_for_BCloss']:
