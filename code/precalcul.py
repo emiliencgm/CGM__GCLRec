@@ -152,6 +152,12 @@ class Pop():
         '''
         return self._user_pop
 
+    @property
+    def item_pop_sum(self):
+        '''
+        total number of items' popularity degree
+        '''
+        return sum(self._item_pop)
 
     def build_pop_item(self):
         num_group = world.config['pop_group']

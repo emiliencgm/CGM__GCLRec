@@ -37,6 +37,12 @@ class Train():
                 if world.config['model'] in ['LightGCN', 'GTN']:
                     pass
                 l_all = self.loss.bpr_loss(batch_users, batch_pos, batch_neg)
+                
+            elif world.config['loss'] == 'Causal_pop':
+                #world.cprint('[FORWARD]')
+                if world.config['model'] in ['LightGCN', 'GTN']:
+                    pass
+                l_all = self.loss.causal_popularity_bpr_loss(batch_users, batch_pos, batch_neg)
             
             
             elif world.config['loss'] == 'BPR_Contrast':

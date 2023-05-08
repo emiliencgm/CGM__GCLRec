@@ -23,6 +23,7 @@ def parse_args():
     parser.add_argument('--w_GCLRec', type=float, default=0.1, help="w for controling augmentation in GCLRec")
     parser.add_argument('--k_aug', type=int, default=0, help="use k-th layer for augmentation in GCLRec, k in [0,1,2,... L]")
     parser.add_argument('--tau_plus', type=float, default=0.1, help="tau_plus in DCL: Debiased Contrastive Loss")
+    parser.add_argument('--pop_gamma', type=float, default=0.1, help="gamma in PD(A): Popularity-bias Deconfounding (and Adjusting)")
     #===========================================================================================================================================
 
     parser.add_argument('--early_stop_steps', type=int, default=20, help="early stop steps")
@@ -59,7 +60,7 @@ def parse_args():
                                                                     ###GCLRec: Adaptive augmentation & loss")
     parser.add_argument('--dataset', type=str, default='yelp2018', help="dataset:[yelp2018,  amazon-book,  MIND]") 
     parser.add_argument('--seed', type=int, default=2022, help="random seed")
-    parser.add_argument('--loss', type=str, default='Adaptive', help="loss function: BPR, BPR_Contrast, BC, Adaptive")
+    parser.add_argument('--loss', type=str, default='Adaptive', help="loss function: BPR, BPR_Contrast, BC, Adaptive, Causal_pop")
     parser.add_argument('--augment', type=str, default='Adaptive', help="Augmentation: No, ED, RW, SVD, Adaptivem")    
     parser.add_argument('--centroid_mode', type=str, default='eigenvector', help="Centroid mode: degree, pagerank, eigenvector")
     parser.add_argument('--commonNeighbor_mode', type=str, default='SC', help="Common Neighbor mode: JS, SC, CN, LHN")

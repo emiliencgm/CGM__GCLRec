@@ -474,4 +474,38 @@ class Adaptive_softmax_loss(torch.nn.Module):
         return batch_weight
 
         
+class Causal_popularity_BPR_loss():
+    def __init__(self, config, model:LightGCN, precalculate:precalculate, homophily:Homophily):
+        self.config = config
+        self.model = model
+        self.precalculate = precalculate
+        self.gamma = config['pop_gamma']
+
+    def causal_popularity_bpr_loss(self, batch_user, batch_pos, batch_neg):
+        (users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, _) = self.model.getEmbedding(batch_user.long(), batch_pos.long(), batch_neg.long())
+        reg_loss = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))
+        reg_loss = reg_loss * self.config['weight_decay']
+
+        pos_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label)[batch_pos].to(world.device)
+        neg_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label)[batch_neg].to(world.device)
+        pos_pop_emb = self.model.embed_item_pop(pos_items_pop)
+        neg_pop_emb = self.model.embed_item_pop(neg_items_pop)
+        norm_pos_items_pop = pos_items_pop / self.precalculate.popularity.item_pop_sum
+        norm_neg_items_pop = neg_items_pop / self.precalculate.popularity.item_pop_sum
+        norm_pos_items_pop = norm_pos_items_pop ** self.gamma
+        norm_neg_items_pop = norm_neg_items_pop ** self.gamma
+
+        pos_scores = torch.mul(users_emb, pos_emb)
+        pos_scores = torch.sum(pos_scores, dim=1)
+        pos_scores = torch.mul(pos_scores, norm_pos_items_pop)
+        neg_scores = torch.mul(users_emb, neg_emb)
+        neg_scores = torch.sum(neg_scores, dim=1)
+        neg_scores = torch.mul(neg_scores, norm_neg_items_pop)
+
+
+        loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))
+
+        loss = (loss + reg_loss)/self.config['batch_size']
+
+        return loss
 

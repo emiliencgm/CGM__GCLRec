@@ -32,7 +32,7 @@ class LightGCN(nn.Module):
         self.embedding_user = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim)
         self.embedding_item = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=self.latent_dim)
         
-        if self.config['loss'] in ['BC']:
+        if self.config['loss'] in ['BC', 'Causal_pop']:
             #For BC loss
             hotest_user = self.precal.popularity.UserPopGroupDict[self.config['pop_group']-1][-1]
             hotest_user = int(hotest_user)
