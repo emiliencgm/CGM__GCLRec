@@ -124,8 +124,8 @@ class BC_loss():
         self.config = config
         self.model = model
         self.precalculate = precalculate
-        self.tau = config['temp_tau']
-        self.f = lambda x: torch.exp(x / self.tau)
+        self.tau1 = config['temp_tau']
+        self.tau2 = config['temp_tau_pop']
         self.decay = self.config['weight_decay']
         self.batch_size = self.config['batch_size']
         self.alpha = self.config['alpha']#BC loss下的alpha与Adaptive下的alpha不同，是用于对pop_loss和主bc_loss加权用的。
@@ -158,8 +158,8 @@ class BC_loss():
         ratings = torch.matmul(users_pop_emb, torch.transpose(pos_pop_emb, 0, 1))
         ratings_diag = torch.diag(ratings)
 
-        numerator = torch.exp(ratings_diag / self.tau)
-        denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
+        numerator = torch.exp(ratings_diag / self.tau2)
+        denominator = torch.sum(torch.exp(ratings / self.tau2), dim = 1)
         loss2 = self.alpha * torch.mean(torch.negative(torch.log(numerator/denominator)))
         #loss2 = self.alpha * torch.sum(torch.negative(torch.log(numerator/denominator)))
 
@@ -183,8 +183,8 @@ class BC_loss():
         #ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+\
         #                        (torch.zeros_like(pos_ratings_margin)))
         
-        numerator = torch.exp(ratings_diag / self.tau)
-        denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
+        numerator = torch.exp(ratings_diag / self.tau1)
+        denominator = torch.sum(torch.exp(ratings / self.tau1), dim = 1)
         loss1 = (1-self.alpha) * torch.mean(torch.negative(torch.log(numerator/denominator)))
         #loss1 = (1-self.alpha) * torch.sum(torch.negative(torch.log(numerator/denominator)))
 
@@ -297,37 +297,6 @@ class Adaptive_softmax_loss(torch.nn.Module):
             # pos_ratings_margin = self.get_coef_adaptive_aug(batch_target_emb, batch_pos_emb)
             # ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7)))
             pass
-        
-        '''
-        #-----------------------------DCL--start-------------------------------
-        #TODO 在一次计算中：pos-pairs:{u-i}, neg-pairs:{u-u', u-i'}
-        batch_size = world.config['batch_size']
-        tau_plus = world.config['tau_plus']
-        temperature = world.config['temp_tau']
-        N = batch_size * 2 - 2
-        pos = torch.exp(torch.sum(users_emb * pos_emb, dim=-1) / temperature)
-        #----------adding--BC----------
-        ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
-        pos_adaptive = torch.diag(ratings).squeeze()
-        pos_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode).squeeze()
-        theta = torch.arccos(torch.clamp(pos_adaptive,-1+1e-7,1-1e-7))
-        M = torch.arccos(torch.clamp(pos_margin,-1+1e-7,1-1e-7))
-        # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
-        pos_adaptive = torch.cos(theta + M)
-        pos_adaptive = torch.exp(pos_adaptive / temperature)
-        pos_adaptive = torch.cat([pos_adaptive, pos_adaptive], dim=0)
-        #----------adding--BC----------
-        pos = torch.cat([pos, pos], dim=0)
-        out = torch.cat([users_emb, pos_emb], dim=0)
-        neg = torch.exp(torch.mm(out, out.t().contiguous()) / temperature)
-        mask = self.get_negative_mask(batch_size).cuda()
-        neg = neg.masked_select(mask).view(2 * batch_size, -1)
-        Ng = (-tau_plus * N * pos + neg.sum(dim = -1)) / (1 - tau_plus)
-        # constrain (optional)
-        Ng = torch.clamp(Ng, min = N * np.e**(-1 / temperature))
-        loss = (- torch.log(1.0*pos_adaptive / (pos + Ng) )).mean()
-        #-----------------------------DCL--end-------------------------------
-        '''
         
         numerator = torch.exp(ratings_diag / self.tau)
         denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
@@ -472,8 +441,78 @@ class Adaptive_softmax_loss(torch.nn.Module):
         #         batch_weight[col,row] = output
 
         return batch_weight
+#=============================================================Debiased Contrastive loss============================================================#
+class Debiased_Contrastive_loss():
+    def __init__(self, config, model:LightGCN, precal:precalculate, homophily:Homophily):
+        self.config = config
+        self.model = model
+        self.precal = precal
+        self.homophily = homophily
+        self.tau = config['temp_tau']
+        self.alpha = config['alpha']
+        self.f = lambda x: torch.exp(x / self.tau)
 
+    def debiased_contrastive_loss(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
+        '''
+        只计算u-i, 不使用数据增强后的u-u'
+        '''
+        reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
+        loss_ui = self.calculate_loss(users_emb, pos_emb)
+        loss = self.config['weight_decay']*reg + loss_ui
         
+        return loss
+
+
+    def calculate_loss(self, batch_target_emb, batch_pos_emb):
+        '''
+        input : embeddings, not index.
+        '''
+
+        users_emb = batch_target_emb
+        pos_emb = batch_pos_emb
+
+        users_emb = F.normalize(users_emb, dim=1)
+        pos_emb = F.normalize(pos_emb, dim=1)        
+        
+        #TODO 在一次计算中：pos-pairs:{u-i}, neg-pairs:{u-u', u-i'}
+        batch_size = world.config['batch_size']
+        tau_plus = world.config['tau_plus']
+        temperature = world.config['temp_tau']
+        N = batch_size * 2 - 2
+        pos = torch.exp(torch.sum(users_emb * pos_emb, dim=-1) / temperature)
+        # #----------adding--BC----------
+        # ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
+        # pos_adaptive = torch.diag(ratings).squeeze()
+        # pos_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode).squeeze()
+        # theta = torch.arccos(torch.clamp(pos_adaptive,-1+1e-7,1-1e-7))
+        # M = torch.arccos(torch.clamp(pos_margin,-1+1e-7,1-1e-7))
+        # # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
+        # pos_adaptive = torch.cos(theta + M)
+        # pos_adaptive = torch.exp(pos_adaptive / temperature)
+        # pos_adaptive = torch.cat([pos_adaptive, pos_adaptive], dim=0)
+        # #----------adding--BC----------
+        pos = torch.cat([pos, pos], dim=0)
+        out = torch.cat([users_emb, pos_emb], dim=0)
+        neg = torch.exp(torch.mm(out, out.t().contiguous()) / temperature)
+        mask = self.get_negative_mask(batch_size).cuda()
+        neg = neg.masked_select(mask).view(2 * batch_size, -1)
+        Ng = (-tau_plus * N * pos + neg.sum(dim = -1)) / (1 - tau_plus)
+        # constrain (optional)
+        Ng = torch.clamp(Ng, min = N * np.e**(-1 / temperature))
+        loss = (- torch.log(1.0*pos / (pos + Ng) )).mean()
+        
+        return loss
+
+    def get_negative_mask(self, batch_size):
+        negative_mask = torch.ones((batch_size, 2 * batch_size), dtype=bool)
+        for i in range(batch_size):
+            negative_mask[i, i] = 0
+            negative_mask[i, i + batch_size] = 0
+
+        negative_mask = torch.cat((negative_mask, negative_mask), 0)
+        return negative_mask
+
+#=============================================================Causal Popularity Bias BPR loss============================================================#
 class Causal_popularity_BPR_loss():
     def __init__(self, config, model:LightGCN, precalculate:precalculate, homophily:Homophily):
         self.config = config
@@ -488,22 +527,27 @@ class Causal_popularity_BPR_loss():
 
         pos_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label)[batch_pos].to(world.device)
         neg_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label)[batch_neg].to(world.device)
-        pos_pop_emb = self.model.embed_item_pop(pos_items_pop)
-        neg_pop_emb = self.model.embed_item_pop(neg_items_pop)
+        # pos_pop_emb = self.model.embed_item_pop(pos_items_pop)
+        # neg_pop_emb = self.model.embed_item_pop(neg_items_pop)
         norm_pos_items_pop = pos_items_pop / self.precalculate.popularity.item_pop_sum
         norm_neg_items_pop = neg_items_pop / self.precalculate.popularity.item_pop_sum
         norm_pos_items_pop = norm_pos_items_pop ** self.gamma
         norm_neg_items_pop = norm_neg_items_pop ** self.gamma
 
+        elu = torch.nn.ELU()
+
         pos_scores = torch.mul(users_emb, pos_emb)
         pos_scores = torch.sum(pos_scores, dim=1)
+        pos_scores = elu(pos_scores) + 1.
         pos_scores = torch.mul(pos_scores, norm_pos_items_pop)
         neg_scores = torch.mul(users_emb, neg_emb)
         neg_scores = torch.sum(neg_scores, dim=1)
+        neg_scores = elu(neg_scores) + 1.
         neg_scores = torch.mul(neg_scores, norm_neg_items_pop)
 
-
-        loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))
+        logSigmoid = torch.nn.LogSigmoid()
+        
+        loss = torch.sum(-logSigmoid((pos_scores - neg_scores)))
 
         loss = (loss + reg_loss)/self.config['batch_size']
 

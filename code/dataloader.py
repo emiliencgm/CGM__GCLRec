@@ -32,9 +32,14 @@ class dataset(Dataset):
         print(f'loading [{path}]')
         self.n_user = 0
         self.m_item = 0
-        train_file = path + '/train.txt'
-        valid_file = path + '/valid.txt'
-        test_file = path + '/test.txt'
+        if config['if_valid']:
+            train_file = path + '/train_7.txt'
+            valid_file = path + '/test.txt' #TODO 为了正确统计数据集  后面的程序会受到“未见过test数据集”这一变化的影响
+            test_file = path + '/valid_1.txt'
+        else:
+            train_file = path + '/train.txt'
+            valid_file = path + '/valid.txt'
+            test_file = path + '/test.txt'
         self.path = path
         trainUniqueUsers, trainItem, trainUser = [], [], []
         testUniqueUsers, testItem, testUser = [], [], []
@@ -122,6 +127,14 @@ class dataset(Dataset):
         
         self.m_item += 1
         self.n_user += 1
+        
+        #TODO 补全（在没划分valid的train.txt中全部的item都出现过了？？？——这样的数据集是怎样划分的？我直接随机把train拆出来valid是不是不妥？？？？）
+        for i in range(self.m_item):
+            if i not in self._TrainPop_item.keys():
+                # self._TrainPop_item[i] = 0
+                self._TrainPop_item[i] = 1 #如果“在没划分valid的train.txt中全部的item都出现过了”，那在train_7.txt中没出现的，应该在train.txt中至少有1的热度
+
+
 
         self.Graph = None
         print(f"{self.trainDataSize} interactions for training")
@@ -218,6 +231,7 @@ class dataset(Dataset):
             try:
                 pre_adj_mat = sp.load_npz(self.path + '/s_pre_adj_mat.npz')
                 print("successfully loaded...")
+                cprint('Remember to delete this pre-calculed mat while changing data split !')
                 norm_adj = pre_adj_mat
             except :
                 print("generating adjacency matrix --- All train data")

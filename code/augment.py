@@ -5,6 +5,7 @@
 Created on Dec 18, 2022
 """
 from model import LightGCN
+from model import GNN_Encoder_edge_index
 import numpy as np
 from utils import randint_choice
 import scipy.sparse as sp
@@ -16,6 +17,10 @@ from precalcul import precalculate
 import time
 from k_means import kmeans
 import faiss
+import torch_sparse
+from scipy.sparse import csr_matrix
+from dataloader import dataset
+import torch_geometric
 
 
 class Homophily:
@@ -247,3 +252,128 @@ class Adaptive_Neighbor_Augment:
         '''
         return 
 
+
+
+class Projector(torch.nn.Module):
+    '''
+    d --> Linear --> 2d --> BatchNorm --> ReLU --> 2d --> Linear --> d
+    '''
+    def __init__(self):
+        super(Projector, self).__init__()
+
+        self.input_dim = world.config['latent_dim_rec']
+        self.linear1 = torch.nn.Linear(self.input_dim, 2*self.input_dim)
+        self.BN = torch.nn.BatchNorm1d(2*self.input_dim)
+        self.activate = torch.nn.ReLU()
+        self.linear2 = torch.nn.Linear(2*self.input_dim, self.input_dim)
+
+    def forward(self, x):
+        x = self.linear1(x)
+        x = self.BN(x)
+        x = self.activate(x)
+        x = self.linear2(x)
+
+        return x
+
+
+# ==================== 可学习的图数据增强：学得边的权重 ====================
+class Augment_Learner(torch.nn.Module):
+    def __init__(self, config, Recmodel:LightGCN, precal:precalculate, homophily:Homophily, dataset:dataset):
+        super(Augment_Learner, self).__init__()
+        self.config = config
+        self.Recmodel = Recmodel        
+        self.num_users = dataset.n_users
+        self.num_items = dataset.m_items
+        self.trainUser = dataset._trainUser
+        self.trainItem = dataset._trainItem
+        self.num_edges = len(self.trainUser)
+        self.src = torch.cat([torch.tensor(self.trainUser), torch.tensor(self.trainItem)])
+        self.dst = torch.cat([torch.tensor(self.trainItem), torch.tensor(self.trainUser)])
+        self.edge_index = torch.tensor([list(np.append(self.trainUser, self.trainItem)), list(np.append(self.trainItem, self.trainUser))])
+        self.data = self.Recmodel.data_origin
+
+        self.input_dim = self.config['latent_dim_rec']
+        mlp_edge_model_dim = self.config['latent_dim_rec']
+
+        self.GNN_encoder = GNN_Encoder_edge_index(config['num_layers'], self.num_users, self.num_items)
+        self.mlp_edge_model = torch.nn.Sequential(
+            torch.nn.Linear(self.input_dim * 2, mlp_edge_model_dim),
+            torch.nn.ReLU(),
+            torch.nn.Linear(mlp_edge_model_dim, 1)
+        )
+        # self.init_emb() TODO
+        
+    def init_emb(self):
+        for m in self.modules():
+            if isinstance(m, torch.nn.Linear):
+                if world.config['init_method'] == 'Normal':
+                    torch.nn.init.normal_(m.weight.data)
+                elif world.config['init_method'] == 'Xavier':
+                    torch.nn.init.xavier_uniform_(m.weight.data)
+                else:
+                    torch.nn.init.xavier_uniform_(m.weight.data)
+                if m.bias is not None:
+                    m.bias.data.fill_(0.0)
+
+    def forward(self):
+        ''''
+        返回增强后的边权重
+        '''
+        with torch.no_grad():
+            users_emb0 = self.Recmodel.embedding_user.weight
+            items_emb0 = self.Recmodel.embedding_item.weight
+            x = torch.cat([users_emb0, items_emb0])
+            graph = self.Recmodel.Graph            
+
+        users_emb, items_emb = self.GNN_encoder.forward(self.data)
+        nodes_emb = torch.cat([users_emb, items_emb])
+
+        emb_src = nodes_emb[self.src]
+        emb_dst = nodes_emb[self.dst]
+        #只改变原有边的权重（邻接矩阵中的1变成0~1的实数）
+        edge_emb = torch.cat([emb_src, emb_dst], 1)
+        edge_logits = self.mlp_edge_model(edge_emb)
+        # edge_logits1, edge_logits2 = torch.split(edge_logits, [self.num_edges, self.num_edges])
+        # edge_logits = (edge_logits1 + edge_logits2) * 0.5
+
+        data_aug = torch_geometric.data.Data(x=x, edge_index=self.edge_index.contiguous(), edge_attr=edge_logits)#TODO detach
+
+        #TODO 将edge_index格式的数据再构建为邻接矩阵并归一化
+        # aug_adj_mat = self.get_graph(edge_logits.cpu().detach().squeeze(), self.trainUser, self.trainItem, self.num_users, self.num_items)
+
+        return data_aug.detach()
+    
+    def get_graph(self, edge_logits, trainUser, trainItem, n_user, m_item):
+        UserItemNet = csr_matrix((edge_logits, (trainUser, trainItem)), shape=(n_user, m_item))
+
+        adj_mat = sp.dok_matrix((n_user + m_item, n_user + m_item), dtype=np.float32)
+        adj_mat = adj_mat.tolil()
+        R = UserItemNet.tolil()
+        #此处会显存爆炸
+        adj_mat[:n_user, n_user:] = R
+        adj_mat[n_user:, :n_user] = R.T
+        adj_mat = adj_mat.todok()
+        # adj_mat = adj_mat + sp.eye(adj_mat.shape[0]) TODO 无自连接
+        
+        rowsum = np.array(adj_mat.sum(axis=1))
+        d_inv = np.power(rowsum, -0.5).flatten()
+        d_inv[np.isinf(d_inv)] = 0.
+        d_mat = sp.diags(d_inv)#对角阵
+        #TODO 不再归一化？
+        norm_adj = adj_mat
+        # norm_adj = d_mat.dot(adj_mat)
+        # norm_adj = norm_adj.dot(d_mat)
+        norm_adj = norm_adj.tocsr()
+
+        Graph = self._convert_sp_mat_to_sp_tensor(norm_adj)
+        Graph = Graph.coalesce().to(world.device)
+
+        return Graph
+    
+    def _convert_sp_mat_to_sp_tensor(self, X):
+        coo = X.tocoo().astype(np.float32)
+        row = torch.Tensor(coo.row).long()
+        col = torch.Tensor(coo.col).long()
+        index = torch.stack([row, col])
+        data = torch.FloatTensor(coo.data)
+        return torch.sparse.FloatTensor(index, data, torch.Size(coo.shape))

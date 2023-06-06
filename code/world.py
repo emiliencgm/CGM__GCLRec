@@ -72,11 +72,21 @@ config['if_SVD'] = args.if_SVD
 config['svd_q'] = args.svd_q
 config['tau_plus'] = args.tau_plus
 config['pop_gamma'] = args.pop_gamma
+config['if_projector'] = args.if_projector
+config['if_valid'] = args.if_valid
+config['temp_tau_pop'] = args.temp_tau_pop
 #备注
 config['comment'] = args.comment
 #加载预训练的embedding
 config['user_emb'] = 0
 config['item_emb'] = 0
+#WandB
+config['project'] = args.project
+config['name'] = args.name
+config['tag'] = args.tag
+config['notes'] = args.notes
+config['group'] = args.group
+config['job_type'] = args.job_type
 
 #打印在TensorboardX的参数信息
 log = {}
@@ -97,6 +107,9 @@ FILE_PATH = join(CODE_PATH, 'checkpoints')
 LOG_FILE = join(CODE_PATH, 'Log')
 FIG_FILE = join(CODE_PATH, 'Fig')
 FIG_FILE = join(FIG_FILE, config['dataset'])
+RESULT_FILE = join(CODE_PATH, 'result')
+RESULT_FILE = join(RESULT_FILE, config['dataset'])
+
 date = datetime.datetime.now().strftime(f"%m_%d_%Hh%Mm%Ss-")
 #FIG_FILE = join(FIG_FILE, date)
 NOHUPPATH = None

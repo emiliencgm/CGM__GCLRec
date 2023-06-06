@@ -21,90 +21,119 @@ import visual
 from pprint import pprint
 import utils
 from augment import Homophily
+import wandb
 
-world.make_print_to_file()
+def main():
+    project = world.config['project']
+    name = world.config['name']
+    tag = world.config['tag']
+    notes = world.config['notes']
+    group = world.config['group']
+    job_type = world.config['job_type']
+    wandb.init(project=project, name=name, tags=tag, group=group, job_type=job_type, config=world.config, save_code=True, sync_tensorboard=False, notes=notes)
 
-utils.set_seed(world.config['seed'])
+    world.make_print_to_file()
 
-print('==========config==========')
-pprint(world.config)
-print('==========config==========')
+    utils.set_seed(world.config['seed'])
 
-cprint('[DATALOADER--START]')
-datasetpath = join(world.DATA_PATH, world.config['dataset'])
-dataset = dataloader.dataset(world.config, datasetpath)
-cprint('[DATALOADER--END]')
+    print('==========config==========')
+    pprint(world.config)
+    print('==========config==========')
 
-cprint('[PRECALCULATE--START]')
-start = time.time()
-precal = precalcul.precalculate(world.config, dataset)
-end = time.time()
-print('precal cost : ',end-start)
-cprint('[PRECALCULATE--END]')
+    cprint('[DATALOADER--START]')
+    datasetpath = join(world.DATA_PATH, world.config['dataset'])
+    dataset = dataloader.dataset(world.config, datasetpath)
+    cprint('[DATALOADER--END]')
 
-models = {'LightGCN':model.LightGCN, 'GTN':model.GTN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec}
-Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
+    cprint('[PRECALCULATE--START]')
+    start = time.time()
+    precal = precalcul.precalculate(world.config, dataset)
+    end = time.time()
+    print('precal cost : ',end-start)
+    cprint('[PRECALCULATE--END]')
 
-homophily = Homophily(Recmodel)
+    models = {'LightGCN':model.LightGCN, 'GTN':model.GTN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec, 'LightGCN_PyG':model.LightGCN_PyG}
+    Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
 
-augments = {'No':None, 'ED':augment.ED_Uniform, 'RW':augment.RW_Uniform, 'SVD':augment.SVD_Augment, 'Adaptive':augment.Adaptive_Neighbor_Augment}
-try:
-    augmentation = augments[world.config['augment']](world.config, Recmodel, precal, homophily)
-except:
-    augmentation = None
+    homophily = Homophily(Recmodel)
 
-losss = {'BPR': loss.BPR_loss, 'BPR_Contrast':loss.BPR_Contrast_loss, 'Softmax':loss.Softmax_loss, 'BC':loss.BC_loss, 'Adaptive':loss.Adaptive_softmax_loss, 'Causal_pop':loss.Causal_popularity_BPR_loss}
-total_loss = losss[world.config['loss']](world.config, Recmodel, precal, homophily)
+    augments = {'No':None, 'ED':augment.ED_Uniform, 'RW':augment.RW_Uniform, 'SVD':augment.SVD_Augment, 'Adaptive':augment.Adaptive_Neighbor_Augment, 'Learner':augment.Augment_Learner}
+    if world.config['augment'] in ['ED', 'RW', 'SVD', 'Adaptive']:
+        augmentation = augments[world.config['augment']](world.config, Recmodel, precal, homophily)
+    elif world.config['augment'] in ['Learner']:
+        augmentation = augments[world.config['augment']](world.config, Recmodel, precal, homophily, dataset).to(world.device)
+    else:
+        augmentation = None
 
-w = SummaryWriter(join(world.BOARD_PATH, time.strftime("%m-%d-%Hh%Mm%Ss-") + "-" + str([(key,value)for key,value in world.log.items()])))
+    losss = {'BPR': loss.BPR_loss, 'BPR_Contrast':loss.BPR_Contrast_loss, 'Softmax':loss.Softmax_loss, 'BC':loss.BC_loss, 'Adaptive':loss.Adaptive_softmax_loss, 'Causal_pop':loss.Causal_popularity_BPR_loss, 'DCL':loss.Debiased_Contrastive_loss}
+    total_loss = losss[world.config['loss']](world.config, Recmodel, precal, homophily)
 
-try:
-    optimizer = torch.optim.Adam([{'params': Recmodel.parameters()}, {'params': total_loss.MLP_model.parameters()}], lr=world.config['lr'])
-except:
+    w = SummaryWriter(join(world.BOARD_PATH, time.strftime("%m-%d-%Hh%Mm%Ss-") + "-" + str([(key,value)for key,value in world.log.items()])))
+
+    train = procedure.Train(total_loss)
+    test = procedure.Test()
+
+    #TODO 检查全部待训练参数是否已经加入优化器
     optimizer = torch.optim.Adam(Recmodel.parameters(), lr=world.config['lr'])
-train = procedure.Train(total_loss)
-test = procedure.Test()
+    if world.config['loss'] == 'Adaptive':
+        optimizer.add_param_group({'params':total_loss.MLP_model.parameters()})
+    if world.config['if_projector']:
+        optimizer.add_param_group({'params':train.projector.parameters()})
+    if world.config['augment'] in ['Learner']:
+        optimizer.add_param_group({'params':augmentation.GNN_encoder.parameters()})
+        optimizer.add_param_group({'params':augmentation.mlp_edge_model.parameters()})
 
-quantify = visual.Quantify(dataset, Recmodel, precal)
+
+    quantify = visual.Quantify(dataset, Recmodel, precal)
 
 
-try:
-    best_result_recall = 0.
-    best_result_ndcg = 0.
-    stopping_step = 0
+    try:
+        best_result_recall = 0.
+        best_result_ndcg = 0.
+        stopping_step = 0
 
-    for epoch in range(world.config['epochs']):
-        start = time.time()
-        if world.config['if_visual'] == 1 and epoch % world.config['visual_epoch'] == 0:
-            cprint("[Visualization]")
-            if world.config['if_tsne'] == 1:
-                quantify.visualize_tsne(epoch)
-            if world.config['if_double_label'] == 1:
-                quantify.visualize_double_label(epoch)
-        
-        cprint('[AUGMENT]')
-        if world.config['model'] in ['SGL']:
-            augmentation.get_augAdjMatrix()
+        for epoch in range(world.config['epochs']):
+            start = time.time()
+            if world.config['if_visual'] == 1 and epoch % world.config['visual_epoch'] == 0:
+                cprint("[Visualization]")
+                if world.config['if_tsne'] == 1:
+                    quantify.visualize_tsne(epoch)
+                if world.config['if_double_label'] == 1:
+                    quantify.visualize_double_label(epoch)
+            
+            cprint('[AUGMENT]')
+            if world.config['model'] in ['SGL']:
+                augmentation.get_augAdjMatrix()
 
-        cprint('[TRAIN]')
-        train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+            cprint('[TRAIN]')
+            train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
 
-        if epoch % 1== 0:
-            cprint("[TEST]")
-            result = test.test(dataset, Recmodel, precal, epoch, w, world.config['if_multicore'])
-            if result["recall"] > best_result_recall:
-                stopping_step = 0
-                advance = (result["recall"] - best_result_recall)
-                best_result_recall = result["recall"]
-                # print("find a better model")
-                cprint_rare("find a better recall", str(best_result_recall), extra='++'+str(advance))                
-                #torch.save(Recmodel.state_dict(), weight_file)
-            else:
-                stopping_step += 1
-                if stopping_step >= world.config['early_stop_steps']:
-                    print(f"early stop triggerd at epoch {epoch}, best recall: {best_result_recall}")
-                    break
-        during = time.time() - start
-        print(f"time cost of epoch {epoch}: ", during)
-finally:
-    w.close()
+            if epoch % 1== 0:
+                cprint("[TEST]")
+                result = test.test(dataset, Recmodel, precal, epoch, w, world.config['if_multicore'])
+                if result["recall"] > best_result_recall:
+                    stopping_step = 0
+                    advance = (result["recall"] - best_result_recall)
+                    best_result_recall = result["recall"]
+                    # print("find a better model")
+                    cprint_rare("find a better recall", str(best_result_recall), extra='++'+str(advance))
+                    wandb.run.summary['best test recall'] = best_result_recall        
+                    #torch.save(Recmodel.state_dict(), weight_file)
+                else:
+                    stopping_step += 1
+                    if stopping_step >= world.config['early_stop_steps']:
+                        print(f"early stop triggerd at epoch {epoch}, best recall: {best_result_recall}")
+                        #将当前参数配置和获得的最佳结果记录
+                        break
+                wandb.log({ f"{world.config['dataset']}"+'/recall@20': result["recall"],
+                            f"{world.config['dataset']}"+'/ndcg@20': result["ndcg"]})
+
+            during = time.time() - start
+            print(f"time cost of epoch {epoch}: ", during)
+    finally:
+        w.close()
+        wandb.finish()
+
+
+if __name__ == '__main__':
+    main()
