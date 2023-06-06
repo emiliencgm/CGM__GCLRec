@@ -24,3 +24,7 @@ config: {'temp_tau': 0.2, 'edge_drop_prob': 0.1, 'latent_dim_rec': 64, 'num_laye
 2023-06-06 15:22:09,785 INFO    MainThread:1615536 [wandb_run.py:_redirect():2078] Wrapping output streams.
 2023-06-06 15:22:09,785 INFO    MainThread:1615536 [wandb_run.py:_redirect():2103] Redirects installed.
 2023-06-06 15:22:09,785 INFO    MainThread:1615536 [wandb_init.py:init():829] run started, returning control to user process
+2023-06-06 16:16:10,116 INFO    MainThread:1615536 [wandb_run.py:_finish():1893] finishing run cgm_emilien/GCLRec_No_Valid/h0qpftht
+2023-06-06 16:16:10,116 INFO    MainThread:1615536 [wandb_run.py:_atexit_cleanup():2127] got exitcode: 0
+2023-06-06 16:16:10,116 INFO    MainThread:1615536 [wandb_run.py:_restore():2110] restore
+2023-06-06 16:16:10,116 INFO    MainThread:1615536 [wandb_run.py:_restore():2116] restore done

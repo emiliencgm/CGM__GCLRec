@@ -132,8 +132,8 @@ class BC_loss():
 
     def bc_loss(self, batch_target, batch_pos, batch_negs, mode):
         #只使用正样本（一个user的正样本往往是其他user的负样本），无需负采样
-        users_pop = torch.tensor(self.precalculate.popularity.user_pop_degree_label)[batch_target].to(world.device)
-        pos_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label)[batch_pos].to(world.device)
+        users_pop = torch.tensor(self.precalculate.popularity.user_pop_degree_label).to(world.device)[batch_target]
+        pos_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label).to(world.device)[batch_pos]
         bc_loss, pop_loss, reg_pop_emb_loss, reg_pop_loss, reg_emb_loss = self.calculate_loss(batch_target, batch_pos, users_pop, pos_items_pop)
         if mode == 'only_bc':
             loss = bc_loss + reg_emb_loss
@@ -323,8 +323,8 @@ class Adaptive_softmax_loss(torch.nn.Module):
 
     def get_popdegree(self, batch_user, batch_pos_item):
         with torch.no_grad():
-            pop_user = torch.tensor(self.precal.popularity.user_pop_degree_label)[batch_user].to(world.device)
-            pop_item = torch.tensor(self.precal.popularity.item_pop_degree_label)[batch_pos_item].to(world.device)
+            pop_user = torch.tensor(self.precal.popularity.user_pop_degree_label).to(world.device)[batch_user]
+            pop_item = torch.tensor(self.precal.popularity.item_pop_degree_label).to(world.device)[batch_pos_item]
         return pop_user, pop_item
 
     def get_homophily(self, batch_user, batch_pos_item):
