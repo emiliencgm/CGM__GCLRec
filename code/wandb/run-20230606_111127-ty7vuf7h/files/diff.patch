@@ -1,0 +1,38 @@
+diff --git a/code/model.py b/code/model.py
+index d484b4c..832e10c 100755
+--- a/code/model.py
++++ b/code/model.py
+@@ -484,7 +484,7 @@ class LightGCN_PyG(nn.Module):
+         # self.conv1 = GCNConv(dim, dim)
+         # self.conv2 = GCNConv(dim, dim)
+         # self.conv3 = GCNConv(dim, dim)
+-        self.lightConv = LGConv()
++        self.lightConv = LGConv().to(world.device)
+ 
+         self.__init_weight()
+ 
+diff --git a/code/tune2.py b/code/tune2.py
+index 68479a1..6254ffb 100644
+--- a/code/tune2.py
++++ b/code/tune2.py
+@@ -1,5 +1,5 @@
+ import os
+-cuda = 1
++cuda = 0
+ # Baseline--yelp2018--2 LightGCN_PyG + BPR
+ os.system(f'python main.py --project GCLRec_No_Valid --name LightGCN_PyG+BPR --model LightGCN_PyG --loss BPR --dataset yelp2018\
+             --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
+@@ -12,7 +12,7 @@ os.system(f'python main.py --project GCLRec_No_Valid --name SGL_RW+BPR_CL --mode
+             --comment _ --if_valid 0 --notes _ --tag SGL --group baseline --job_type yelp2018')
+ 
+ #Baseline--yelp2018--6 SimGCL+BPR_Contrast
+-os.system(f'python main.py --project GCLRec_No_Valid --name SimGCL+BPR_CL --model SimGCL --loss BPR_Contrast --augment No --dataset yelp2018\
+-            --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 \
+-            --lambda1 0.1 --temp_tau 0.2 --eps_SimGCL 0.1\
+-            --comment _ --if_valid 0 --notes _ --tag SimGCL --group baseline --job_type yelp2018')#Layer=3
+\ No newline at end of file
++# os.system(f'python main.py --project GCLRec_No_Valid --name SimGCL+BPR_CL --model SimGCL --loss BPR_Contrast --augment No --dataset yelp2018\
++#             --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 \
++#             --lambda1 0.1 --temp_tau 0.2 --eps_SimGCL 0.1\
++#             --comment _ --if_valid 0 --notes _ --tag SimGCL --group baseline --job_type yelp2018')#Layer=3
+\ No newline at end of file

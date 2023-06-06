@@ -1,0 +1,184 @@
+{
+    "os": "Linux-5.15.0-71-generic-x86_64-with-glibc2.31",
+    "python": "3.9.13",
+    "heartbeatAt": "2023-06-06T04:28:54.711488",
+    "startedAt": "2023-06-06T04:28:52.937966",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--project",
+        "GCLRec_No_Valid",
+        "--name",
+        "LightGCN_PyG+BPR",
+        "--model",
+        "LightGCN_PyG",
+        "--loss",
+        "BPR",
+        "--augment",
+        "No",
+        "--dataset",
+        "yelp2018",
+        "--init_method",
+        "Normal",
+        "--lr",
+        "0.001",
+        "--weight_decay",
+        "1e-4",
+        "--cuda",
+        "0",
+        "--num_layers",
+        "3",
+        "--latent_dim_rec",
+        "64",
+        "--batch_size",
+        "2048",
+        "--comment",
+        "_",
+        "--if_valid",
+        "0",
+        "--notes",
+        "PyG_Implementation",
+        "--tag",
+        "LightGCN",
+        "--group",
+        "baseline",
+        "--job_type",
+        "yelp2018"
+    ],
+    "state": "running",
+    "program": "/home/cgm/code/CGM__GCLRec/code/main.py",
+    "codePath": "code/main.py",
+    "git": {
+        "remote": "https://github.com/emiliencgm/CGM__GCLRec.git",
+        "commit": "f8b42f156ad1d09152fd92007f2e22b8da3a5013"
+    },
+    "email": "131215707706@163.com",
+    "root": "/home/cgm/code/CGM__GCLRec",
+    "host": "user-System-Product-Name",
+    "username": "cgm",
+    "executable": "/home/cgm/anaconda3/bin/python",
+    "cpu_count": 10,
+    "cpu_count_logical": 20,
+    "cpu_freq": {
+        "current": 3.640400000000001,
+        "min": 800.0,
+        "max": 5300.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 2.892,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        }
+    ],
+    "disk": {
+        "total": 915.3232879638672,
+        "used": 849.6833190917969
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        }
+    ],
+    "memory": {
+        "total": 62.657814025878906
+    }
+}

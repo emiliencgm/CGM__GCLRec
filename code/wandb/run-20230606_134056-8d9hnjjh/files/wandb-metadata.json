@@ -1,0 +1,178 @@
+{
+    "os": "Linux-5.15.0-71-generic-x86_64-with-glibc2.31",
+    "python": "3.9.13",
+    "heartbeatAt": "2023-06-06T05:40:57.645237",
+    "startedAt": "2023-06-06T05:40:56.533482",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--model",
+        "LightGCN_PyG",
+        "--loss",
+        "BPR_Contrast",
+        "--augment",
+        "Learner",
+        "--dataset",
+        "yelp2018",
+        "--init_method",
+        "Normal",
+        "--adaptive_method",
+        "None",
+        "--temp_tau",
+        "0.2",
+        "--if_visual",
+        "0",
+        "--cuda",
+        "0",
+        "--comment",
+        "tune_Aument_Learner_LGN_Contrast",
+        "--num_layers",
+        "3",
+        "--latent_dim_rec",
+        "64",
+        "--batch_size",
+        "2048",
+        "--early_stop_steps",
+        "40",
+        "--if_projector",
+        "0",
+        "--if_valid",
+        "0"
+    ],
+    "state": "running",
+    "program": "/home/cgm/code/CGM__GCLRec/code/main.py",
+    "codePath": "code/main.py",
+    "git": {
+        "remote": "https://github.com/emiliencgm/CGM__GCLRec.git",
+        "commit": "f8b42f156ad1d09152fd92007f2e22b8da3a5013"
+    },
+    "email": "131215707706@163.com",
+    "root": "/home/cgm/code/CGM__GCLRec",
+    "host": "user-System-Product-Name",
+    "username": "cgm",
+    "executable": "/home/cgm/anaconda3/bin/python",
+    "cpu_count": 10,
+    "cpu_count_logical": 20,
+    "cpu_freq": {
+        "current": 3.720350000000001,
+        "min": 800.0,
+        "max": 5300.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.74,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.716,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        }
+    ],
+    "disk": {
+        "total": 915.3232879638672,
+        "used": 849.6910743713379
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        }
+    ],
+    "memory": {
+        "total": 62.657814025878906
+    }
+}

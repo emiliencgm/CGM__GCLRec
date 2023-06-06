@@ -479,11 +479,7 @@ class LightGCN_PyG(nn.Module):
         super(LightGCN_PyG, self).__init__()
         self.config = config
         self.dataset = dataset
-        self.precal = precal        
-        # dim = config['latent_dim_rec']
-        # self.conv1 = GCNConv(dim, dim)
-        # self.conv2 = GCNConv(dim, dim)
-        # self.conv3 = GCNConv(dim, dim)
+        self.precal = precal 
         self.lightConv = LGConv()
 
         self.__init_weight()
@@ -532,21 +528,27 @@ class LightGCN_PyG(nn.Module):
         else:
             self.Graph = self.dataset.Graph
 
-        users_emb0 = self.embedding_user.weight
-        items_emb0 = self.embedding_item.weight
-        self.x = torch.cat([users_emb0, items_emb0])
+        
         self.edge_index = torch.tensor([list(np.append(self.dataset.trainUser, self.dataset.trainItem)), list(np.append(self.dataset.trainItem, self.dataset.trainUser))])
-        self.data_origin = torch_geometric.data.Data(x=self.x, edge_index=self.edge_index.contiguous()).to(world.device)
         
 
         print(f"GCL Model is ready to go!")
+    
+    def pyg_data(self):
+        users_emb0 = self.embedding_user.weight
+        items_emb0 = self.embedding_item.weight
+        x = torch.cat([users_emb0, items_emb0])
+        data_origin = torch_geometric.data.Data(x=x, edge_index=self.edge_index.contiguous())
+        return data_origin
 
     def computer(self):
         """
         vanilla LightGCN. No dropout used, return final embedding for rec. 
-        """       
-        x, edge_index= self.data_origin.x, self.data_origin.edge_index
-        x, edge_index = x.to(world.device), edge_index.to(world.device)
+        """
+        users_emb0 = self.embedding_user.weight
+        items_emb0 = self.embedding_item.weight
+        x = torch.cat([users_emb0, items_emb0])
+        x, edge_index = x.to(world.device), self.edge_index.to(world.device)
         embs = [x]
         for layer in range(self.n_layers):
             x = self.lightConv(x=x, edge_index=edge_index)

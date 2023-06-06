@@ -1,0 +1,1146 @@
+2023-06-06 12:39:19,266 INFO    StreamThr :1569444 [internal.py:wandb_internal():86] W&B internal server running at pid: 1569444, started at: 2023-06-06 12:39:19.265133
+2023-06-06 12:39:19,271 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status
+2023-06-06 12:39:19,275 INFO    WriterThread:1569444 [datastore.py:open_for_write():85] open: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/run-0vot5wix.wandb
+2023-06-06 12:39:19,276 DEBUG   SenderThread:1569444 [sender.py:send():375] send: header
+2023-06-06 12:39:19,298 DEBUG   SenderThread:1569444 [sender.py:send():375] send: run
+2023-06-06 12:39:20,000 INFO    SenderThread:1569444 [dir_watcher.py:__init__():219] watching files in: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files
+2023-06-06 12:39:20,000 INFO    SenderThread:1569444 [sender.py:_start_run_threads():1124] run started: 0vot5wix with start time 1686026359.263517
+2023-06-06 12:39:20,000 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:39:20,000 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:39:20,003 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: check_version
+2023-06-06 12:39:20,003 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: check_version
+2023-06-06 12:39:20,437 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: run_start
+2023-06-06 12:39:20,442 DEBUG   HandlerThread:1569444 [system_info.py:__init__():31] System info init
+2023-06-06 12:39:20,442 DEBUG   HandlerThread:1569444 [system_info.py:__init__():46] System info init done
+2023-06-06 12:39:20,442 INFO    HandlerThread:1569444 [system_monitor.py:start():181] Starting system monitor
+2023-06-06 12:39:20,443 INFO    SystemMonitor:1569444 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-06-06 12:39:20,443 INFO    SystemMonitor:1569444 [interfaces.py:start():190] Started cpu monitoring
+2023-06-06 12:39:20,443 INFO    HandlerThread:1569444 [system_monitor.py:probe():201] Collecting system info
+2023-06-06 12:39:20,443 INFO    SystemMonitor:1569444 [interfaces.py:start():190] Started disk monitoring
+2023-06-06 12:39:20,444 INFO    SystemMonitor:1569444 [interfaces.py:start():190] Started gpu monitoring
+2023-06-06 12:39:20,445 INFO    SystemMonitor:1569444 [interfaces.py:start():190] Started memory monitoring
+2023-06-06 12:39:20,445 INFO    SystemMonitor:1569444 [interfaces.py:start():190] Started network monitoring
+2023-06-06 12:39:20,466 DEBUG   HandlerThread:1569444 [system_info.py:probe():195] Probing system
+2023-06-06 12:39:20,471 DEBUG   HandlerThread:1569444 [system_info.py:_probe_git():180] Probing git
+2023-06-06 12:39:20,480 DEBUG   HandlerThread:1569444 [system_info.py:_probe_git():188] Probing git done
+2023-06-06 12:39:20,480 DEBUG   HandlerThread:1569444 [system_info.py:probe():240] Probing system done
+2023-06-06 12:39:20,480 DEBUG   HandlerThread:1569444 [system_monitor.py:probe():210] {'os': 'Linux-5.15.0-71-generic-x86_64-with-glibc2.31', 'python': '3.9.13', 'heartbeatAt': '2023-06-06T04:39:20.466287', 'startedAt': '2023-06-06T04:39:19.235846', 'docker': None, 'cuda': None, 'args': ('--model', 'LightGCN_PyG', '--loss', 'BPR_Contrast', '--augment', 'Learner', '--dataset', 'yelp2018', '--init_method', 'Normal', '--adaptive_method', 'None', '--temp_tau', '0.2', '--if_visual', '0', '--cuda', '0', '--comment', 'tune_Aument_Learner_LGN_Contrast', '--num_layers', '3', '--latent_dim_rec', '64', '--batch_size', '2048', '--early_stop_steps', '40', '--if_projector', '0', '--if_valid', '0'), 'state': 'running', 'program': '/home/cgm/code/CGM__GCLRec/code/main.py', 'codePath': 'code/main.py', 'git': {'remote': 'https://github.com/emiliencgm/CGM__GCLRec.git', 'commit': 'f8b42f156ad1d09152fd92007f2e22b8da3a5013'}, 'email': '131215707706@163.com', 'root': '/home/cgm/code/CGM__GCLRec', 'host': 'user-System-Product-Name', 'username': 'cgm', 'executable': '/home/cgm/anaconda3/bin/python', 'cpu_count': 10, 'cpu_count_logical': 20, 'cpu_freq': {'current': 3.716350000000001, 'min': 800.0, 'max': 5300.0}, 'cpu_freq_per_core': [{'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 4.027, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}, {'current': 3.7, 'min': 800.0, 'max': 5300.0}], 'disk': {'total': 915.3232879638672, 'used': 849.683967590332}, 'gpu': 'NVIDIA GeForce RTX 3090', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 3090', 'memory_total': 25769803776}], 'memory': {'total': 62.657814025878906}}
+2023-06-06 12:39:20,480 INFO    HandlerThread:1569444 [system_monitor.py:probe():211] Finished collecting system info
+2023-06-06 12:39:20,480 INFO    HandlerThread:1569444 [system_monitor.py:probe():214] Publishing system info
+2023-06-06 12:39:20,480 DEBUG   HandlerThread:1569444 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-06-06 12:39:20,481 DEBUG   HandlerThread:1569444 [system_info.py:_save_pip():67] Saving pip packages done
+2023-06-06 12:39:20,481 DEBUG   HandlerThread:1569444 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-06-06 12:39:21,001 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:39:21,001 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/requirements.txt
+2023-06-06 12:39:21,001 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/conda-environment.yaml
+2023-06-06 12:39:25,385 DEBUG   HandlerThread:1569444 [system_info.py:_save_conda():86] Saving conda packages done
+2023-06-06 12:39:25,385 DEBUG   HandlerThread:1569444 [system_info.py:_save_code():89] Saving code
+2023-06-06 12:39:25,399 DEBUG   HandlerThread:1569444 [system_info.py:_save_code():110] Saving code done
+2023-06-06 12:39:25,399 DEBUG   HandlerThread:1569444 [system_info.py:_save_patches():127] Saving git patches
+2023-06-06 12:39:26,002 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/conda-environment.yaml
+2023-06-06 12:39:26,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/diff.patch
+2023-06-06 12:39:26,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/code/code/main.py
+2023-06-06 12:39:26,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/code
+2023-06-06 12:39:26,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/code/code
+2023-06-06 12:39:26,222 DEBUG   HandlerThread:1569444 [system_info.py:_save_patches():169] Saving git patches done
+2023-06-06 12:39:26,223 INFO    HandlerThread:1569444 [system_monitor.py:probe():216] Finished publishing system info
+2023-06-06 12:39:26,224 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:39:26,224 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:39:26,224 DEBUG   SenderThread:1569444 [sender.py:send():375] send: files
+2023-06-06 12:39:26,225 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-06-06 12:39:26,225 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file code/code/main.py with policy now
+2023-06-06 12:39:26,225 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file diff.patch with policy now
+2023-06-06 12:39:26,230 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:39:26,232 DEBUG   SenderThread:1569444 [sender.py:send():375] send: telemetry
+2023-06-06 12:39:26,233 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:39:26,595 INFO    wandb-upload_1:1569444 [upload_job.py:push():117] Skipped uploading /tmp/tmp7dwbkasiwandb/eiorsiu0-code/code/main.py
+2023-06-06 12:39:26,968 INFO    wandb-upload_0:1569444 [upload_job.py:push():137] Uploaded file /tmp/tmp7dwbkasiwandb/fhw0ecsb-wandb-metadata.json
+2023-06-06 12:39:27,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/diff.patch
+2023-06-06 12:39:27,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-metadata.json
+2023-06-06 12:39:27,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_created():278] file/dir created: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:27,118 INFO    wandb-upload_2:1569444 [upload_job.py:push():137] Uploaded file /tmp/tmp7dwbkasiwandb/cm3t77bw-diff.patch
+2023-06-06 12:39:29,003 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:29,773 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:39:34,773 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:39:39,774 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:39:41,251 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:39:41,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:39:43,007 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:44,839 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:39:45,008 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:47,008 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:49,009 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:49,947 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:39:51,009 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/config.yaml
+2023-06-06 12:39:51,010 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:53,010 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:55,011 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:55,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:39:56,250 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:39:56,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:39:57,011 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:39:59,012 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:00,331 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:01,012 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:03,013 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:05,014 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:05,386 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:07,014 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:09,015 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:10,502 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:11,015 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:11,250 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:40:11,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:40:13,016 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:15,016 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:15,561 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:17,017 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:19,017 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:20,445 DEBUG   SystemMonitor:1569444 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-06-06 12:40:20,447 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:40:20,620 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:21,018 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:23,019 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:25,019 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:25,660 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:26,250 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:40:26,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:40:27,020 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:29,020 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:30,676 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:31,021 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:33,022 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:35,022 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:35,719 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:37,023 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:39,024 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:40,794 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:41,024 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:41,260 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:40:41,261 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:40:43,025 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:45,025 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:45,851 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:47,026 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:49,027 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:50,447 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:40:50,957 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:40:51,027 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:53,028 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:55,029 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:40:56,251 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:40:56,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:40:56,498 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:00,091 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:41:00,093 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:41:00,095 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:41:00,095 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:41:00,095 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:41:00,095 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:41:01,031 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:41:01,031 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:01,556 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:03,031 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:05,032 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:06,603 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:07,032 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:09,033 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:11,034 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:11,251 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:41:11,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:41:11,710 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:13,034 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:15,035 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:16,768 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:17,035 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:19,036 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:20,448 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:41:21,037 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:21,830 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:23,037 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:25,038 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:26,251 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:41:26,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:41:26,912 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:27,039 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:29,039 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:31,040 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:31,964 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:33,041 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:35,041 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:36,976 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:37,042 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:39,042 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:41,043 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:41,251 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:41:41,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:41:42,031 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:43,043 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:45,044 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:47,045 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:47,100 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:49,045 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:50,448 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:41:51,046 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:52,133 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:53,046 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:55,047 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:56,251 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:41:56,251 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:41:57,048 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:41:57,207 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:41:59,048 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:01,049 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:02,251 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:03,050 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:05,050 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:07,051 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:07,315 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:09,051 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:11,052 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:11,340 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:42:11,341 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:42:12,587 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:13,053 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:17,435 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:42:17,436 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:42:17,437 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:42:17,438 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:42:17,438 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:42:17,445 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:42:17,635 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:18,054 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:42:19,054 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:20,449 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:42:21,055 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:22,720 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:23,055 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:25,056 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:26,306 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:42:26,307 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:42:27,057 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:27,759 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:29,057 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:31,058 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:32,825 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:33,058 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:35,059 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:37,060 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:37,842 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:39,060 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:41,061 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:41,306 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:42:41,307 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:42:42,906 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:43,062 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:45,062 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:47,063 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:47,927 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:49,064 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:50,449 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:42:51,065 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:53,013 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:53,065 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:55,066 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:56,306 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:42:56,307 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:42:57,067 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:42:58,040 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:42:59,068 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:01,068 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:03,069 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:03,073 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:05,070 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:07,070 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:08,175 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:09,071 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:11,071 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:11,311 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:43:11,311 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:43:13,072 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:13,259 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:15,072 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:17,073 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:18,279 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:19,073 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:20,450 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:43:21,074 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:23,075 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:23,368 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:25,075 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:26,311 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:43:26,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:43:27,076 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:29,076 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:29,245 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:34,246 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:34,778 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:43:34,778 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:43:34,781 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:43:34,781 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:43:34,781 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:43:34,789 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:43:35,078 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:43:37,078 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:39,079 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:39,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:41,080 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:41,311 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:43:41,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:43:43,080 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:44,393 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:45,081 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:47,081 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:49,082 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:49,468 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:50,450 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:43:51,083 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:53,083 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:54,557 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:43:55,084 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:56,311 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:43:56,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:43:57,084 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:59,085 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:43:59,559 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:01,086 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:03,086 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:04,593 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:05,087 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:07,087 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:09,088 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:09,693 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:11,088 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:11,311 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:44:11,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:44:13,089 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:14,743 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:15,090 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:17,090 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:19,091 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:19,821 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:20,451 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:44:21,091 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:23,092 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:24,880 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:25,093 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:26,311 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:44:26,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:44:27,093 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:29,094 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:29,951 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:31,094 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:33,095 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:35,016 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:35,095 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:37,096 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:39,097 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:40,038 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:41,097 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:41,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:44:41,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:44:43,098 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:45,098 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:45,117 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:47,099 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:50,452 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:44:50,452 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:52,351 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:44:52,351 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:44:52,353 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:44:52,353 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:44:52,353 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:44:52,361 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:44:53,101 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:44:53,101 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:55,101 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:55,559 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:44:56,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:44:56,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:44:57,102 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:44:59,102 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:00,641 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:01,103 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:03,103 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:05,104 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:05,736 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:07,105 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:09,105 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:10,776 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:11,106 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:11,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:45:11,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:45:13,106 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:15,107 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:15,823 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:17,108 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:19,108 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:20,452 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:45:20,860 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:21,109 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:23,110 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:25,110 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:25,938 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:26,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:45:26,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:45:27,111 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:29,111 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:30,983 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:31,112 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:33,113 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:35,114 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:36,049 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:37,115 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:39,115 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:41,107 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:41,116 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:41,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:45:41,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:45:43,116 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:45,117 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:46,211 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:47,117 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:49,118 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:50,453 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:45:51,118 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:51,288 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:53,119 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:55,120 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:56,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:45:56,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:45:56,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:45:57,120 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:45:59,121 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:01,121 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:01,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:03,122 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:05,122 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:06,874 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:09,434 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:46:09,434 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:46:09,436 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:46:09,436 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:46:09,436 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:46:09,444 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:46:10,124 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:46:11,124 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:11,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:46:11,312 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:46:11,937 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:13,125 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:15,125 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:16,998 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:17,126 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:19,127 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:20,453 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:46:21,127 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:22,070 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:23,128 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:25,129 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:26,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:46:26,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:46:27,081 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:27,130 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:29,130 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:31,131 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:32,162 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:33,131 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:35,132 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:37,133 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:37,223 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:39,134 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:41,134 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:41,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:46:41,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:46:42,304 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:43,135 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:45,136 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:47,136 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:47,400 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:49,137 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:50,454 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:46:51,138 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:52,487 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:53,138 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:55,139 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:56,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:46:56,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:46:57,140 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:46:57,550 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:46:59,140 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:01,141 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:02,606 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:03,141 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:05,142 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:07,143 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:07,637 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:09,143 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:11,144 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:11,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:47:11,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:47:12,674 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:13,144 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:15,145 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:17,146 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:17,762 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:19,147 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:20,454 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:47:21,147 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:23,455 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:26,167 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:47:26,168 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:47:26,169 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:47:26,169 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:47:26,169 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:47:26,170 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:47:26,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:47:26,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:47:27,149 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:47:27,149 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:28,556 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:29,150 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:31,150 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:33,151 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:33,592 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:35,152 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:37,153 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:38,607 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:39,153 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:41,154 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:41,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:47:41,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:47:43,154 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:43,664 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:45,155 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:47,155 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:48,761 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:49,156 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:50,455 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:47:51,157 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:53,157 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:53,804 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:55,158 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:56,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:47:56,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:47:57,159 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:47:58,869 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:47:59,159 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:01,160 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:03,161 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:03,952 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:05,161 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:07,162 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:09,062 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:09,162 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:11,163 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:11,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:48:11,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:48:13,163 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:14,081 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:15,164 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:17,165 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:19,161 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:19,165 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:20,478 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:48:21,166 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:23,166 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:24,186 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:25,167 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:26,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:48:26,313 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:48:27,168 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:29,168 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:29,216 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:31,169 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:33,170 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:34,249 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:35,170 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:37,171 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:39,172 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:39,729 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:41,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:48:41,314 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:48:44,347 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:48:44,349 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:48:44,350 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:48:44,350 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:48:44,350 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:48:44,358 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:48:44,768 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:45,173 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:48:45,173 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:47,174 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:49,174 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:49,872 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:50,456 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:48:51,175 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:53,176 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:54,947 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:48:55,176 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:56,314 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:48:56,314 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:48:57,177 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:48:59,178 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:00,065 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:01,179 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:03,179 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:05,164 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:05,180 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:07,181 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:09,181 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:10,172 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:11,182 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:11,313 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:49:11,314 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:49:13,182 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:15,183 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:15,281 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:17,183 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:19,184 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:20,331 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:20,456 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:49:21,185 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:23,185 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:25,186 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:25,393 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:26,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:49:26,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:49:27,186 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:29,187 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:30,451 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:31,187 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:33,188 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:35,188 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:35,536 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:37,189 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:39,189 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:40,537 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:41,190 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:41,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:49:41,318 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:49:43,190 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:45,191 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:45,554 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:47,192 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:49,192 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:50,457 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:49:50,648 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:51,193 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:53,193 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:55,194 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:55,737 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:49:56,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:49:56,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:49:57,194 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:49:58,195 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:01,554 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:02,702 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:50:02,703 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:50:02,704 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:50:02,705 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:50:03,196 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:50:03,196 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:04,197 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:05,197 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:06,641 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:07,198 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:09,199 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:11,199 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:11,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:50:11,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:50:11,685 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:13,200 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:15,201 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:16,723 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:17,201 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:19,202 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:20,457 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:50:21,202 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:21,735 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:23,203 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:25,203 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:26,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:50:26,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:50:26,802 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:27,204 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:29,205 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:31,205 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:31,825 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:33,206 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:35,207 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:36,870 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:37,207 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:39,208 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:41,209 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:41,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:50:41,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:50:41,927 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:43,210 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:45,210 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:47,018 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:47,211 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:49,211 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:50,458 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:50:51,212 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:52,037 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:53,213 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:55,214 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:56,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:50:56,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:50:57,107 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:50:57,214 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:50:59,215 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:01,216 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:02,203 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:03,217 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:05,217 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:07,218 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:07,268 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:09,218 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:11,219 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:11,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:51:11,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:51:12,318 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:13,220 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:15,220 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:16,220 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:18,317 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:19,909 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:51:19,910 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:51:19,913 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:51:19,913 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:51:19,913 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:51:19,921 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:51:20,222 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:51:20,458 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:51:21,222 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:22,222 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:23,222 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:23,389 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:25,224 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:26,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:51:26,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:51:27,224 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:28,453 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:29,225 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:31,226 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:33,226 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:33,544 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:35,227 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:37,227 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:38,619 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:39,228 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:41,229 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:41,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:51:41,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:51:43,229 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:43,620 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:45,230 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:47,230 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:48,698 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:49,231 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:50,459 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:51:51,232 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:53,232 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:53,779 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:55,233 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:56,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:51:56,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:51:57,233 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:51:58,876 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:51:59,234 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:01,235 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:03,235 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:03,979 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:05,236 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:07,236 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:08,994 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:09,237 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:11,238 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:11,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:52:11,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:52:13,238 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:14,039 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:15,239 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:17,239 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:19,084 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:19,240 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:20,471 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:52:21,241 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:23,241 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:24,179 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:25,242 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:26,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:52:26,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:52:27,242 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:29,221 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:29,243 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:31,244 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:32,244 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:34,577 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:37,236 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:52:37,237 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:52:37,238 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:52:37,239 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:52:37,245 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:52:39,246 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:39,624 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:40,246 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:41,246 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:41,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:52:41,319 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:52:43,247 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:44,715 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:45,248 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:47,248 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:49,249 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:49,821 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:50,460 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:52:51,249 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:53,250 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:54,894 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:52:55,250 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:56,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:52:56,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:52:57,251 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:59,252 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:52:59,986 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:01,252 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:03,253 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:05,053 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:05,253 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:08,254 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:10,161 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:10,255 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:11,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:53:11,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:53:12,255 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:14,256 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:15,220 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:16,256 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:18,257 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:20,258 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:20,291 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:20,460 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:53:22,258 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:24,259 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:25,303 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:26,260 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:26,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:53:26,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:53:28,260 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:30,261 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:30,378 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:32,261 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:34,262 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:35,487 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:36,263 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:38,263 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:40,264 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:40,567 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:41,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:53:41,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:53:42,264 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:44,265 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:45,665 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:46,265 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:48,266 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:50,267 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:50,461 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:53:51,461 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:54,760 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:53:54,762 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:53:54,762 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:53:54,764 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:53:55,268 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:53:56,269 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:53:56,319 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:53:56,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:53:56,555 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:53:58,269 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:00,270 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:01,635 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:02,271 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:04,271 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:06,272 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:06,724 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:08,273 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:10,274 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:11,320 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:54:11,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:54:11,830 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:12,274 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:14,275 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:16,276 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:16,878 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:18,277 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:20,277 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:20,461 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:54:21,966 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:22,278 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:24,278 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:26,279 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:26,320 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:54:26,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:54:27,020 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:28,280 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:30,281 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:32,034 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:32,282 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:34,282 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:36,283 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:37,123 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:38,284 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:40,285 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:41,320 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:54:41,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:54:42,149 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:42,285 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:44,286 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:46,286 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:47,206 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:48,287 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:50,288 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:50,462 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:54:52,288 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:52,312 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:54,289 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:56,289 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:54:56,320 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:54:56,320 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:54:57,374 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:54:58,290 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:00,291 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:02,291 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:02,421 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:04,292 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:06,292 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:08,293 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:08,369 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:11,347 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:55:11,347 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:55:12,093 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: partial_history
+2023-06-06 12:55:12,094 DEBUG   SenderThread:1569444 [sender.py:send():375] send: history
+2023-06-06 12:55:12,094 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: summary_record
+2023-06-06 12:55:12,096 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:55:12,294 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:55:13,436 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:14,295 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:16,295 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:18,296 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:18,515 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:20,297 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:20,462 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:55:22,298 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:23,560 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:24,298 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:26,299 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:26,346 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:55:26,347 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:55:28,300 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:28,621 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:30,300 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:32,301 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:33,636 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:34,302 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:36,302 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:38,303 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:38,702 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:40,304 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:41,346 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:55:41,347 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:55:42,304 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:43,775 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:44,305 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:46,305 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:48,306 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:48,848 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:50,307 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:50,463 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:55:52,307 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:53,957 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:55:54,308 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:56,309 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:56,347 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: stop_status
+2023-06-06 12:55:56,347 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: stop_status
+2023-06-06 12:55:58,309 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:55:59,022 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:56:00,310 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:56:02,310 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:56:03,985 DEBUG   SenderThread:1569444 [sender.py:send():375] send: telemetry
+2023-06-06 12:56:03,986 DEBUG   SenderThread:1569444 [sender.py:send():375] send: exit
+2023-06-06 12:56:03,986 INFO    SenderThread:1569444 [sender.py:send_exit():598] handling exit code: 0
+2023-06-06 12:56:03,986 INFO    SenderThread:1569444 [sender.py:send_exit():600] handling runtime: 1003
+2023-06-06 12:56:03,986 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:56:03,986 INFO    SenderThread:1569444 [sender.py:send_exit():606] send defer
+2023-06-06 12:56:03,986 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:03,986 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 0
+2023-06-06 12:56:03,986 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:03,986 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 0
+2023-06-06 12:56:03,986 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 1
+2023-06-06 12:56:03,986 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:03,986 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 1
+2023-06-06 12:56:03,986 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:03,986 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 1
+2023-06-06 12:56:03,987 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 2
+2023-06-06 12:56:03,987 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:03,987 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 2
+2023-06-06 12:56:03,987 INFO    HandlerThread:1569444 [system_monitor.py:finish():190] Stopping system monitor
+2023-06-06 12:56:03,987 DEBUG   SystemMonitor:1569444 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-06-06 12:56:03,987 INFO    HandlerThread:1569444 [interfaces.py:finish():202] Joined cpu monitor
+2023-06-06 12:56:03,987 DEBUG   SystemMonitor:1569444 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-06-06 12:56:03,987 INFO    HandlerThread:1569444 [interfaces.py:finish():202] Joined disk monitor
+2023-06-06 12:56:04,024 INFO    HandlerThread:1569444 [interfaces.py:finish():202] Joined gpu monitor
+2023-06-06 12:56:04,025 INFO    HandlerThread:1569444 [interfaces.py:finish():202] Joined memory monitor
+2023-06-06 12:56:04,025 INFO    HandlerThread:1569444 [interfaces.py:finish():202] Joined network monitor
+2023-06-06 12:56:04,025 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:04,025 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 2
+2023-06-06 12:56:04,025 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 3
+2023-06-06 12:56:04,025 DEBUG   SenderThread:1569444 [sender.py:send():375] send: stats
+2023-06-06 12:56:04,025 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:04,025 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 3
+2023-06-06 12:56:04,026 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:56:04,026 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:04,026 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 3
+2023-06-06 12:56:04,026 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 4
+2023-06-06 12:56:04,026 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:04,026 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 4
+2023-06-06 12:56:04,026 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:04,026 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 4
+2023-06-06 12:56:04,026 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 5
+2023-06-06 12:56:04,026 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:04,026 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 5
+2023-06-06 12:56:04,027 DEBUG   SenderThread:1569444 [sender.py:send():375] send: summary
+2023-06-06 12:56:04,027 INFO    SenderThread:1569444 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-06-06 12:56:04,027 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:04,027 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 5
+2023-06-06 12:56:04,027 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 6
+2023-06-06 12:56:04,027 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:04,027 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 6
+2023-06-06 12:56:04,027 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:04,027 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 6
+2023-06-06 12:56:04,030 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: status_report
+2023-06-06 12:56:04,312 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/wandb-summary.json
+2023-06-06 12:56:04,312 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:56:04,336 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 7
+2023-06-06 12:56:04,336 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:04,336 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 7
+2023-06-06 12:56:04,337 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:04,337 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 7
+2023-06-06 12:56:04,986 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: poll_exit
+2023-06-06 12:56:05,313 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/config.yaml
+2023-06-06 12:56:06,313 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:56:07,444 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 8
+2023-06-06 12:56:07,445 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: poll_exit
+2023-06-06 12:56:07,446 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:07,446 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 8
+2023-06-06 12:56:07,447 DEBUG   SenderThread:1569444 [sender.py:send_request():402] send_request: defer
+2023-06-06 12:56:07,447 INFO    SenderThread:1569444 [sender.py:send_request_defer():622] handle sender defer: 8
+2023-06-06 12:56:07,477 INFO    SenderThread:1569444 [sender.py:transition_state():626] send defer: 9
+2023-06-06 12:56:07,478 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: defer
+2023-06-06 12:56:07,478 DEBUG   SenderThread:1569444 [sender.py:send():375] send: artifact
+2023-06-06 12:56:07,478 INFO    HandlerThread:1569444 [handler.py:handle_request_defer():170] handle defer: 9
+2023-06-06 12:56:08,315 INFO    Thread-12 :1569444 [dir_watcher.py:_on_file_modified():295] file/dir modified: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/files/output.log
+2023-06-06 12:56:09,366 INFO    wandb-upload_0:1569444 [upload_job.py:push():92] Skipped uploading /home/cgm/.local/share/wandb/artifacts/staging/tmppbxtkv70
+2023-06-06 12:56:09,829 INFO    wandb-upload_1:1569444 [upload_job.py:push():95] Uploaded file /home/cgm/.local/share/wandb/artifacts/staging/tmpce7r7mti
+2023-06-06 12:56:09,971 INFO    wandb-upload_2:1569444 [upload_job.py:push():95] Uploaded file /home/cgm/.local/share/wandb/artifacts/staging/tmpg07osgim
+2023-06-06 12:56:09,987 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:14,989 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:19,990 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:24,992 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:29,993 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:34,995 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:39,996 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:44,998 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:49,999 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:56:55,000 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:00,002 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:05,003 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:10,005 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:15,006 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:20,008 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:25,009 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:30,011 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:35,012 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:40,014 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:45,015 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:50,017 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:57:55,018 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:00,020 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:05,022 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:10,023 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:15,025 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:20,026 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:25,028 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:30,029 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:35,031 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:40,032 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:45,034 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:50,035 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:58:55,037 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:00,038 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:05,040 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:10,041 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:15,043 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:20,044 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:25,046 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:30,047 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:35,049 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:40,050 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:45,052 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:50,053 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 12:59:55,055 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:00,056 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:05,058 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:10,060 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:15,061 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:20,063 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:25,064 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:30,066 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:35,067 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:40,069 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:45,070 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:50,072 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:00:55,073 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:00,075 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:05,076 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:10,078 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:15,079 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:20,081 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:25,082 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:30,084 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:35,085 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:40,087 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:45,089 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:50,090 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:01:55,091 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:00,093 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:05,094 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:10,096 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:15,097 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:20,098 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:25,100 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:30,102 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:35,103 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:40,105 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:45,106 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:50,107 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:02:55,109 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:00,110 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:05,112 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:10,113 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:15,115 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:20,116 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:25,118 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:30,119 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:35,121 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:40,122 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:45,124 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:50,124 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:03:55,126 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:04:00,128 DEBUG   HandlerThread:1569444 [handler.py:handle_request():144] handle_request: keepalive
+2023-06-06 13:04:01,698 WARNING StreamThr :1569444 [internal.py:is_dead():414] Internal process exiting, parent pid 1569413 disappeared
+2023-06-06 13:04:01,699 ERROR   StreamThr :1569444 [internal.py:wandb_internal():152] Internal process shutdown.
+2023-06-06 13:04:02,128 INFO    HandlerThread:1569444 [handler.py:finish():842] shutting down handler
+2023-06-06 13:04:02,562 INFO    WriterThread:1569444 [datastore.py:close():298] close: /home/cgm/code/CGM__GCLRec/code/wandb/run-20230606_123919-0vot5wix/run-0vot5wix.wandb
+2023-06-06 13:04:02,710 INFO    MainThread:1569444 [internal.py:handle_exit():76] Internal process exited

@@ -1,0 +1,213 @@
+diff --git a/code/augment.py b/code/augment.py
+index 6a5f897..6a4180b 100755
+--- a/code/augment.py
++++ b/code/augment.py
+@@ -290,7 +290,7 @@ class Augment_Learner(torch.nn.Module):
+         self.src = torch.cat([torch.tensor(self.trainUser), torch.tensor(self.trainItem)])
+         self.dst = torch.cat([torch.tensor(self.trainItem), torch.tensor(self.trainUser)])
+         self.edge_index = torch.tensor([list(np.append(self.trainUser, self.trainItem)), list(np.append(self.trainItem, self.trainUser))])
+-        self.data = self.Recmodel.data_origin
++
+ 
+         self.input_dim = self.config['latent_dim_rec']
+         mlp_edge_model_dim = self.config['latent_dim_rec']
+@@ -318,14 +318,9 @@ class Augment_Learner(torch.nn.Module):
+     def forward(self):
+         ''''
+         返回增强后的边权重
+-        '''
+-        with torch.no_grad():
+-            users_emb0 = self.Recmodel.embedding_user.weight
+-            items_emb0 = self.Recmodel.embedding_item.weight
+-            x = torch.cat([users_emb0, items_emb0])
+-            graph = self.Recmodel.Graph            
++        '''           
+ 
+-        users_emb, items_emb = self.GNN_encoder.forward(self.data)
++        users_emb, items_emb = self.GNN_encoder.forward(self.Recmodel.pyg_data())
+         nodes_emb = torch.cat([users_emb, items_emb])
+ 
+         emb_src = nodes_emb[self.src]
+@@ -336,6 +331,12 @@ class Augment_Learner(torch.nn.Module):
+         # edge_logits1, edge_logits2 = torch.split(edge_logits, [self.num_edges, self.num_edges])
+         # edge_logits = (edge_logits1 + edge_logits2) * 0.5
+ 
++        with torch.no_grad():
++            users_emb0 = self.Recmodel.embedding_user.weight
++            items_emb0 = self.Recmodel.embedding_item.weight
++            x = torch.cat([users_emb0, items_emb0])
++            # graph = self.Recmodel.Graph
++
+         data_aug = torch_geometric.data.Data(x=x, edge_index=self.edge_index.contiguous(), edge_attr=edge_logits)#TODO detach
+ 
+         #TODO 将edge_index格式的数据再构建为邻接矩阵并归一化
+@@ -343,37 +344,37 @@ class Augment_Learner(torch.nn.Module):
+ 
+         return data_aug.detach()
+     
+-    def get_graph(self, edge_logits, trainUser, trainItem, n_user, m_item):
+-        UserItemNet = csr_matrix((edge_logits, (trainUser, trainItem)), shape=(n_user, m_item))
+-
+-        adj_mat = sp.dok_matrix((n_user + m_item, n_user + m_item), dtype=np.float32)
+-        adj_mat = adj_mat.tolil()
+-        R = UserItemNet.tolil()
+-        #此处会显存爆炸
+-        adj_mat[:n_user, n_user:] = R
+-        adj_mat[n_user:, :n_user] = R.T
+-        adj_mat = adj_mat.todok()
+-        # adj_mat = adj_mat + sp.eye(adj_mat.shape[0]) TODO 无自连接
++    # def get_graph(self, edge_logits, trainUser, trainItem, n_user, m_item):
++    #     UserItemNet = csr_matrix((edge_logits, (trainUser, trainItem)), shape=(n_user, m_item))
++
++    #     adj_mat = sp.dok_matrix((n_user + m_item, n_user + m_item), dtype=np.float32)
++    #     adj_mat = adj_mat.tolil()
++    #     R = UserItemNet.tolil()
++    #     #此处会显存爆炸
++    #     adj_mat[:n_user, n_user:] = R
++    #     adj_mat[n_user:, :n_user] = R.T
++    #     adj_mat = adj_mat.todok()
++    #     # adj_mat = adj_mat + sp.eye(adj_mat.shape[0]) TODO 无自连接
+         
+-        rowsum = np.array(adj_mat.sum(axis=1))
+-        d_inv = np.power(rowsum, -0.5).flatten()
+-        d_inv[np.isinf(d_inv)] = 0.
+-        d_mat = sp.diags(d_inv)#对角阵
+-        #TODO 不再归一化？
+-        norm_adj = adj_mat
+-        # norm_adj = d_mat.dot(adj_mat)
+-        # norm_adj = norm_adj.dot(d_mat)
+-        norm_adj = norm_adj.tocsr()
+-
+-        Graph = self._convert_sp_mat_to_sp_tensor(norm_adj)
+-        Graph = Graph.coalesce().to(world.device)
+-
+-        return Graph
++    #     rowsum = np.array(adj_mat.sum(axis=1))
++    #     d_inv = np.power(rowsum, -0.5).flatten()
++    #     d_inv[np.isinf(d_inv)] = 0.
++    #     d_mat = sp.diags(d_inv)#对角阵
++    #     #TODO 不再归一化？
++    #     norm_adj = adj_mat
++    #     # norm_adj = d_mat.dot(adj_mat)
++    #     # norm_adj = norm_adj.dot(d_mat)
++    #     norm_adj = norm_adj.tocsr()
++
++    #     Graph = self._convert_sp_mat_to_sp_tensor(norm_adj)
++    #     Graph = Graph.coalesce().to(world.device)
++
++    #     return Graph
+     
+-    def _convert_sp_mat_to_sp_tensor(self, X):
+-        coo = X.tocoo().astype(np.float32)
+-        row = torch.Tensor(coo.row).long()
+-        col = torch.Tensor(coo.col).long()
+-        index = torch.stack([row, col])
+-        data = torch.FloatTensor(coo.data)
+-        return torch.sparse.FloatTensor(index, data, torch.Size(coo.shape))
++    # def _convert_sp_mat_to_sp_tensor(self, X):
++    #     coo = X.tocoo().astype(np.float32)
++    #     row = torch.Tensor(coo.row).long()
++    #     col = torch.Tensor(coo.col).long()
++    #     index = torch.stack([row, col])
++    #     data = torch.FloatTensor(coo.data)
++    #     return torch.sparse.FloatTensor(index, data, torch.Size(coo.shape))
+diff --git a/code/model.py b/code/model.py
+index d484b4c..c870452 100755
+--- a/code/model.py
++++ b/code/model.py
+@@ -479,11 +479,7 @@ class LightGCN_PyG(nn.Module):
+         super(LightGCN_PyG, self).__init__()
+         self.config = config
+         self.dataset = dataset
+-        self.precal = precal        
+-        # dim = config['latent_dim_rec']
+-        # self.conv1 = GCNConv(dim, dim)
+-        # self.conv2 = GCNConv(dim, dim)
+-        # self.conv3 = GCNConv(dim, dim)
++        self.precal = precal 
+         self.lightConv = LGConv()
+ 
+         self.__init_weight()
+@@ -532,21 +528,27 @@ class LightGCN_PyG(nn.Module):
+         else:
+             self.Graph = self.dataset.Graph
+ 
+-        users_emb0 = self.embedding_user.weight
+-        items_emb0 = self.embedding_item.weight
+-        self.x = torch.cat([users_emb0, items_emb0])
++        
+         self.edge_index = torch.tensor([list(np.append(self.dataset.trainUser, self.dataset.trainItem)), list(np.append(self.dataset.trainItem, self.dataset.trainUser))])
+-        self.data_origin = torch_geometric.data.Data(x=self.x, edge_index=self.edge_index.contiguous()).to(world.device)
+         
+ 
+         print(f"GCL Model is ready to go!")
++    
++    def pyg_data(self):
++        users_emb0 = self.embedding_user.weight
++        items_emb0 = self.embedding_item.weight
++        x = torch.cat([users_emb0, items_emb0])
++        data_origin = torch_geometric.data.Data(x=x, edge_index=self.edge_index.contiguous())
++        return data_origin
+ 
+     def computer(self):
+         """
+         vanilla LightGCN. No dropout used, return final embedding for rec. 
+-        """       
+-        x, edge_index= self.data_origin.x, self.data_origin.edge_index
+-        x, edge_index = x.to(world.device), edge_index.to(world.device)
++        """
++        users_emb0 = self.embedding_user.weight
++        items_emb0 = self.embedding_item.weight
++        x = torch.cat([users_emb0, items_emb0])
++        x, edge_index = x.to(world.device), self.edge_index.to(world.device)
+         embs = [x]
+         for layer in range(self.n_layers):
+             x = self.lightConv(x=x, edge_index=edge_index)
+diff --git a/code/tune2.py b/code/tune2.py
+index 68479a1..f91fcb4 100644
+--- a/code/tune2.py
++++ b/code/tune2.py
+@@ -1,18 +1,28 @@
+ import os
+-cuda = 1
++cuda = 0
+ # Baseline--yelp2018--2 LightGCN_PyG + BPR
+-os.system(f'python main.py --project GCLRec_No_Valid --name LightGCN_PyG+BPR --model LightGCN_PyG --loss BPR --dataset yelp2018\
+-            --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
+-            --comment _ --if_valid 0 --notes PyG_Implementation --tag LightGCN --group baseline --job_type yelp2018')
++# os.system(f'python main.py --project GCLRec_No_Valid --name LightGCN_PyG+BPR --model LightGCN_PyG --loss BPR --augment No --dataset yelp2018\
++#             --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
++#             --comment _ --if_valid 0 --notes PyG_Implementation --tag LightGCN --group baseline --job_type yelp2018')
+ 
+-#Baseline--yelp2018--4 SGL_RW+BPR_Contrast
+-os.system(f'python main.py --project GCLRec_No_Valid --name SGL_RW+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset yelp2018\
+-            --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 \
+-            --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 \
+-            --comment _ --if_valid 0 --notes _ --tag SGL --group baseline --job_type yelp2018')
++# #Baseline--yelp2018--4 SGL_RW+BPR_Contrast
++# os.system(f'python main.py --project GCLRec_No_Valid --name SGL_RW+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset yelp2018\
++#             --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 \
++#             --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 \
++#             --comment _ --if_valid 0 --notes _ --tag SGL --group baseline --job_type yelp2018')
+ 
+ #Baseline--yelp2018--6 SimGCL+BPR_Contrast
+-os.system(f'python main.py --project GCLRec_No_Valid --name SimGCL+BPR_CL --model SimGCL --loss BPR_Contrast --augment No --dataset yelp2018\
+-            --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 \
+-            --lambda1 0.1 --temp_tau 0.2 --eps_SimGCL 0.1\
+-            --comment _ --if_valid 0 --notes _ --tag SimGCL --group baseline --job_type yelp2018')#Layer=3
+\ No newline at end of file
++# os.system(f'python main.py --project GCLRec_No_Valid --name SimGCL+BPR_CL --model SimGCL --loss BPR_Contrast --augment No --dataset yelp2018\
++#             --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 \
++#             --lambda1 0.1 --temp_tau 0.2 --eps_SimGCL 0.1\
++#             --comment _ --if_valid 0 --notes _ --tag SimGCL --group baseline --job_type yelp2018')#Layer=3
++
++#Aument_Learner and LightGCN_PyG
++os.system(f'python main.py --model LightGCN_PyG --loss BPR_Contrast --augment Learner --dataset yelp2018\
++            --init_method Normal --adaptive_method None\
++            --temp_tau 0.2\
++            --if_visual 0 --cuda {cuda} --comment tune_Aument_Learner_LGN_Contrast\
++            --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
++            --early_stop_steps 40\
++            --if_projector 0\
++            --if_valid 0')
+\ No newline at end of file

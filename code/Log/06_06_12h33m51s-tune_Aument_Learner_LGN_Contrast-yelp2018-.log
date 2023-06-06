@@ -1,0 +1,82 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaptive_method': 'None',
+ 'alpha': 0.5,
+ 'augment': 'Learner',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': 'tune_Aument_Learner_LGN_Contrast',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'yelp2018',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 40,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': '-',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': '-',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'latent_dim_rec': 64,
+ 'loss': 'BPR_Contrast',
+ 'lr': 0.001,
+ 'model': 'LightGCN_PyG',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'name',
+ 'notes': '-',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'project',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': None,
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.2,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20],
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 1,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[0;30;43m[DATALOADER--START][0m
+loading [/home/cgm/code/CGM__GCLRec/data/yelp2018]
+1237259 interactions for training
+324147 interactions for testing
+yelp2018 Sparsity : 0.0012958757851778647
+loading adjacency matrix
+successfully loaded...
+[0;30;43mRemember to delete this pre-calculed mat while changing data split ![0m
+yelp2018 is ready to go
+[0;30;43m[DATALOADER--END][0m
+[0;30;43m[PRECALCULATE--START][0m
+precal cost :  0.8092811107635498
+[0;30;43m[PRECALCULATE--END][0m
+user:31668, item:38048
+[0;30;43muse NORMAL distribution UI for Embedding[0m
+GCL Model is ready to go!
