@@ -117,7 +117,15 @@ def main():
                     best_result_recall = result["recall"]
                     # print("find a better model")
                     cprint_rare("find a better recall", str(best_result_recall), extra='++'+str(advance))
-                    wandb.run.summary['best test recall'] = best_result_recall        
+                    wandb.run.summary['best test recall'] = best_result_recall  
+
+                    # if world.config['if_visual'] == 1:
+                    #     cprint("[Visualization]")
+                    #     if world.config['if_tsne'] == 1:
+                    #         quantify.visualize_tsne(epoch)
+                    #     if world.config['if_double_label'] == 1:
+                    #         quantify.visualize_double_label(epoch)
+
                     #torch.save(Recmodel.state_dict(), weight_file)
                 else:
                     stopping_step += 1
