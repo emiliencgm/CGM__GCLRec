@@ -1,0 +1,142 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaptive_method': 'None',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'yelp2018',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'baseline',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'yelp2018',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'latent_dim_rec': 64,
+ 'loss': 'DCL',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+DCL',
+ 'notes': 'temp_tau=0.2',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['DCL'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.2,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20],
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 1,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[0;30;43m[DATALOADER--START][0m
+loading [/home/cgm/code/CGM__GCLRec/data/yelp2018]
+1237259 interactions for training
+324147 interactions for testing
+yelp2018 Sparsity : 0.0012958757851778647
+loading adjacency matrix
+successfully loaded...
+[0;30;43mRemember to delete this pre-calculed mat while changing data split ![0m
+yelp2018 is ready to go
+[0;30;43m[DATALOADER--END][0m
+[0;30;43m[PRECALCULATE--START][0m
+precal cost :  0.7620058059692383
+[0;30;43m[PRECALCULATE--END][0m
+user:31668, item:38048
+[0;30;43muse NORMAL distribution UI for Embedding[0m
+GCL Model is ready to go!
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[0]:loss 5.236
+[0;30;43m[TEST][0m
+{'precision': array([0.0203202]), 'recall': array([0.04288285]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([3.15776178e-05]), 5: array([9.76035459e-05]), 6: array([0.0009868]), 7: array([0.00156809]), 8: array([0.00753445]), 9: array([0.10818341])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([3.5086242e-06]), 5: array([1.54053664e-05]), 6: array([0.00016778]), 7: array([0.00025668]), 8: array([0.00154306]), 9: array([0.04089641])}, 'ndcg': array([0.03572693])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.04288285][0m [0;37;44m++[0.04288285][0m
+time cost of epoch 0:  52.59910607337952
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[1]:loss 3.545
+[0;30;43m[TEST][0m
+{'precision': array([0.02165751]), 'recall': array([0.04621253]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([5.2629363e-05]), 6: array([0.0007026]), 7: array([0.00146967]), 8: array([0.00750349]), 9: array([0.11578888])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([6.20274635e-06]), 6: array([0.0001226]), 7: array([0.00023821]), 8: array([0.00153332]), 9: array([0.04431219])}, 'ndcg': array([0.03812417])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.04621253][0m [0;37;44m++[0.00332968][0m
+time cost of epoch 1:  50.899744510650635
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[2]:loss 3.159
+[0;30;43m[TEST][0m
+{'precision': array([0.02226222]), 'recall': array([0.04749765]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([0.00028683]), 7: array([0.00117495]), 8: array([0.00717286]), 9: array([0.11917024])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([5.7403598e-05]), 7: array([0.00019072]), 8: array([0.00148196]), 9: array([0.04576756])}, 'ndcg': array([0.03920605])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.04749765][0m [0;37;44m++[0.00128512][0m
+time cost of epoch 2:  52.92281222343445
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[3]:loss 2.987
+[0;30;43m[TEST][0m
+{'precision': array([0.02276904]), 'recall': array([0.04861415]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([0.00024473]), 7: array([0.00124372]), 8: array([0.00714989]), 9: array([0.12169521])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([4.94465396e-05]), 7: array([0.00019327]), 8: array([0.00149684]), 9: array([0.04687459])}, 'ndcg': array([0.04011064])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.04861415][0m [0;37;44m++[0.0011165][0m
+time cost of epoch 3:  52.7720365524292
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[4]:loss 2.879
+[0;30;43m[TEST][0m
+{'precision': array([0.02299166]), 'recall': array([0.04934419]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([0.00024473]), 7: array([0.00122311]), 8: array([0.00696015]), 9: array([0.12336123])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([4.40582953e-05]), 7: array([0.0001834]), 8: array([0.00146449]), 9: array([0.04765225])}, 'ndcg': array([0.04072218])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.04934419][0m [0;37;44m++[0.00073004][0m
+time cost of epoch 4:  53.37686371803284
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[5]:loss 2.799
+[0;30;43m[TEST][0m
+{'precision': array([0.02336112]), 'recall': array([0.05018497]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([0.00016052]), 7: array([0.001231]), 8: array([0.0072145]), 9: array([0.12542558])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([2.39839526e-05]), 7: array([0.00018319]), 8: array([0.00151132]), 9: array([0.04846647])}, 'ndcg': array([0.04143777])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.05018497][0m [0;37;44m++[0.00084078][0m
+time cost of epoch 5:  53.254825592041016
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[6]:loss 2.742
+[0;30;43m[TEST][0m
+{'precision': array([0.02358848]), 'recall': array([0.05062703]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([0.00013684]), 7: array([0.00154029]), 8: array([0.00719369]), 9: array([0.12650872])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.]), 6: array([2.86830028e-05]), 7: array([0.00024348]), 8: array([0.00149707]), 9: array([0.0488578])}, 'ndcg': array([0.04183053])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.05062703][0m [0;37;44m++[0.00044207][0m
+time cost of epoch 6:  52.35241389274597
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[7]:loss 2.690
+[0;30;43m[TEST][0m
+{'precision': array([0.02390426]), 'recall': array([0.05129743]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([3.15776178e-05]), 6: array([0.00013684]), 7: array([0.00126919]), 8: array([0.007148]), 9: array([0.12825464])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([2.63146815e-06]), 6: array([2.36592909e-05]), 7: array([0.00019498]), 8: array([0.00149523]), 9: array([0.04958093])}, 'ndcg': array([0.04235406])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.05129743][0m [0;37;44m++[0.00067039][0m
+time cost of epoch 7:  54.017558336257935
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[8]:loss 2.649
+[0;30;43m[TEST][0m

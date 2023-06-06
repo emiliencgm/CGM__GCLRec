@@ -18,11 +18,21 @@ cuda = 0
 #             --comment _ --if_valid 0 --notes _ --tag SimGCL --group baseline --job_type yelp2018')#Layer=3
 
 #Aument_Learner and LightGCN_PyG
-os.system(f'python main.py --model LightGCN_PyG --loss BPR_Contrast --augment Learner --dataset yelp2018\
-            --init_method Normal --adaptive_method None\
-            --temp_tau 0.2\
-            --if_visual 0 --cuda {cuda} --comment tune_Aument_Learner_LGN_Contrast\
-            --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
-            --early_stop_steps 40\
-            --if_projector 0\
-            --if_valid 0')
+# os.system(f'python main.py --model LightGCN_PyG --loss BPR_Contrast --augment Learner --dataset yelp2018\
+#             --init_method Normal --adaptive_method None\
+#             --temp_tau 0.2\
+#             --if_visual 0 --cuda {cuda} --comment tune_Aument_Learner_LGN_Contrast\
+#             --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
+#             --early_stop_steps 40\
+#             --if_projector 0\
+#             --if_valid 0')
+#Baseline--yelp2018--10 LightGCN + DCL
+os.system(f'python main.py --project GCLRec_No_Valid --name LightGCN+DCL --model LightGCN --loss DCL --dataset yelp2018\
+            --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
+            --tau_plus 0.1 --temp_tau 0.2\
+            --comment _ --if_valid 0 --notes temp_tau=0.2 --tag DCL --group baseline --job_type yelp2018')#temp_tau=0.2
+#Baseline--yelp2018--10 LightGCN + DCL
+os.system(f'python main.py --project GCLRec_No_Valid --name LightGCN+DCL --model LightGCN --loss DCL --dataset yelp2018\
+            --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {cuda} --num_layers 3 --latent_dim_rec 64 --batch_size 2048\
+            --tau_plus 0.1 --temp_tau 0.1\
+            --comment _ --if_valid 0 --notes temp_tau=0.1 --tag DCL --group baseline --job_type yelp2018')#temp_tau=0.1

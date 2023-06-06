@@ -140,6 +140,19 @@ class Train():
                     l_all = self.loss.adaptive_softmax_loss(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
                 else:
                     l_all = self.loss.adaptive_softmax_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+             
+            
+            elif world.config['loss'] == 'DCL':
+                users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs= Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
+
+                if world.config['model'] in ['LightGCN', 'LightGCN_PyG']:
+                    aug_users1, aug_items1 = None, None
+                    aug_users2, aug_items2 = None, None
+                else:
+                    aug_users1, aug_items1 = None, None
+                    aug_users2, aug_items2 = None, None
+
+                l_all = self.loss.debiased_contrastive_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
 
             else:
                 l_all = None
