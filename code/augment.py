@@ -143,7 +143,7 @@ class RW_Uniform(ED_Uniform):
 
     def Random_Walk(self, p_drop):
         aug_g = []
-        for layer in self.config['num_layers']:
+        for layer in range(self.config['num_layers']):
             aug_g.append(self.Edge_drop_random(p_drop))
         return aug_g
 
