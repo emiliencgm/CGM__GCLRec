@@ -1,0 +1,43 @@
+diff --git a/code/__pycache__/loss.cpython-39.pyc b/code/__pycache__/loss.cpython-39.pyc
+index 0f3317b..4f9ce9d 100644
+Binary files a/code/__pycache__/loss.cpython-39.pyc and b/code/__pycache__/loss.cpython-39.pyc differ
+diff --git a/code/tune2.py b/code/tune2.py
+index 6593160..f63a4ae 100644
+--- a/code/tune2.py
++++ b/code/tune2.py
+@@ -1,2 +1,7 @@
+ import os
+ cuda = 0
++#Adaptive loss
++os.system('python main.py --project GCLRec_No_Valid --name LightGCN+Adaptive_loss_mlp --model LightGCN --loss Adaptive --dataset yelp2018 --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda 0 --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --adaptive_method mlp --centroid_mode eigenvector --commonNeighbor_mode SC --temp_tau 0.1 --comment _ --if_valid 0 --notes LightGCN+Adaptive_loss__mlp__log_pop+centroid_eig+CN_SC__ --tag Adaptive_loss --group Ours --job_type yelp2018 --if_visual 1 --visual_epoch 3')
++
++#Adaptive Aug
++os.system('python main.py --project GCLRec_No_Valid --name Adaptive_Aug+BPR_Contrast --model GCLRec --loss BPR_Contrast --augment Adaptive --dataset yelp2018 --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda 0 --num_layers 4 --latent_dim_rec 64 --batch_size 2048 --alpha 0.5 --temp_tau 0.1 --lambda1 0.1 --epsilon_GCLRec 0.1 --w_GCLRec 0. --k_aug 1 --comment _ --if_valid 0 --notes just_neighbor_No_Adaptive_4Layers --tag Adaptive_Aug --group Ours --job_type yelp2018 --if_visual 1 --visual_epoch 1')
+\ No newline at end of file
+diff --git a/code/wandb/debug-internal.log b/code/wandb/debug-internal.log
+index ddda1f9..610fff4 120000
+--- a/code/wandb/debug-internal.log
++++ b/code/wandb/debug-internal.log
+@@ -1 +1 @@
+-run-20230606_170039-rcj83tvv/logs/debug-internal.log
+\ No newline at end of file
++run-20230607_034120-xhkecrq9/logs/debug-internal.log
+\ No newline at end of file
+diff --git a/code/wandb/debug.log b/code/wandb/debug.log
+index a10678f..25422a4 120000
+--- a/code/wandb/debug.log
++++ b/code/wandb/debug.log
+@@ -1 +1 @@
+-run-20230606_170039-rcj83tvv/logs/debug.log
+\ No newline at end of file
++run-20230607_034120-xhkecrq9/logs/debug.log
+\ No newline at end of file
+diff --git a/code/wandb/latest-run b/code/wandb/latest-run
+index 128abe3..3e3ca35 120000
+--- a/code/wandb/latest-run
++++ b/code/wandb/latest-run
+@@ -1 +1 @@
+-run-20230606_170039-rcj83tvv
+\ No newline at end of file
++run-20230607_034120-xhkecrq9
+\ No newline at end of file

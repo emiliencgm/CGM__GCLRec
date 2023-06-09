@@ -1,0 +1,532 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaptive_method': 'None',
+ 'alpha': 0.5,
+ 'augment': 'Adaptive',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'yelp2018',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'Ours',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 1,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'yelp2018',
+ 'k_aug': 1,
+ 'lambda1': 0.1,
+ 'latent_dim_rec': 64,
+ 'loss': 'BPR_Contrast',
+ 'lr': 0.001,
+ 'model': 'GCLRec',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'Adaptive_Aug+BPR_Contrast',
+ 'notes': 'just_neighbor_No_Adaptive_4Layers',
+ 'num_layers': 4,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['Adaptive_Aug'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.1,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20],
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 1,
+ 'w_GCLRec': 0.0,
+ 'weight_decay': 0.0001}
+==========config==========
+[0;30;43m[DATALOADER--START][0m
+loading [/home/cgm/code/CGM__GCLRec/data/yelp2018]
+1237259 interactions for training
+324147 interactions for testing
+yelp2018 Sparsity : 0.0012958757851778647
+loading adjacency matrix
+successfully loaded...
+[0;30;43mRemember to delete this pre-calculed mat while changing data split ![0m
+yelp2018 is ready to go
+[0;30;43m[DATALOADER--END][0m
+[0;30;43m[PRECALCULATE--START][0m
+precal cost :  0.7939026355743408
+[0;30;43m[PRECALCULATE--END][0m
+user:31668, item:38048
+[0;30;43muse NORMAL distribution UI for Embedding[0m
+GCL Model is ready to go!
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[0]:loss 0.982
+[0;30;43m[TEST][0m
+{'precision': array([0.00058419]), 'recall': array([0.00110825]), 'recall_pop': {0: array([0.00024103]), 1: array([0.00022499]), 2: array([0.00028262]), 3: array([0.00023131]), 4: array([0.00026709]), 5: array([0.00047893]), 6: array([0.00045397]), 7: array([0.00060491]), 8: array([0.0013386]), 9: array([0.00106934])}, 'recall_pop_Contribute': {0: array([5.34964058e-05]), 1: array([3.32060523e-05]), 2: array([3.92907987e-05]), 3: array([3.22412923e-05]), 4: array([4.6481938e-05]), 5: array([7.10824567e-05]), 6: array([7.6228678e-05]), 7: array([9.55406237e-05]), 8: array([0.00027291]), 9: array([0.00038777])}, 'ndcg': array([0.00100555])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.00110825][0m [0;37;44m++[0.00110825][0m
+time cost of epoch 0:  87.80726718902588
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[1]:loss 0.979
+[0;30;43m[TEST][0m
+{'precision': array([0.00132784]), 'recall': array([0.00240501]), 'recall_pop': {0: array([0.00047256]), 1: array([0.00030393]), 2: array([0.00043682]), 3: array([0.00051419]), 4: array([0.00055392]), 5: array([0.00067693]), 6: array([0.00135818]), 7: array([0.00166108]), 8: array([0.00295821]), 9: array([0.00317295])}, 'recall_pop_Contribute': {0: array([0.00010278]), 1: array([5.06008921e-05]), 2: array([6.05701537e-05]), 3: array([7.09785741e-05]), 4: array([8.5367279e-05]), 5: array([0.00011051]), 6: array([0.000226]), 7: array([0.00027008]), 8: array([0.00055351]), 9: array([0.00087461])}, 'ndcg': array([0.00224009])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.00240501][0m [0;37;44m++[0.00129677][0m
+time cost of epoch 1:  111.3275625705719
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[2]:loss 0.977
+[0;30;43m[TEST][0m
+{'precision': array([0.00242358]), 'recall': array([0.00440641]), 'recall_pop': {0: array([0.00044689]), 1: array([0.00036972]), 2: array([0.00036683]), 3: array([0.00056708]), 4: array([0.00077734]), 5: array([0.00124067]), 6: array([0.00218778]), 7: array([0.0024034]), 8: array([0.00551265]), 9: array([0.0073306])}, 'recall_pop_Contribute': {0: array([0.00010277]), 1: array([5.98440065e-05]), 2: array([5.31023767e-05]), 3: array([8.82339783e-05]), 4: array([0.00013667]), 5: array([0.00022451]), 6: array([0.00036947]), 7: array([0.00042291]), 8: array([0.00107357]), 9: array([0.00187531])}, 'ndcg': array([0.00391314])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.00440641][0m [0;37;44m++[0.00200139][0m
+time cost of epoch 2:  129.32674074172974
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[3]:loss 0.975
+[0;30;43m[TEST][0m
+{'precision': array([0.00337407]), 'recall': array([0.00615542]), 'recall_pop': {0: array([0.00017216]), 1: array([0.00025657]), 2: array([0.0003063]), 3: array([0.00059734]), 4: array([0.0009247]), 5: array([0.00121311]), 6: array([0.00205485]), 7: array([0.00285299]), 8: array([0.00692586]), 9: array([0.01368048])}, 'recall_pop_Contribute': {0: array([3.6791961e-05]), 1: array([3.65162721e-05]), 2: array([3.7305833e-05]), 3: array([0.00010027]), 4: array([0.00015568]), 5: array([0.00020665]), 6: array([0.00035143]), 7: array([0.00053461]), 8: array([0.0013943]), 9: array([0.00330186])}, 'ndcg': array([0.00543469])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.00615542][0m [0;37;44m++[0.00174901][0m
+time cost of epoch 3:  110.08124685287476
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[4]:loss 0.969
+[0;30;43m[TEST][0m
+{'precision': array([0.00436245]), 'recall': array([0.00801084]), 'recall_pop': {0: array([1.8420277e-05]), 1: array([0.00015789]), 2: array([0.00011684]), 3: array([0.00038242]), 4: array([0.00076049]), 5: array([0.00094785]), 6: array([0.00206272]), 7: array([0.00310847]), 8: array([0.00844823]), 9: array([0.02046179])}, 'recall_pop_Contribute': {0: array([1.02627258e-05]), 1: array([1.67119112e-05]), 2: array([1.33563883e-05]), 3: array([6.90796593e-05]), 4: array([0.00012819]), 5: array([0.00015219]), 6: array([0.00036645]), 7: array([0.00058297]), 8: array([0.00168166]), 9: array([0.00498997])}, 'ndcg': array([0.00713252])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.00801084][0m [0;37;44m++[0.00185542][0m
+time cost of epoch 4:  119.33816981315613
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[5]:loss 0.957
+[0;30;43m[TEST][0m
+{'precision': array([0.00611816]), 'recall': array([0.01189228]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.]), 2: array([0.00012631]), 3: array([0.00046136]), 4: array([0.00079207]), 5: array([0.00095891]), 6: array([0.00193055]), 7: array([0.00343167]), 8: array([0.00980955]), 9: array([0.03303452])}, 'recall_pop_Contribute': {0: array([6.93469253e-06]), 1: array([0.]), 2: array([2.22783185e-05]), 3: array([7.678838e-05]), 4: array([0.00013451]), 5: array([0.00016216]), 6: array([0.00034943]), 7: array([0.00062216]), 8: array([0.00198459]), 9: array([0.00853343])}, 'ndcg': array([0.01029742])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.01189228][0m [0;37;44m++[0.00388144][0m
+time cost of epoch 5:  110.64808678627014
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[6]:loss 0.934
+[0;30;43m[TEST][0m
+{'precision': array([0.00806177]), 'recall': array([0.01624073]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([1.05258726e-05]), 2: array([7.89440445e-05]), 3: array([0.00039031]), 4: array([0.00070523]), 5: array([0.00088786]), 6: array([0.00198473]), 7: array([0.00371741]), 8: array([0.01159335]), 9: array([0.04462939])}, 'recall_pop_Contribute': {0: array([6.93469253e-06]), 1: array([8.7715605e-07]), 2: array([1.14517066e-05]), 3: array([6.93521385e-05]), 4: array([0.00013255]), 5: array([0.0001618]), 6: array([0.00036306]), 7: array([0.00071929]), 8: array([0.00240149]), 9: array([0.01237393])}, 'ndcg': array([0.01393358])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.01624073][0m [0;37;44m++[0.00434845][0m
+time cost of epoch 6:  119.05052089691162
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[7]:loss 0.901
+[0;30;43m[TEST][0m
+{'precision': array([0.01007958]), 'recall': array([0.0197267]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.]), 2: array([4.73664267e-05]), 3: array([0.00037367]), 4: array([0.00068155]), 5: array([0.00097383]), 6: array([0.00214808]), 7: array([0.00389936]), 8: array([0.01257423]), 9: array([0.05318876])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([0.]), 2: array([7.50450442e-06]), 3: array([6.99856611e-05]), 4: array([0.00013183]), 5: array([0.00019057]), 6: array([0.00038613]), 7: array([0.00072449]), 8: array([0.00259573]), 9: array([0.01561415])}, 'ndcg': array([0.01721845])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.0197267][0m [0;37;44m++[0.00348597][0m
+time cost of epoch 7:  111.53981685638428
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[8]:loss 0.861
+[0;30;43m[TEST][0m
+{'precision': array([0.01287262]), 'recall': array([0.02478866]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([3.15776178e-05]), 2: array([6.31552356e-05]), 3: array([0.00033683]), 4: array([0.00085786]), 5: array([0.00104154]), 6: array([0.00247333]), 7: array([0.00487265]), 8: array([0.01420229]), 9: array([0.06337078])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([6.31552356e-06]), 2: array([1.4209928e-05]), 3: array([6.79036204e-05]), 4: array([0.00016406]), 5: array([0.00020833]), 6: array([0.00045988]), 7: array([0.00091819]), 8: array([0.00299017]), 9: array([0.01995329])}, 'ndcg': array([0.02206946])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.02478866][0m [0;37;44m++[0.00506196][0m
+time cost of epoch 8:  120.50279068946838
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[9]:loss 0.817
+[0;30;43m[TEST][0m
+{'precision': array([0.01601775]), 'recall': array([0.03110999]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([6.31552356e-05]), 2: array([6.31552356e-05]), 3: array([0.00041577]), 4: array([0.00104732]), 5: array([0.00121363]), 6: array([0.00274357]), 7: array([0.00551593]), 8: array([0.01554695]), 9: array([0.07581001])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([1.15784599e-05]), 2: array([1.4209928e-05]), 3: array([8.29405812e-05]), 4: array([0.00019213]), 5: array([0.00023774]), 6: array([0.0005116]), 7: array([0.00104143]), 8: array([0.0032882]), 9: array([0.02572385])}, 'ndcg': array([0.02751326])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03110999][0m [0;37;44m++[0.00632133][0m
+time cost of epoch 9:  129.662522315979
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[10]:loss 0.768
+[0;30;43m[TEST][0m
+{'precision': array([0.01908078]), 'recall': array([0.03753346]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([7.36811082e-05]), 2: array([7.89440445e-05]), 3: array([0.00057366]), 4: array([0.00135784]), 5: array([0.00139544]), 6: array([0.00327828]), 7: array([0.00629883]), 8: array([0.0173662]), 9: array([0.08763318])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([1.55256621e-05]), 2: array([1.81571302e-05]), 3: array([0.0001139]), 4: array([0.00024683]), 5: array([0.00027456]), 6: array([0.00059742]), 7: array([0.00120795]), 8: array([0.00370537]), 9: array([0.03134742])}, 'ndcg': array([0.03285932])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03753346][0m [0;37;44m++[0.00642347][0m
+time cost of epoch 10:  111.15631532669067
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[11]:loss 0.717
+[0;30;43m[TEST][0m
+{'precision': array([0.02157225]), 'recall': array([0.04362976]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00013684]), 2: array([0.00011052]), 3: array([0.00086838]), 4: array([0.00135784]), 5: array([0.00174017]), 6: array([0.0034467]), 7: array([0.00711965]), 8: array([0.01870197]), 9: array([0.09912866])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([2.52996866e-05]), 2: array([2.34200665e-05]), 3: array([0.00016495]), 4: array([0.00025213]), 5: array([0.00032992]), 6: array([0.00063456]), 7: array([0.0014114]), 8: array([0.00404413]), 9: array([0.03673764])}, 'ndcg': array([0.03751573])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.04362976][0m [0;37;44m++[0.00609631][0m
+time cost of epoch 11:  119.52667570114136
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[12]:loss 0.666
+[0;30;43m[TEST][0m
+{'precision': array([0.02313061]), 'recall': array([0.04772933]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00020525]), 2: array([0.00011052]), 3: array([0.00091575]), 4: array([0.00146046]), 5: array([0.00196542]), 6: array([0.00375826]), 7: array([0.00815359]), 8: array([0.01977166]), 9: array([0.10655992])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([5.21406617e-05]), 2: array([2.34200665e-05]), 3: array([0.00017801]), 4: array([0.00027118]), 5: array([0.00037228]), 6: array([0.00069227]), 7: array([0.0016178]), 8: array([0.00431036]), 9: array([0.04020555])}, 'ndcg': array([0.04071373])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.04772933][0m [0;37;44m++[0.00409956][0m
+time cost of epoch 12:  112.19902968406677
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[13]:loss 0.620
+[0;30;43m[TEST][0m
+{'precision': array([0.02423424]), 'recall': array([0.0506697]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00023683]), 2: array([0.00021157]), 3: array([0.00104206]), 4: array([0.00151573]), 5: array([0.00211015]), 6: array([0.00419772]), 7: array([0.00902934]), 8: array([0.02086271]), 9: array([0.11187427])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([5.6087864e-05]), 2: array([4.43840961e-05]), 3: array([0.00019643]), 4: array([0.00028105]), 5: array([0.00041499]), 6: array([0.00077154]), 7: array([0.00178468]), 8: array([0.00458096]), 9: array([0.04253326])}, 'ndcg': array([0.04292281])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.0506697][0m [0;37;44m++[0.00294037][0m
+time cost of epoch 13:  120.30706405639648
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[14]:loss 0.581
+[0;30;43m[TEST][0m
+{'precision': array([0.02492106]), 'recall': array([0.05246806]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00023683]), 2: array([0.00024315]), 3: array([0.00115258]), 4: array([0.0015552]), 5: array([0.00245066]), 6: array([0.00431696]), 7: array([0.00957037]), 8: array([0.02146821]), 9: array([0.11485196])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([5.6087864e-05]), 2: array([4.99477716e-05]), 3: array([0.00021432]), 4: array([0.00029547]), 5: array([0.00048715]), 6: array([0.00081218]), 7: array([0.0019083]), 8: array([0.00470531]), 9: array([0.04393298])}, 'ndcg': array([0.0442077])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.05246806][0m [0;37;44m++[0.00179836][0m
+time cost of epoch 14:  117.17998504638672
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[15]:loss 0.547
+[0;30;43m[TEST][0m
+{'precision': array([0.02538209]), 'recall': array([0.0535743]), 'recall_pop': {0: array([1.57888089e-05]), 1: array([0.00031051]), 2: array([0.00025894]), 3: array([0.001221]), 4: array([0.00158941]), 5: array([0.00269276]), 6: array([0.0047301]), 7: array([0.0100016]), 8: array([0.02265619]), 9: array([0.11585686])}, 'recall_pop_Contribute': {0: array([6.91132767e-06]), 1: array([6.70648454e-05]), 2: array([5.02109184e-05]), 3: array([0.00022738]), 4: array([0.00031174]), 5: array([0.00052448]), 6: array([0.00089214]), 7: array([0.0019786]), 8: array([0.00498644]), 9: array([0.04452933])}, 'ndcg': array([0.04507842])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.0535743][0m [0;37;44m++[0.00110624][0m
+time cost of epoch 15:  118.4226610660553
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[16]:loss 0.519
+[0;30;43m[TEST][0m
+{'precision': array([0.02556682]), 'recall': array([0.05396601]), 'recall_pop': {0: array([2.63146815e-05]), 1: array([0.00027894]), 2: array([0.00025894]), 3: array([0.00131573]), 4: array([0.00153415]), 5: array([0.0028717]), 6: array([0.00486273]), 7: array([0.01039237]), 8: array([0.02351215]), 9: array([0.11531893])}, 'recall_pop_Contribute': {0: array([1.14224159e-05]), 1: array([6.07493218e-05]), 2: array([5.07748045e-05]), 3: array([0.00024497]), 4: array([0.00029723]), 5: array([0.00055531]), 6: array([0.00090409]), 7: array([0.00204311]), 8: array([0.00519489]), 9: array([0.04460346])}, 'ndcg': array([0.04538877])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.05396601][0m [0;37;44m++[0.00039172][0m
+time cost of epoch 16:  123.76640558242798
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[17]:loss 0.496
+[0;30;43m[TEST][0m
+{'precision': array([0.0255905]), 'recall': array([0.05403281]), 'recall_pop': {0: array([1.57888089e-05]), 1: array([0.00031051]), 2: array([0.00024315]), 3: array([0.00133152]), 4: array([0.00162098]), 5: array([0.0028841]), 6: array([0.00496009]), 7: array([0.01049056]), 8: array([0.02412931]), 9: array([0.11504161])}, 'recall_pop_Contribute': {0: array([6.91132767e-06]), 1: array([6.70648454e-05]), 2: array([4.91959236e-05]), 3: array([0.00024848]), 4: array([0.00030716]), 5: array([0.000559]), 6: array([0.00091603]), 7: array([0.00206303]), 8: array([0.00535375]), 9: array([0.04446218])}, 'ndcg': array([0.0454565])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.05403281][0m [0;37;44m++[6.68008714e-05][0m
+time cost of epoch 17:  111.08765912055969
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[18]:loss 0.476
+[0;30;43m[TEST][0m
+{'precision': array([0.02547682]), 'recall': array([0.05365585]), 'recall_pop': {0: array([1.57888089e-05]), 1: array([0.00031051]), 2: array([0.00033788]), 3: array([0.00137889]), 4: array([0.00169106]), 5: array([0.00291831]), 6: array([0.00501009]), 7: array([0.0107617]), 8: array([0.0243803]), 9: array([0.11328121])}, 'recall_pop_Contribute': {0: array([6.91132767e-06]), 1: array([6.70648454e-05]), 2: array([6.73530538e-05]), 3: array([0.00025853]), 4: array([0.00032397]), 5: array([0.00057197]), 6: array([0.00092999]), 7: array([0.00209942]), 8: array([0.00539299]), 9: array([0.04393764])}, 'ndcg': array([0.04534428])}
+time cost of epoch 18:  120.56569719314575
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[19]:loss 0.460
+[0;30;43m[TEST][0m
+{'precision': array([0.02534262]), 'recall': array([0.05335444]), 'recall_pop': {0: array([2.63146815e-05]), 1: array([0.00031051]), 2: array([0.00032209]), 3: array([0.00143678]), 4: array([0.0018579]), 5: array([0.00308304]), 6: array([0.00504693]), 7: array([0.01109623]), 8: array([0.02471405]), 9: array([0.11224803])}, 'recall_pop_Contribute': {0: array([1.14224159e-05]), 1: array([6.70648454e-05]), 2: array([6.58348991e-05]), 3: array([0.0002671]), 4: array([0.00035693]), 5: array([0.00060015]), 6: array([0.00094692]), 7: array([0.00215619]), 8: array([0.00548241]), 9: array([0.04340041])}, 'ndcg': array([0.04509223])}
+time cost of epoch 19:  111.6989357471466
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[20]:loss 0.446
+[0;30;43m[TEST][0m
+{'precision': array([0.02513736]), 'recall': array([0.05268312]), 'recall_pop': {0: array([3.42090859e-05]), 1: array([0.00031051]), 2: array([0.00030104]), 3: array([0.00142099]), 4: array([0.00179474]), 5: array([0.00311725]), 6: array([0.00509061]), 7: array([0.01115561]), 8: array([0.02488031]), 9: array([0.11025971])}, 'recall_pop_Contribute': {0: array([1.60895481e-05]), 1: array([6.70648454e-05]), 2: array([6.03695422e-05]), 3: array([0.00026079]), 4: array([0.00034404]), 5: array([0.00060281]), 6: array([0.00096032]), 7: array([0.00217112]), 8: array([0.00549996]), 9: array([0.04270055])}, 'ndcg': array([0.04465638])}
+time cost of epoch 20:  119.8670506477356
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[21]:loss 0.434
+[0;30;43m[TEST][0m
+{'precision': array([0.02492579]), 'recall': array([0.05201897]), 'recall_pop': {0: array([3.42090859e-05]), 1: array([0.00033683]), 2: array([0.00033262]), 3: array([0.00143678]), 4: array([0.00181316]), 5: array([0.00310515]), 6: array([0.00519587]), 7: array([0.01134093]), 8: array([0.02511045]), 9: array([0.10813372])}, 'recall_pop_Contribute': {0: array([1.60895481e-05]), 1: array([7.25670061e-05]), 2: array([6.56324785e-05]), 3: array([0.00026359]), 4: array([0.00034999]), 5: array([0.00060795]), 6: array([0.00097717]), 7: array([0.00219806]), 8: array([0.00552193]), 9: array([0.04194599])}, 'ndcg': array([0.04419562])}
+time cost of epoch 21:  127.71382069587708
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[22]:loss 0.423
+[0;30;43m[TEST][0m
+{'precision': array([0.02470317]), 'recall': array([0.05146639]), 'recall_pop': {0: array([3.42090859e-05]), 1: array([0.00035262]), 2: array([0.00037735]), 3: array([0.00143415]), 4: array([0.00172369]), 5: array([0.0030262]), 6: array([0.0052906]), 7: array([0.0112233]), 8: array([0.02511368]), 9: array([0.10646866])}, 'recall_pop_Contribute': {0: array([1.60895481e-05]), 1: array([7.25670061e-05]), 2: array([6.8503171e-05]), 3: array([0.0002632]), 4: array([0.00032842]), 5: array([0.00059122]), 6: array([0.00099815]), 7: array([0.00218633]), 8: array([0.00553824]), 9: array([0.04140368])}, 'ndcg': array([0.04380634])}
+time cost of epoch 22:  109.42865324020386
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[23]:loss 0.415
+[0;30;43m[TEST][0m
+{'precision': array([0.02446792]), 'recall': array([0.05074718]), 'recall_pop': {0: array([4.99978948e-05]), 1: array([0.00035788]), 2: array([0.00036156]), 3: array([0.00144994]), 4: array([0.0017879]), 5: array([0.00310146]), 6: array([0.00520482]), 7: array([0.01131722]), 8: array([0.02490017]), 9: array([0.10478576])}, 'recall_pop_Contribute': {0: array([1.53377001e-05]), 1: array([7.28062304e-05]), 2: array([6.36913435e-05]), 3: array([0.00026287]), 4: array([0.00033275]), 5: array([0.00060101]), 6: array([0.00096978]), 7: array([0.00217943]), 8: array([0.0054571]), 9: array([0.0407924])}, 'ndcg': array([0.04324101])}
+time cost of epoch 23:  87.50185537338257
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[24]:loss 0.407
+[0;30;43m[TEST][0m
+{'precision': array([0.02418372]), 'recall': array([0.04991855]), 'recall_pop': {0: array([6.57867037e-05]), 1: array([0.00041577]), 2: array([0.00032999]), 3: array([0.00138942]), 4: array([0.00175369]), 5: array([0.00308041]), 6: array([0.00511535]), 7: array([0.01114536]), 8: array([0.02482611]), 9: array([0.10277131])}, 'recall_pop_Contribute': {0: array([2.06006364e-05]), 1: array([8.57004244e-05]), 2: array([5.84284072e-05]), 3: array([0.0002545]), 4: array([0.00033492]), 5: array([0.00059855]), 6: array([0.00096416]), 7: array([0.00215128]), 8: array([0.00542154]), 9: array([0.04002886])}, 'ndcg': array([0.04263286])}
+time cost of epoch 24:  89.63954162597656
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[25]:loss 0.401
+[0;30;43m[TEST][0m
+{'precision': array([0.02388373]), 'recall': array([0.04909885]), 'recall_pop': {0: array([6.57867037e-05]), 1: array([0.00036841]), 2: array([0.00036156]), 3: array([0.00134731]), 4: array([0.00174422]), 5: array([0.00310146]), 6: array([0.00519008]), 7: array([0.01115887]), 8: array([0.02498706]), 9: array([0.10079363])}, 'recall_pop_Contribute': {0: array([2.06006364e-05]), 1: array([7.32949317e-05]), 2: array([6.36913435e-05]), 3: array([0.00024063]), 4: array([0.0003359]), 5: array([0.00060798]), 6: array([0.00096301]), 7: array([0.00214713]), 8: array([0.00545024]), 9: array([0.03919637])}, 'ndcg': array([0.0420819])}
+time cost of epoch 25:  90.08089137077332
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[26]:loss 0.395
+[0;30;43m[TEST][0m
+{'precision': array([0.02362795]), 'recall': array([0.04835072]), 'recall_pop': {0: array([6.57867037e-05]), 1: array([0.00041051]), 2: array([0.00039314]), 3: array([0.00133152]), 4: array([0.00170738]), 5: array([0.00305673]), 6: array([0.00515144]), 7: array([0.01118378]), 8: array([0.02497391]), 9: array([0.09871502])}, 'recall_pop_Contribute': {0: array([2.06006364e-05]), 1: array([7.76932427e-05]), 2: array([7.1711056e-05]), 3: array([0.00024369]), 4: array([0.00032273]), 5: array([0.00060104]), 6: array([0.00096206]), 7: array([0.00214113]), 8: array([0.0054413]), 9: array([0.03846876])}, 'ndcg': array([0.04150485])}
+time cost of epoch 26:  107.10861706733704
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[27]:loss 0.389
+[0;30;43m[TEST][0m
+{'precision': array([0.02333428]), 'recall': array([0.04762966]), 'recall_pop': {0: array([1.8420277e-05]), 1: array([0.00037893]), 2: array([0.00039314]), 3: array([0.00136573]), 4: array([0.00165212]), 5: array([0.00311199]), 6: array([0.0051567]), 7: array([0.01116378]), 8: array([0.02469133]), 9: array([0.09718973])}, 'recall_pop_Contribute': {0: array([1.08266118e-05]), 1: array([7.61143618e-05]), 2: array([7.1711056e-05]), 3: array([0.00024715]), 4: array([0.00030725]), 5: array([0.00061498]), 6: array([0.00096946]), 7: array([0.00213042]), 8: array([0.00535196]), 9: array([0.03784978])}, 'ndcg': array([0.04093125])}
+time cost of epoch 27:  112.1541223526001
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[28]:loss 0.385
+[0;30;43m[TEST][0m
+{'precision': array([0.02297587]), 'recall': array([0.04665623]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00041051]), 2: array([0.0003563]), 3: array([0.00124468]), 4: array([0.00165475]), 5: array([0.00297094]), 6: array([0.00506377]), 7: array([0.01088278]), 8: array([0.02420954]), 9: array([0.09528308])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([8.00615641e-05]), 2: array([6.5368543e-05]), 3: array([0.00022094]), 4: array([0.00030419]), 5: array([0.00059164]), 6: array([0.00094489]), 7: array([0.00206294]), 8: array([0.00523872]), 9: array([0.03714117])}, 'ndcg': array([0.04025782])}
+time cost of epoch 28:  119.84435391426086
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[29]:loss 0.381
+[0;30;43m[TEST][0m
+{'precision': array([0.02269483]), 'recall': array([0.04582545]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00034735]), 2: array([0.00032999]), 3: array([0.001251]), 4: array([0.0015337]), 5: array([0.00292515]), 6: array([0.00504828]), 7: array([0.0105285]), 8: array([0.02389999]), 9: array([0.093933])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([6.97988383e-05]), 2: array([6.14357994e-05]), 3: array([0.00022124]), 4: array([0.0002839]), 5: array([0.00057192]), 6: array([0.00094678]), 7: array([0.00199682]), 8: array([0.00514821]), 9: array([0.03651904])}, 'ndcg': array([0.03967485])}
+time cost of epoch 29:  117.21062231063843
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[30]:loss 0.377
+[0;30;43m[TEST][0m
+{'precision': array([0.02241379]), 'recall': array([0.04509555]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00034735]), 2: array([0.00034577]), 3: array([0.00124468]), 4: array([0.0014916]), 5: array([0.00297357]), 6: array([0.0050464]), 7: array([0.01051897]), 8: array([0.0233912]), 9: array([0.09244011])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([6.97988383e-05]), 2: array([6.29394955e-05]), 3: array([0.00022011]), 4: array([0.00028283]), 5: array([0.00057438]), 6: array([0.00094215]), 7: array([0.00199341]), 8: array([0.00502989]), 9: array([0.03591373])}, 'ndcg': array([0.03907618])}
+time cost of epoch 30:  119.68438029289246
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[31]:loss 0.374
+[0;30;43m[TEST][0m
+{'precision': array([0.02211696]), 'recall': array([0.04434239]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00034735]), 2: array([0.0003063]), 3: array([0.00116679]), 4: array([0.00145739]), 5: array([0.00294094]), 6: array([0.00493408]), 7: array([0.01043802]), 8: array([0.02311233]), 9: array([0.09060256])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([6.97988383e-05]), 2: array([5.37532794e-05]), 3: array([0.00021051]), 4: array([0.0002795]), 5: array([0.0005595]), 6: array([0.000928]), 7: array([0.00197439]), 8: array([0.00497804]), 9: array([0.03528257])}, 'ndcg': array([0.03842896])}
+time cost of epoch 31:  122.84946537017822
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[32]:loss 0.371
+[0;30;43m[TEST][0m
+{'precision': array([0.02185329]), 'recall': array([0.04355895]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00034735]), 2: array([0.00032209]), 3: array([0.00118679]), 4: array([0.00141002]), 5: array([0.00287358]), 6: array([0.00496378]), 7: array([0.01033165]), 8: array([0.02264458]), 9: array([0.08907416])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([6.97988383e-05]), 2: array([5.33754276e-05]), 3: array([0.00020751]), 4: array([0.0002721]), 5: array([0.00054472]), 6: array([0.00092722]), 7: array([0.00195629]), 8: array([0.00488168]), 9: array([0.03463994])}, 'ndcg': array([0.03787081])}
+time cost of epoch 32:  114.3864734172821
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[33]:loss 0.368
+[0;30;43m[TEST][0m
+{'precision': array([0.0216354]), 'recall': array([0.04298336]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00031578]), 2: array([0.00033262]), 3: array([0.00115627]), 4: array([0.00138897]), 5: array([0.00301041]), 6: array([0.00495513]), 7: array([0.01042183]), 8: array([0.02247656]), 9: array([0.08764565])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([6.34833147e-05]), 2: array([5.86383639e-05]), 3: array([0.00019844]), 4: array([0.00026788]), 5: array([0.00056431]), 6: array([0.00092375]), 7: array([0.00194851]), 8: array([0.00482431]), 9: array([0.03412772])}, 'ndcg': array([0.03740796])}
+time cost of epoch 33:  119.41175413131714
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[34]:loss 0.366
+[0;30;43m[TEST][0m
+{'precision': array([0.02137331]), 'recall': array([0.04222464]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00030525]), 2: array([0.00030104]), 3: array([0.00114837]), 4: array([0.00142055]), 5: array([0.00282621]), 6: array([0.00472958]), 7: array([0.01021218]), 8: array([0.02224783]), 9: array([0.08622634])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([6.12277706e-05]), 2: array([5.41272756e-05]), 3: array([0.0001934]), 4: array([0.00026786]), 5: array([0.00053659]), 6: array([0.00086772]), 7: array([0.0019124]), 8: array([0.00478422]), 9: array([0.03354077])}, 'ndcg': array([0.036851])}
+time cost of epoch 34:  111.07237505912781
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[35]:loss 0.364
+[0;30;43m[TEST][0m
+{'precision': array([0.02114122]), 'recall': array([0.04165822]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00025262]), 2: array([0.00031683]), 3: array([0.00114048]), 4: array([0.00142581]), 5: array([0.00282095]), 6: array([0.00477356]), 7: array([0.0101603]), 8: array([0.0222536]), 9: array([0.08481973])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([5.42970986e-05]), 2: array([5.78865158e-05]), 3: array([0.00019039]), 4: array([0.00026428]), 5: array([0.00053115]), 6: array([0.00087872]), 7: array([0.00190239]), 8: array([0.00477219]), 9: array([0.03300059])}, 'ndcg': array([0.0362945])}
+time cost of epoch 35:  121.47650218009949
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[36]:loss 0.362
+[0;30;43m[TEST][0m
+{'precision': array([0.02087912]), 'recall': array([0.0409467]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.0002421]), 2: array([0.00034841]), 3: array([0.00105101]), 4: array([0.00134687]), 5: array([0.00276569]), 6: array([0.00475063]), 7: array([0.01004557]), 8: array([0.02193325]), 9: array([0.0831111])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([5.20415545e-05]), 2: array([6.57057355e-05]), 3: array([0.0001755]), 4: array([0.00025131]), 5: array([0.00052089]), 6: array([0.00087757]), 7: array([0.00188303]), 8: array([0.00470108]), 9: array([0.03241327])}, 'ndcg': array([0.03577019])}
+time cost of epoch 36:  128.08048105239868
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[37]:loss 0.360
+[0;30;43m[TEST][0m
+{'precision': array([0.02064545]), 'recall': array([0.04040326]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00021052]), 2: array([0.00034841]), 3: array([0.00103785]), 4: array([0.00126266]), 5: array([0.0026499]), 6: array([0.00457958]), 7: array([0.00984479]), 8: array([0.02197599]), 9: array([0.08190448])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([4.50869601e-05]), 2: array([6.43900014e-05]), 3: array([0.00017458]), 4: array([0.00024224]), 5: array([0.00049857]), 6: array([0.00084916]), 7: array([0.00183593]), 8: array([0.00471626]), 9: array([0.03197073])}, 'ndcg': array([0.03530192])}
+time cost of epoch 37:  111.08835959434509
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[38]:loss 0.358
+[0;30;43m[TEST][0m
+{'precision': array([0.0204323]), 'recall': array([0.03981987]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00023157]), 2: array([0.00033262]), 3: array([0.00105364]), 4: array([0.00126266]), 5: array([0.00269201]), 6: array([0.004648]), 7: array([0.00964556]), 8: array([0.02178982]), 9: array([0.08064818])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([4.00632482e-05]), 2: array([5.80744778e-05]), 3: array([0.00017379]), 4: array([0.00024092]), 5: array([0.00050757]), 6: array([0.00085278]), 7: array([0.0018175]), 8: array([0.00466459]), 9: array([0.03145826])}, 'ndcg': array([0.03482463])}
+time cost of epoch 38:  121.04794406890869
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[39]:loss 0.357
+[0;30;43m[TEST][0m
+{'precision': array([0.02024757]), 'recall': array([0.0393026]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.00018947]), 2: array([0.00033262]), 3: array([0.00101154]), 4: array([0.00123635]), 5: array([0.0026078]), 6: array([0.00466747]), 7: array([0.00960135]), 8: array([0.02134545]), 9: array([0.07978637])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([3.45610875e-05]), 2: array([5.80744778e-05]), 3: array([0.00016307]), 4: array([0.00023488]), 5: array([0.00049365]), 6: array([0.00084408]), 7: array([0.00179869]), 8: array([0.00456984]), 9: array([0.03109417])}, 'ndcg': array([0.03444899])}
+time cost of epoch 39:  97.13191652297974
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[40]:loss 0.355
+[0;30;43m[TEST][0m
+{'precision': array([0.02002337]), 'recall': array([0.03870547]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.00018947]), 2: array([0.00032209]), 3: array([0.00102733]), 4: array([0.00122845]), 5: array([0.0026078]), 6: array([0.00457958]), 7: array([0.00948008]), 8: array([0.02106482]), 9: array([0.07852514])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([3.45610875e-05]), 2: array([5.28115415e-05]), 3: array([0.00016722]), 4: array([0.00024279]), 5: array([0.00048839]), 6: array([0.00082725]), 7: array([0.00178583]), 8: array([0.00448596]), 9: array([0.03060908])}, 'ndcg': array([0.03396342])}
+time cost of epoch 40:  92.5076494216919
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[41]:loss 0.354
+[0;30;43m[TEST][0m
+{'precision': array([0.01983706]), 'recall': array([0.03819946]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.00016841]), 2: array([0.00032209]), 3: array([0.00101154]), 4: array([0.00122056]), 5: array([0.00258675]), 6: array([0.00439538]), 7: array([0.00936433]), 8: array([0.02060876]), 9: array([0.07752912])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([3.40347939e-05]), 2: array([5.28115415e-05]), 3: array([0.00016397]), 4: array([0.00024075]), 5: array([0.00047651]), 6: array([0.00080293]), 7: array([0.00175995]), 8: array([0.00441362]), 9: array([0.03024331])}, 'ndcg': array([0.03360886])}
+time cost of epoch 41:  93.79988217353821
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[42]:loss 0.353
+[0;30;43m[TEST][0m
+{'precision': array([0.01960496]), 'recall': array([0.03759892]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.00019999]), 2: array([0.00032209]), 3: array([0.00090101]), 4: array([0.00112583]), 5: array([0.00258675]), 6: array([0.00441485]), 7: array([0.00925204]), 8: array([0.02047162]), 9: array([0.07644541])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([3.71925557e-05]), 2: array([5.28115415e-05]), 3: array([0.00014494]), 4: array([0.00021741]), 5: array([0.00048386]), 6: array([0.00079926]), 7: array([0.0017286]), 8: array([0.00436624]), 9: array([0.02975704])}, 'ndcg': array([0.03315636])}
+time cost of epoch 42:  92.15928602218628
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[43]:loss 0.352
+[0;30;43m[TEST][0m
+{'precision': array([0.01950865]), 'recall': array([0.03723332]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.00019999]), 2: array([0.00032999]), 3: array([0.00092628]), 4: array([0.00119424]), 5: array([0.00244044]), 6: array([0.0045359]), 7: array([0.00932204]), 8: array([0.0202773]), 9: array([0.07549566])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([3.71925557e-05]), 2: array([5.41272756e-05]), 3: array([0.00014539]), 4: array([0.00022754]), 5: array([0.00045762]), 6: array([0.00081457]), 7: array([0.00174472]), 8: array([0.00430351]), 9: array([0.02943708])}, 'ndcg': array([0.03280823])}
+time cost of epoch 43:  92.40130591392517
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[44]:loss 0.351
+[0;30;43m[TEST][0m
+{'precision': array([0.01933655]), 'recall': array([0.03675924]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.00015789]), 2: array([0.0003142]), 3: array([0.00092628]), 4: array([0.00118372]), 5: array([0.00245623]), 6: array([0.00447462]), 7: array([0.00921459]), 8: array([0.0198362]), 9: array([0.07483351])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([2.92981512e-05]), 2: array([5.06186514e-05]), 3: array([0.00014776]), 4: array([0.00022996]), 5: array([0.00045774]), 6: array([0.00080274]), 7: array([0.00171494]), 8: array([0.00421674]), 9: array([0.02909787])}, 'ndcg': array([0.03245529])}
+time cost of epoch 44:  93.40223121643066
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[45]:loss 0.350
+[0;30;43m[TEST][0m
+{'precision': array([0.01911867]), 'recall': array([0.03620146]), 'recall_pop': {0: array([7.89440445e-06]), 1: array([0.00015789]), 2: array([0.00033788]), 3: array([0.00090101]), 4: array([0.00110477]), 5: array([0.00235518]), 6: array([0.00439305]), 7: array([0.00913187]), 8: array([0.01939654]), 9: array([0.07381911])}, 'recall_pop_Contribute': {0: array([6.31552356e-06]), 1: array([2.92981512e-05]), 2: array([5.28115415e-05]), 3: array([0.00014099]), 4: array([0.00021595]), 5: array([0.00043713]), 6: array([0.00078278]), 7: array([0.00171956]), 8: array([0.00412821]), 9: array([0.0286884])}, 'ndcg': array([0.03211678])}
+time cost of epoch 45:  93.63510155677795
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[46]:loss 0.349
+[0;30;43m[TEST][0m
+{'precision': array([0.01894026]), 'recall': array([0.03569668]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.0001421]), 2: array([0.00028262]), 3: array([0.00086944]), 4: array([0.0010732]), 5: array([0.0024048]), 6: array([0.00436305]), 7: array([0.00911553]), 8: array([0.01911377]), 9: array([0.07253225])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([2.64274587e-05]), 2: array([4.17217829e-05]), 3: array([0.00014042]), 4: array([0.00020755]), 5: array([0.00043835]), 6: array([0.00077429]), 7: array([0.00171372]), 8: array([0.00406647]), 9: array([0.02827615])}, 'ndcg': array([0.03169508])}
+time cost of epoch 46:  65.42711043357849
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[47]:loss 0.348
+[0;30;43m[TEST][0m
+{'precision': array([0.01879816]), 'recall': array([0.03537188]), 'recall_pop': {0: array([2.36832133e-05]), 1: array([0.0001421]), 2: array([0.00025894]), 3: array([0.00081576]), 4: array([0.00106793]), 5: array([0.00245217]), 6: array([0.00427433]), 7: array([0.00882291]), 8: array([0.01910958]), 9: array([0.07200422])}, 'recall_pop_Contribute': {0: array([1.15784599e-05]), 1: array([2.64274587e-05]), 2: array([3.89023528e-05]), 3: array([0.00012778]), 4: array([0.00021067]), 5: array([0.00044366]), 6: array([0.00076595]), 7: array([0.00163399]), 8: array([0.00405851]), 9: array([0.02805442])}, 'ndcg': array([0.03142448])}
+early stop triggerd at epoch 47, best recall: [0.05403281]

@@ -1,0 +1,144 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaptive_method': 'None',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'yelp2018',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'baseline',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 1,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'yelp2018',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'latent_dim_rec': 64,
+ 'loss': 'BPR',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+BPR',
+ 'notes': '_',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['testing'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.2,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20],
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 1,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[0;30;43m[DATALOADER--START][0m
+loading [/home/cgm/code/CGM__GCLRec/data/yelp2018]
+1237259 interactions for training
+324147 interactions for testing
+yelp2018 Sparsity : 0.0012958757851778647
+loading adjacency matrix
+successfully loaded...
+[0;30;43mRemember to delete this pre-calculed mat while changing data split ![0m
+yelp2018 is ready to go
+[0;30;43m[DATALOADER--END][0m
+[0;30;43m[PRECALCULATE--START][0m
+precal cost :  0.8028867244720459
+[0;30;43m[PRECALCULATE--END][0m
+user:31668, item:38048
+[0;30;43muse NORMAL distribution UI for Embedding[0m
+GCL Model is ready to go!
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[0]:loss 0.353
+[0;30;43m[TEST][0m
+{'precision': array([0.0154604]), 'recall': array([0.03247509]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.00015263]), 6: array([0.00082102]), 7: array([0.00117363]), 8: array([0.00437568]), 9: array([0.08182413])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([1.92402558e-05]), 6: array([0.00013858]), 7: array([0.00019132]), 8: array([0.00086807]), 9: array([0.03125788])}, 'ndcg': array([0.02650045])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03247509][0m [0;37;44m++[0.03247509][0m
+time cost of epoch 0:  38.419962644577026
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[1]:loss 0.167
+[0;30;43m[TEST][0m
+{'precision': array([0.01581723]), 'recall': array([0.03354901]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.0001421]), 6: array([0.00091575]), 7: array([0.0011789]), 8: array([0.00508332]), 9: array([0.08551841])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([1.69847117e-05]), 6: array([0.00015516]), 7: array([0.00020073]), 8: array([0.00098723]), 9: array([0.03218891])}, 'ndcg': array([0.02756309])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03354901][0m [0;37;44m++[0.00107393][0m
+time cost of epoch 1:  37.1602725982666
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[2]:loss 0.155
+[0;30;43m[TEST][0m
+{'precision': array([0.01595933]), 'recall': array([0.03406846]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.0001421]), 6: array([0.00089996]), 7: array([0.00126837]), 8: array([0.00521295]), 9: array([0.08632405])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([1.69847117e-05]), 6: array([0.0001499]), 7: array([0.00021132]), 8: array([0.00102422]), 9: array([0.03266603])}, 'ndcg': array([0.02791308])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03406846][0m [0;37;44m++[0.00051944][0m
+time cost of epoch 2:  36.57615065574646
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[3]:loss 0.149
+[0;30;43m[TEST][0m
+{'precision': array([0.016253]), 'recall': array([0.03491077]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.00011052]), 6: array([0.00093154]), 7: array([0.001221]), 8: array([0.00550217]), 9: array([0.08809614])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([1.41140192e-05]), 6: array([0.00015697]), 7: array([0.00020685]), 8: array([0.00107942]), 9: array([0.03345342])}, 'ndcg': array([0.02854716])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03491077][0m [0;37;44m++[0.00084232][0m
+time cost of epoch 3:  35.99052548408508
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[4]:loss 0.140
+[0;30;43m[TEST][0m
+{'precision': array([0.01672193]), 'recall': array([0.03605874]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.00011052]), 6: array([0.00093154]), 7: array([0.00124732]), 8: array([0.00580751]), 9: array([0.09010098])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([1.41140192e-05]), 6: array([0.00015697]), 7: array([0.0002165]), 8: array([0.00114387]), 9: array([0.03452729])}, 'ndcg': array([0.02940748])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03605874][0m [0;37;44m++[0.00114797][0m
+time cost of epoch 4:  36.52070689201355
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m
+[0;30;43m[double-label][0m
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[5]:loss 0.133
+[0;30;43m[TEST][0m
+{'precision': array([0.01728243]), 'recall': array([0.03740141]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([3.15776178e-05]), 5: array([7.89440445e-05]), 6: array([0.00090628]), 7: array([0.00119995]), 8: array([0.00573149]), 9: array([0.09325313])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([3.15776178e-06]), 5: array([1.0605395e-05]), 6: array([0.00014935]), 7: array([0.00021226]), 8: array([0.00113149]), 9: array([0.03589456])}, 'ndcg': array([0.03037773])}
+[5;37;44mfind a better recall[0m [0;37;44m[0.03740141][0m [0;37;44m++[0.00134267][0m
+time cost of epoch 5:  36.818854093551636
+[0;30;43m[Visualization][0m
+[0;30;43m[t-SNE][0m

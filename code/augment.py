@@ -301,7 +301,7 @@ class Augment_Learner(torch.nn.Module):
             torch.nn.ReLU(),
             torch.nn.Linear(mlp_edge_model_dim, 1)
         )
-        self.init_emb()
+        # self.init_emb() TODO 
         
     def init_emb(self):
         for m in self.modules():

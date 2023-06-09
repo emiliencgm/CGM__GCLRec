@@ -1,0 +1,223 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaptive_method': 'None',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'gowalla',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'baseline',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'gowalla',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'latent_dim_rec': 64,
+ 'loss': 'BPR',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+BPR',
+ 'notes': '_',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['LightGCN'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.2,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20],
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 5,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[DATALOADER--START]
+loading [/home/cgm/code/CGM__GCLRec/data/gowalla]
+810128 interactions for training
+217242 interactions for testing
+gowalla Sparsity : 0.0008396216228570436
+loading adjacency matrix
+successfully loaded...
+Remember to delete this pre-calculed mat while changing data split !
+gowalla is ready to go
+[DATALOADER--END]
+[PRECALCULATE--START]
+training: 48it [00:01, 39.50it/s]
+precal cost :  0.7089109420776367
+[PRECALCULATE--END]
+user:29858, item:40981
+use NORMAL distribution UI for Embedding
+GCL Model is ready to go!
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 37.54it/s]
+EPOCH[0]:loss 0.496
+[TEST]
+training: 3it [00:00, 23.20it/s]
+{'precision': array([0.02632125]), 'recall': array([0.08037361]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([1.67459307e-05]), 5: array([6.6983723e-05]), 6: array([0.00023444]), 7: array([0.00083395]), 8: array([0.00504212]), 9: array([0.16078957])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([4.18648268e-06]), 5: array([1.83407813e-05]), 6: array([7.09454767e-05]), 7: array([0.00021357]), 8: array([0.00153128]), 9: array([0.07853528])}, 'ndcg': array([0.06701002])}
+[5mfind a better recall[25m [0.08037361] ++[0.08037361]
+time cost of epoch 0:  17.30461072921753
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 38.85it/s]
+EPOCH[1]:loss 0.226
+[TEST]
+training: 63it [00:01, 39.56it/s]
+{'precision': array([0.03023478]), 'recall': array([0.09399363]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.00011164]), 4: array([0.00015071]), 5: array([0.00040748]), 6: array([0.00104941]), 7: array([0.0026827]), 8: array([0.00990123]), 9: array([0.18839246])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([2.21050976e-05]), 4: array([3.96793699e-05]), 5: array([9.21721983e-05]), 6: array([0.00027594]), 7: array([0.00069744]), 8: array([0.00279001]), 9: array([0.09007628])}, 'ndcg': array([0.08054133])}
+[5mfind a better recall[25m [0.09399363] ++[0.01362002]
+time cost of epoch 1:  16.509498119354248
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 38.48it/s]
+EPOCH[2]:loss 0.169
+[TEST]
+training: 30it [00:00, 39.21it/s]
+{'precision': array([0.0320852]), 'recall': array([0.10055044]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.00014513]), 4: array([0.00031817]), 5: array([0.00063635]), 6: array([0.00179181]), 7: array([0.00389319]), 8: array([0.01139612]), 9: array([0.2021891])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([2.51498123e-05]), 4: array([7.74000017e-05]), 5: array([0.00013942]), 6: array([0.00050694]), 7: array([0.00104894]), 8: array([0.00322574]), 9: array([0.09552686])}, 'ndcg': array([0.08689873])}
+[5mfind a better recall[25m [0.10055044] ++[0.00655682]
+time cost of epoch 2:  16.89406394958496
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 38.47it/s]
+EPOCH[3]:loss 0.143
+[TEST]
+training: 6it [00:00, 27.63it/s]
+{'precision': array([0.03358396]), 'recall': array([0.10564933]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([3.34918615e-05]), 3: array([0.00022886]), 4: array([0.00055262]), 5: array([0.00094335]), 6: array([0.00211836]), 7: array([0.00465457]), 8: array([0.01256886]), 9: array([0.21374248])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([8.37296537e-06]), 3: array([4.91523131e-05]), 4: array([0.00013378]), 5: array([0.00021479]), 6: array([0.00059826]), 7: array([0.00130546]), 8: array([0.00353257]), 9: array([0.09980694])}, 'ndcg': array([0.09116552])}
+[5mfind a better recall[25m [0.10564933] ++[0.00509889]
+time cost of epoch 3:  16.591319799423218
+[AUGMENT]
+
+
+
+
+
+training: 392it [00:10, 39.83it/s]
+EPOCH[4]:loss 0.127
+
+training: 395it [00:10, 38.23it/s]
+training: 61it [00:01, 39.73it/s]
+{'precision': array([0.03461049]), 'recall': array([0.10898578]), 'recall_pop': {0: array([0.]), 1: array([6.6983723e-05]), 2: array([3.34918615e-05]), 3: array([0.00037957]), 4: array([0.00063635]), 5: array([0.00102708]), 6: array([0.00242816]), 7: array([0.00498223]), 8: array([0.013771]), 9: array([0.22134737])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.67459307e-05]), 2: array([8.37296537e-06]), 3: array([8.91799346e-05]), 4: array([0.0001581]), 5: array([0.00024629]), 6: array([0.0006808]), 7: array([0.00138875]), 8: array([0.0038263]), 9: array([0.10257125])}, 'ndcg': array([0.09410066])}
+[5mfind a better recall[25m [0.10898578] ++[0.00333645]
+time cost of epoch 4:  16.639443397521973
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 38.08it/s]
+EPOCH[5]:loss 0.116
+[TEST]
+training: 36it [00:00, 40.12it/s]
+{'precision': array([0.03532387]), 'recall': array([0.11147514]), 'recall_pop': {0: array([0.]), 1: array([6.6983723e-05]), 2: array([0.00010048]), 3: array([0.00045772]), 4: array([0.000681]), 5: array([0.00116105]), 6: array([0.00276308]), 7: array([0.00562528]), 8: array([0.01492217]), 9: array([0.22628301])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.25594481e-05]), 2: array([2.79098846e-05]), 3: array([0.00010732]), 4: array([0.00017057]), 5: array([0.00028122]), 6: array([0.00079244]), 7: array([0.00153999]), 8: array([0.00409401]), 9: array([0.10444913])}, 'ndcg': array([0.09644419])}
+[5mfind a better recall[25m [0.11147514] ++[0.00248936]
+time cost of epoch 5:  16.74662446975708
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 39.02it/s]
+EPOCH[6]:loss 0.108
+[TEST]
+training: 16it [00:00, 37.14it/s]
+{'precision': array([0.03599035]), 'recall': array([0.11376005]), 'recall_pop': {0: array([0.]), 1: array([0.00010048]), 2: array([0.00013397]), 3: array([0.00045772]), 4: array([0.00069217]), 5: array([0.00116105]), 6: array([0.00319568]), 7: array([0.00639001]), 8: array([0.01550486]), 9: array([0.23080972])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.67459307e-05]), 2: array([4.18648268e-05]), 3: array([0.00011104]), 4: array([0.00016896]), 5: array([0.00027284]), 6: array([0.00092904]), 7: array([0.00174272]), 8: array([0.00426751]), 9: array([0.10620932])}, 'ndcg': array([0.09843577])}
+[5mfind a better recall[25m [0.11376005] ++[0.00228492]
+time cost of epoch 6:  16.489092111587524
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 37.97it/s]
+EPOCH[7]:loss 0.102
+[TEST]
+training: 66it [00:01, 40.16it/s]
+{'precision': array([0.03652287]), 'recall': array([0.11540426]), 'recall_pop': {0: array([0.]), 1: array([0.00013397]), 2: array([0.00018421]), 3: array([0.00044098]), 4: array([0.00072566]), 5: array([0.00117222]), 6: array([0.00357247]), 7: array([0.00666966]), 8: array([0.01610353]), 9: array([0.23469463])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([3.18172684e-05]), 2: array([5.33477508e-05]), 3: array([0.00010825]), 4: array([0.00017375]), 5: array([0.00027563]), 6: array([0.00103186]), 7: array([0.00181032]), 8: array([0.00443725]), 9: array([0.10748203])}, 'ndcg': array([0.09981656])}
+[5mfind a better recall[25m [0.11540426] ++[0.0016442]
+time cost of epoch 7:  16.742894887924194
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 39.48it/s]
+EPOCH[8]:loss 0.097
+[TEST]
+{'precision': array([0.03694487]), 'recall': array([0.11703648]), 'recall_pop': {0: array([0.]), 1: array([0.00016746]), 2: array([0.00020095]), 3: array([0.00047447]), 4: array([0.0007424]), 5: array([0.00116105]), 6: array([0.00389064]), 7: array([0.00720051]), 8: array([0.01710463]), 9: array([0.23783476])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([4.29812222e-05]), 2: array([6.00461231e-05]), 3: array([0.00011383]), 4: array([0.00019105]), 5: array([0.00027025]), 6: array([0.00111808]), 7: array([0.00193055]), 8: array([0.00467825]), 9: array([0.10863143])}, 'ndcg': array([0.10110825])}
+[5mfind a better recall[25m [0.11703648] ++[0.00163222]
+time cost of epoch 8:  17.790269136428833
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+training: 395it [00:10, 38.48it/s]
+EPOCH[9]:loss 0.091
+[TEST]
+training: 56it [00:01, 41.01it/s]
+{'precision': array([0.03733003]), 'recall': array([0.11829339]), 'recall_pop': {0: array([1.95369192e-05]), 1: array([0.00013397]), 2: array([0.00020095]), 3: array([0.00050796]), 4: array([0.00084288]), 5: array([0.00116105]), 6: array([0.00406089]), 7: array([0.00741653]), 8: array([0.01740913]), 9: array([0.24045294])}, 'recall_pop_Contribute': {0: array([1.42086685e-05]), 1: array([3.46082569e-05]), 2: array([6.00461231e-05]), 3: array([0.00012221]), 4: array([0.00021816]), 5: array([0.00027025]), 6: array([0.00117003]), 7: array([0.00200285]), 8: array([0.00474595]), 9: array([0.10965507])}, 'ndcg': array([0.10194011])}
+[5mfind a better recall[25m [0.11829339] ++[0.00125691]
+time cost of epoch 9:  16.541157960891724
+[AUGMENT]
+
+
+
+
+
+training: 395it [00:10, 37.81it/s]
+EPOCH[10]:loss 0.088
+[TEST]

@@ -1,0 +1,3651 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaptive_method': 'None',
+ 'alpha': 0.5,
+ 'augment': 'ED',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'yelp2018',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'baseline',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 1,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'yelp2018',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'latent_dim_rec': 64,
+ 'loss': 'BPR_Contrast',
+ 'lr': 0.001,
+ 'model': 'SGL',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'SGL_ED+BPR_CL',
+ 'notes': '_',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['SGL'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.2,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20],
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 1,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[DATALOADER--START]
+loading [/home/cgm/code/CGM__GCLRec/data/yelp2018]
+1237259 interactions for training
+324147 interactions for testing
+yelp2018 Sparsity : 0.0012958757851778647
+loading adjacency matrix
+successfully loaded...
+Remember to delete this pre-calculed mat while changing data split !
+yelp2018 is ready to go
+[DATALOADER--END]
+[PRECALCULATE--START]
+precal cost :  0.7164251804351807
+[PRECALCULATE--END]
+user:31668, item:38048
+use NORMAL distribution UI for Embedding
+GCL Model is ready to go!
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 0it [00:00, ?it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [01:58,  5.11it/s]
+EPOCH[0]:loss 1.812
+[TEST]
+{'precision': array([0.01220949]), 'recall': array([0.02392195]), 'recall_pop': {0: array([0.]), 1: array([6.31552356e-06]), 2: array([0.]), 3: array([3.42090859e-05]), 4: array([0.00013947]), 5: array([0.00026446]), 6: array([0.00122656]), 7: array([0.00293377]), 8: array([0.01020004]), 9: array([0.0605397])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.21452376e-06]), 2: array([0.]), 3: array([6.85508509e-06]), 4: array([1.48666079e-05]), 5: array([3.2034269e-05]), 6: array([0.00020048]), 7: array([0.00053728]), 8: array([0.0021408]), 9: array([0.02098841])}, 'ndcg': array([0.0206417])}
+[5mfind a better recall[25m [0.02392195] ++[0.02392195]
+time cost of epoch 0:  139.77929830551147
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 2it [00:00,  7.08it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 603it [01:10,  8.07it/s]
+EPOCH[1]:loss 1.747
+
+training: 604it [01:10,  8.56it/s]
+{'precision': array([0.02026652]), 'recall': array([0.04144613]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([3.15776178e-05]), 5: array([0.00029472]), 6: array([0.00088342]), 7: array([0.00336969]), 8: array([0.01281993]), 9: array([0.10111767])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([1.97360111e-06]), 5: array([4.26979148e-05]), 6: array([0.0001532]), 7: array([0.00063646]), 8: array([0.00275837]), 9: array([0.03785342])}, 'ndcg': array([0.03507066])}
+[5mfind a better recall[25m [0.04144613] ++[0.01752418]
+time cost of epoch 1:  95.11116361618042
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 10it [00:01,  8.38it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 602it [01:17,  7.58it/s]
+EPOCH[2]:loss 1.625
+
+training: 604it [01:17,  7.77it/s]
+{'precision': array([0.02393583]), 'recall': array([0.05207927]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([0.00022104]), 6: array([0.00093417]), 7: array([0.00347681]), 8: array([0.0141132]), 9: array([0.12639824])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([0.]), 3: array([0.]), 4: array([0.]), 5: array([3.38261079e-05]), 6: array([0.00015652]), 7: array([0.000665]), 8: array([0.00305044]), 9: array([0.04817349])}, 'ndcg': array([0.04300355])}
+[5mfind a better recall[25m [0.05207927] ++[0.01063314]
+time cost of epoch 2:  102.40529036521912
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 4it [00:00,  6.63it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [01:51,  5.42it/s]
+EPOCH[3]:loss 1.492
+[TEST]
+{'precision': array([0.02519262]), 'recall': array([0.05506431]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([3.15776178e-05]), 3: array([3.15776178e-05]), 4: array([0.00011052]), 5: array([0.00023683]), 6: array([0.00113153]), 7: array([0.00422121]), 8: array([0.01695706]), 9: array([0.13087034])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([6.31552356e-06]), 3: array([6.31552356e-06]), 4: array([3.13520634e-05]), 5: array([3.5705728e-05]), 6: array([0.00019076]), 7: array([0.00081435]), 8: array([0.00366625]), 9: array([0.05031325])}, 'ndcg': array([0.04557941])}
+[5mfind a better recall[25m [0.05506431] ++[0.00298504]
+time cost of epoch 3:  134.46336555480957
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 1it [00:00,  3.71it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.97it/s]
+EPOCH[4]:loss 1.409
+[TEST]
+{'precision': array([0.02612574]), 'recall': array([0.05742172]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([3.15776178e-05]), 3: array([5.52608311e-05]), 4: array([0.00035788]), 5: array([0.00044998]), 6: array([0.00148813]), 7: array([0.00540516]), 8: array([0.01964868]), 9: array([0.13360645])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([6.31552356e-06]), 3: array([1.61396713e-05]), 4: array([8.09250501e-05]), 5: array([7.9337976e-05]), 6: array([0.0002545]), 7: array([0.0010599]), 8: array([0.00424839]), 9: array([0.05167621])}, 'ndcg': array([0.04746338])}
+[5mfind a better recall[25m [0.05742172] ++[0.00235741]
+time cost of epoch 4:  144.56028604507446
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 6it [00:01,  4.73it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.95it/s]
+EPOCH[5]:loss 1.360
+[TEST]
+{'precision': array([0.02682834]), 'recall': array([0.05925625]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([3.15776178e-05]), 3: array([8.94699171e-05]), 4: array([0.0005105]), 5: array([0.00064208]), 6: array([0.00193999]), 7: array([0.0065063]), 8: array([0.0218717]), 9: array([0.13548627])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([6.31552356e-06]), 3: array([2.910905e-05]), 4: array([0.00010338]), 5: array([0.00011707]), 6: array([0.00033941]), 7: array([0.00127864]), 8: array([0.00477225]), 9: array([0.05261008])}, 'ndcg': array([0.04895389])}
+[5mfind a better recall[25m [0.05925625] ++[0.00183453]
+time cost of epoch 5:  145.35605096817017
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 2it [00:00,  4.29it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.96it/s]
+EPOCH[6]:loss 1.326
+[TEST]
+{'precision': array([0.02725148]), 'recall': array([0.06038587]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([3.15776178e-05]), 3: array([0.0001921]), 4: array([0.00071576]), 5: array([0.00084733]), 6: array([0.00246872]), 7: array([0.00755344]), 8: array([0.02404318]), 9: array([0.13532742])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([6.31552356e-06]), 3: array([5.3443865e-05]), 4: array([0.0001424]), 5: array([0.00015798]), 6: array([0.00043393]), 7: array([0.00148256]), 8: array([0.00523026]), 9: array([0.05287898])}, 'ndcg': array([0.04982043])}
+[5mfind a better recall[25m [0.06038587] ++[0.00112962]
+time cost of epoch 6:  145.07018065452576
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+training: 7it [00:01,  5.20it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.98it/s]
+EPOCH[7]:loss 1.302
+[TEST]
+{'precision': array([0.02778515]), 'recall': array([0.0617031]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([6.31552356e-05]), 3: array([0.00023157]), 4: array([0.00071576]), 5: array([0.00109469]), 6: array([0.00301606]), 7: array([0.00876564]), 8: array([0.02610535]), 9: array([0.13609542])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([1.4209928e-05]), 3: array([5.84060621e-05]), 4: array([0.00014335]), 5: array([0.00021199]), 6: array([0.00053264]), 7: array([0.00172766]), 8: array([0.00572911]), 9: array([0.05328574])}, 'ndcg': array([0.05070473])}
+[5mfind a better recall[25m [0.0617031] ++[0.00131723]
+time cost of epoch 7:  144.79227805137634
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 2it [00:00,  4.33it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.98it/s]
+EPOCH[8]:loss 1.284
+[TEST]
+{'precision': array([0.02799829]), 'recall': array([0.06223945]), 'recall_pop': {0: array([0.]), 1: array([0.]), 2: array([6.31552356e-05]), 3: array([0.00030262]), 4: array([0.00081049]), 5: array([0.00125889]), 6: array([0.00348258]), 7: array([0.00992814]), 8: array([0.02770899]), 9: array([0.13473634])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([0.]), 2: array([1.4209928e-05]), 3: array([7.73902252e-05]), 4: array([0.00016441]), 5: array([0.00024623]), 6: array([0.00061442]), 7: array([0.00196327]), 8: array([0.00610358]), 9: array([0.05305593])}, 'ndcg': array([0.05124839])}
+[5mfind a better recall[25m [0.06223945] ++[0.00053634]
+time cost of epoch 8:  144.82852864265442
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 4it [00:00,  5.02it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.96it/s]
+EPOCH[9]:loss 1.269
+[TEST]
+{'precision': array([0.02828565]), 'recall': array([0.06288796]), 'recall_pop': {0: array([0.]), 1: array([1.05258726e-05]), 2: array([6.31552356e-05]), 3: array([0.0003342]), 4: array([0.00093154]), 5: array([0.00149836]), 6: array([0.00393204]), 7: array([0.01110295]), 8: array([0.02860086]), 9: array([0.13459431])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([3.94720222e-06]), 2: array([1.4209928e-05]), 3: array([8.19013134e-05]), 4: array([0.00018872]), 5: array([0.00029528]), 6: array([0.00069497]), 7: array([0.00217814]), 8: array([0.00631726]), 9: array([0.05311353])}, 'ndcg': array([0.05167885])}
+[5mfind a better recall[25m [0.06288796] ++[0.00064852]
+time cost of epoch 9:  144.70058703422546
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.96it/s]
+EPOCH[10]:loss 1.257
+[TEST]
+{'precision': array([0.02845143]), 'recall': array([0.06319898]), 'recall_pop': {0: array([0.]), 1: array([1.05258726e-05]), 2: array([7.36811082e-05]), 3: array([0.00032367]), 4: array([0.0009868]), 5: array([0.00158783]), 6: array([0.00433653]), 7: array([0.0117847]), 8: array([0.02989677]), 9: array([0.13397478])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([3.94720222e-06]), 2: array([1.60674349e-05]), 3: array([7.79541112e-05]), 4: array([0.000203]), 5: array([0.0003072]), 6: array([0.000787]), 7: array([0.00230787]), 8: array([0.00660046]), 9: array([0.05289549])}, 'ndcg': array([0.05188422])}
+[5mfind a better recall[25m [0.06319898] ++[0.00031102]
+time cost of epoch 10:  144.51238751411438
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 6it [00:01,  4.66it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 603it [02:01,  4.85it/s]
+EPOCH[11]:loss 1.247
+
+training: 604it [02:01,  4.97it/s]
+{'precision': array([0.02855248]), 'recall': array([0.06341817]), 'recall_pop': {0: array([0.]), 1: array([1.05258726e-05]), 2: array([7.36811082e-05]), 3: array([0.00042893]), 4: array([0.00111311]), 5: array([0.00166151]), 6: array([0.00463126]), 7: array([0.01254854]), 8: array([0.03044568]), 9: array([0.13325746])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([3.94720222e-06]), 2: array([1.60674349e-05]), 3: array([0.00010137]), 4: array([0.0002218]), 5: array([0.0003252]), 6: array([0.00084388]), 7: array([0.00245344]), 8: array([0.00679338]), 9: array([0.05265908])}, 'ndcg': array([0.052144])}
+[5mfind a better recall[25m [0.06341817] ++[0.00021919]
+time cost of epoch 11:  144.81105375289917
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.98it/s]
+EPOCH[12]:loss 1.239
+[TEST]
+{'precision': array([0.02870563]), 'recall': array([0.06381967]), 'recall_pop': {0: array([0.]), 1: array([2.63146815e-05]), 2: array([0.00010526]), 3: array([0.00045524]), 4: array([0.00109995]), 5: array([0.00175466]), 6: array([0.00500229]), 7: array([0.01312493]), 8: array([0.03187722]), 9: array([0.13288291])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([7.104964e-06]), 2: array([2.05785232e-05]), 3: array([0.00011161]), 4: array([0.00021841]), 5: array([0.00033856]), 6: array([0.00091498]), 7: array([0.00256805]), 8: array([0.00709418]), 9: array([0.05254619])}, 'ndcg': array([0.05241278])}
+[5mfind a better recall[25m [0.06381967] ++[0.0004015]
+time cost of epoch 12:  145.31436729431152
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 6it [00:01,  4.97it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:00,  5.00it/s]
+EPOCH[13]:loss 1.231
+[TEST]
+{'precision': array([0.02870248]), 'recall': array([0.06393203]), 'recall_pop': {0: array([0.]), 1: array([2.63146815e-05]), 2: array([7.36811082e-05]), 3: array([0.00046051]), 4: array([0.00121048]), 5: array([0.00171782]), 6: array([0.00541649]), 7: array([0.01364446]), 8: array([0.0325849]), 9: array([0.13150111])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([7.45582642e-06]), 2: array([1.60674349e-05]), 3: array([0.00010635]), 4: array([0.00023272]), 5: array([0.00033673]), 6: array([0.00100446]), 7: array([0.00266587]), 8: array([0.00726378]), 9: array([0.05229859])}, 'ndcg': array([0.05258481])}
+[5mfind a better recall[25m [0.06393203] ++[0.00011236]
+time cost of epoch 13:  144.14559316635132
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 3it [00:00,  4.56it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.96it/s]
+EPOCH[14]:loss 1.225
+[TEST]
+{'precision': array([0.02885563]), 'recall': array([0.06414135]), 'recall_pop': {0: array([0.]), 1: array([4.21034904e-05]), 2: array([0.00010526]), 3: array([0.00050787]), 4: array([0.00124214]), 5: array([0.00188624]), 6: array([0.00582045]), 7: array([0.01420807]), 8: array([0.03349003]), 9: array([0.13111178])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.06135882e-05]), 2: array([2.13303712e-05]), 3: array([0.00011612]), 4: array([0.00023116]), 5: array([0.00037636]), 6: array([0.00108416]), 7: array([0.00279662]), 8: array([0.00746201]), 9: array([0.05204298])}, 'ndcg': array([0.05266431])}
+[5mfind a better recall[25m [0.06414135] ++[0.00020932]
+time cost of epoch 14:  145.76424193382263
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+training: 8it [00:01,  4.76it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.98it/s]
+EPOCH[15]:loss 1.220
+[TEST]
+{'precision': array([0.02885089]), 'recall': array([0.06419587]), 'recall_pop': {0: array([0.]), 1: array([5.78922993e-05]), 2: array([0.00010526]), 3: array([0.00058682]), 4: array([0.00127635]), 5: array([0.00198886]), 6: array([0.00615307]), 7: array([0.01460206]), 8: array([0.03388685]), 9: array([0.13039726])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.58765245e-05]), 2: array([2.13303712e-05]), 3: array([0.00012882]), 4: array([0.0002415]), 5: array([0.00039574]), 6: array([0.00114134]), 7: array([0.00287775]), 8: array([0.00755961]), 9: array([0.05181392])}, 'ndcg': array([0.05274249])}
+[5mfind a better recall[25m [0.06419587] ++[5.4516822e-05]
+time cost of epoch 15:  144.66031193733215
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+training: 7it [00:01,  4.78it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [01:39,  6.06it/s]
+EPOCH[16]:loss 1.215
+[TEST]
+{'precision': array([0.02881773]), 'recall': array([0.06406215]), 'recall_pop': {0: array([0.]), 1: array([8.94699171e-05]), 2: array([0.00013684]), 3: array([0.00062892]), 4: array([0.00140002]), 5: array([0.00214149]), 6: array([0.00631464]), 7: array([0.01491354]), 8: array([0.03433114]), 9: array([0.12907413])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.77340314e-05]), 2: array([2.48389954e-05]), 3: array([0.00014496]), 4: array([0.00025784]), 5: array([0.00042689]), 6: array([0.00117471]), 7: array([0.00293084]), 8: array([0.00765814]), 9: array([0.05142621])}, 'ndcg': array([0.05266344])}
+time cost of epoch 16:  123.28015351295471
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 0it [00:00, ?it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [01:11,  8.47it/s]
+EPOCH[17]:loss 1.210
+[TEST]
+{'precision': array([0.02890773]), 'recall': array([0.06428329]), 'recall_pop': {0: array([0.]), 1: array([8.94699171e-05]), 2: array([0.00013684]), 3: array([0.00061313]), 4: array([0.00156581]), 5: array([0.00223885]), 6: array([0.00660516]), 7: array([0.0153144]), 8: array([0.03500334]), 9: array([0.12889018])}, 'recall_pop_Contribute': {0: array([0.]), 1: array([1.77340314e-05]), 2: array([2.48389954e-05]), 3: array([0.00013601]), 4: array([0.00028646]), 5: array([0.00043727]), 6: array([0.00123154]), 7: array([0.00302792]), 8: array([0.00779216]), 9: array([0.05132936])}, 'ndcg': array([0.0527911])}
+[5mfind a better recall[25m [0.06428329] ++[8.74164974e-05]
+time cost of epoch 17:  95.039297580719
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 1it [00:00,  5.85it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [01:23,  7.23it/s]
+EPOCH[18]:loss 1.207
+[TEST]
+{'precision': array([0.02887142]), 'recall': array([0.06422943]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([7.36811082e-05]), 2: array([0.00013684]), 3: array([0.00076576]), 4: array([0.00169212]), 5: array([0.00235915]), 6: array([0.00677989]), 7: array([0.01579933]), 8: array([0.03522377]), 9: array([0.12784115])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([1.45762696e-05]), 2: array([2.48389954e-05]), 3: array([0.00015894]), 4: array([0.00030866]), 5: array([0.000462]), 6: array([0.00128492]), 7: array([0.00312746]), 8: array([0.00783775]), 9: array([0.05100678])}, 'ndcg': array([0.05271631])}
+time cost of epoch 18:  107.66079664230347
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 5it [00:01,  4.57it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.99it/s]
+EPOCH[19]:loss 1.203
+[TEST]
+{'precision': array([0.028813]), 'recall': array([0.06399341]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([7.36811082e-05]), 2: array([0.00013684]), 3: array([0.00081839]), 4: array([0.00178685]), 5: array([0.00234122]), 6: array([0.00705198]), 7: array([0.01592656]), 8: array([0.03568914]), 9: array([0.12664601])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([1.45762696e-05]), 2: array([2.48389954e-05]), 3: array([0.00016339]), 4: array([0.0003279]), 5: array([0.00046612]), 6: array([0.00131071]), 7: array([0.00316589]), 8: array([0.00793745]), 9: array([0.05057903])}, 'ndcg': array([0.05254452])}
+time cost of epoch 19:  145.0247552394867
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 2it [00:00,  4.70it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.98it/s]
+EPOCH[20]:loss 1.200
+[TEST]
+{'precision': array([0.02879721]), 'recall': array([0.0639506]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([7.36811082e-05]), 2: array([0.00013684]), 3: array([0.00089733]), 4: array([0.00186579]), 5: array([0.00245888]), 6: array([0.00730588]), 7: array([0.01605495]), 8: array([0.03654985]), 9: array([0.12563157])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([1.45762696e-05]), 2: array([2.48389954e-05]), 3: array([0.00017948]), 4: array([0.00035492]), 5: array([0.00050142]), 6: array([0.00135402]), 7: array([0.00319541]), 8: array([0.00811876]), 9: array([0.05020366])}, 'ndcg': array([0.05255493])}
+time cost of epoch 20:  144.87919902801514
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 6it [00:01,  5.00it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 602it [02:01,  4.96it/s]
+EPOCH[21]:loss 1.197
+
+training: 604it [02:01,  4.96it/s]
+{'precision': array([0.02874826]), 'recall': array([0.0638179]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([7.36811082e-05]), 2: array([0.00013684]), 3: array([0.0009447]), 4: array([0.00174738]), 5: array([0.00266414]), 6: array([0.00752587]), 7: array([0.01624123]), 8: array([0.03680909]), 9: array([0.12476682])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([1.45762696e-05]), 2: array([2.48389954e-05]), 3: array([0.00018662]), 4: array([0.00032962]), 5: array([0.00054831]), 6: array([0.00140959]), 7: array([0.00324966]), 8: array([0.0081573]), 9: array([0.04989388])}, 'ndcg': array([0.05257477])}
+time cost of epoch 21:  145.88112330436707
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.96it/s]
+EPOCH[22]:loss 1.195
+[TEST]
+{'precision': array([0.02873405]), 'recall': array([0.06373108]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([7.36811082e-05]), 2: array([0.00013684]), 3: array([0.00099206]), 4: array([0.00184211]), 5: array([0.00267992]), 6: array([0.00754955]), 7: array([0.01671403]), 8: array([0.03698323]), 9: array([0.12415593])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([1.45762696e-05]), 2: array([2.48389954e-05]), 3: array([0.00019316]), 4: array([0.00034843]), 5: array([0.00055271]), 6: array([0.00142307]), 7: array([0.00334057]), 8: array([0.00821432]), 9: array([0.0496159])}, 'ndcg': array([0.05246312])}
+time cost of epoch 22:  145.63494157791138
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 6it [00:01,  5.09it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:02,  4.92it/s]
+EPOCH[23]:loss 1.193
+[TEST]
+{'precision': array([0.02866142]), 'recall': array([0.06352952]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00012105]), 2: array([0.00017368]), 3: array([0.00107364]), 4: array([0.00201579]), 5: array([0.00293255]), 6: array([0.00782937]), 7: array([0.01697145]), 8: array([0.03712294]), 9: array([0.12277197])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([2.87861977e-05]), 2: array([3.92243546e-05]), 3: array([0.00020513]), 4: array([0.00036593]), 5: array([0.00059161]), 6: array([0.00148758]), 7: array([0.00338343]), 8: array([0.00823416]), 9: array([0.04919017])}, 'ndcg': array([0.05226104])}
+time cost of epoch 23:  147.62055778503418
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 1it [00:00,  4.29it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.98it/s]
+EPOCH[24]:loss 1.191
+[TEST]
+{'precision': array([0.02849091]), 'recall': array([0.06315916]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([8.94699171e-05]), 2: array([0.00019473]), 3: array([0.00112101]), 4: array([0.00201579]), 5: array([0.00297623]), 6: array([0.00799089]), 7: array([0.01716743]), 8: array([0.03719304]), 9: array([0.12144941])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([2.08917932e-05]), 2: array([4.19811308e-05]), 3: array([0.00022361]), 4: array([0.00036867]), 5: array([0.0005959]), 6: array([0.00152842]), 7: array([0.00343578]), 8: array([0.00822447]), 9: array([0.04871593])}, 'ndcg': array([0.05210454])}
+time cost of epoch 24:  145.54275012016296
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:02,  4.94it/s]
+EPOCH[25]:loss 1.189
+[TEST]
+{'precision': array([0.02845775]), 'recall': array([0.06319316]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00012105]), 2: array([0.00019999]), 3: array([0.00108943]), 4: array([0.00209473]), 5: array([0.00312359]), 6: array([0.008289]), 7: array([0.0172199]), 8: array([0.03768664]), 9: array([0.12115321])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([2.87861977e-05]), 2: array([3.91742314e-05]), 3: array([0.00021729]), 4: array([0.00038877]), 5: array([0.00062836]), 6: array([0.0015744]), 7: array([0.00344347]), 8: array([0.0083133]), 9: array([0.04855608])}, 'ndcg': array([0.05207718])}
+time cost of epoch 25:  145.95067691802979
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 0it [00:00, ?it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:00,  5.01it/s]
+EPOCH[26]:loss 1.187
+[TEST]
+{'precision': array([0.02842459]), 'recall': array([0.0631008]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00011578]), 2: array([0.00025262]), 3: array([0.00114469]), 4: array([0.00213684]), 5: array([0.00326832]), 6: array([0.0082375]), 7: array([0.01767284]), 8: array([0.03756437]), 9: array([0.12025021])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([4.11386187e-05]), 2: array([4.995072e-05]), 3: array([0.00022975]), 4: array([0.00039893]), 5: array([0.00066536]), 6: array([0.00156451]), 7: array([0.00355305]), 8: array([0.00828207]), 9: array([0.04831254])}, 'ndcg': array([0.05197573])}
+time cost of epoch 26:  144.04006791114807
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.98it/s]
+EPOCH[27]:loss 1.185
+[TEST]
+{'precision': array([0.02837881]), 'recall': array([0.06297141]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([9.99957897e-05]), 2: array([0.0002421]), 3: array([0.00122363]), 4: array([0.00217368]), 5: array([0.00329644]), 6: array([0.00829013]), 7: array([0.01804782]), 8: array([0.0376796]), 9: array([0.11950443])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([3.76299945e-05]), 2: array([5.35094674e-05]), 3: array([0.00024501]), 4: array([0.00040598]), 5: array([0.00066361]), 6: array([0.0015729]), 7: array([0.00359749]), 8: array([0.00832142]), 9: array([0.04807034])}, 'ndcg': array([0.0517761])}
+time cost of epoch 27:  145.09743571281433
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 4it [00:00,  4.69it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:01,  4.96it/s]
+EPOCH[28]:loss 1.184
+[TEST]
+{'precision': array([0.02824302]), 'recall': array([0.06260138]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00011578]), 2: array([0.00031578]), 3: array([0.00123942]), 4: array([0.00222797]), 5: array([0.00332275]), 6: array([0.00833997]), 7: array([0.0180417]), 8: array([0.03772984]), 9: array([0.11851324])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([4.39455181e-05]), 2: array([6.50378041e-05]), 3: array([0.00025115]), 4: array([0.00041844]), 5: array([0.00065444]), 6: array([0.00159983]), 7: array([0.00361189]), 8: array([0.00833082]), 9: array([0.04762231])}, 'ndcg': array([0.05161515])}
+time cost of epoch 28:  145.280357837677
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+training: 6it [00:01,  4.49it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 603it [02:01,  5.03it/s]
+EPOCH[29]:loss 1.182
+
+training: 604it [02:01,  4.96it/s]
+{'precision': array([0.02819723]), 'recall': array([0.06246761]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00011578]), 2: array([0.00028946]), 3: array([0.00123942]), 4: array([0.00233059]), 5: array([0.00346937]), 6: array([0.00846733]), 7: array([0.01793832]), 8: array([0.03766643]), 9: array([0.11814057])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([4.39455181e-05]), 2: array([5.80205557e-05]), 3: array([0.0002501]), 4: array([0.00043726]), 5: array([0.00070223]), 6: array([0.00162522]), 7: array([0.00359474]), 8: array([0.00832929]), 9: array([0.04742331])}, 'ndcg': array([0.05145447])}
+time cost of epoch 29:  145.76552486419678
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 602it [02:01,  5.09it/s]
+EPOCH[30]:loss 1.181
+
+training: 604it [02:02,  4.95it/s]
+{'precision': array([0.02815776]), 'recall': array([0.06232499]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00011578]), 2: array([0.00038419]), 3: array([0.00127731]), 4: array([0.00225165]), 5: array([0.00362041]), 6: array([0.00872574]), 7: array([0.01820786]), 8: array([0.03791697]), 9: array([0.1171848])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([4.39455181e-05]), 2: array([7.64408327e-05]), 3: array([0.0002513]), 4: array([0.0004323]), 5: array([0.00072799]), 6: array([0.00168214]), 7: array([0.00366275]), 8: array([0.00836115]), 9: array([0.04708346])}, 'ndcg': array([0.05134689])}
+time cost of epoch 30:  146.65191435813904
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 2it [00:00,  3.37it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [02:33,  3.93it/s]
+EPOCH[31]:loss 1.180
+[TEST]
+{'precision': array([0.02802829]), 'recall': array([0.06206964]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00013157]), 2: array([0.00047366]), 3: array([0.00133521]), 4: array([0.00231578]), 5: array([0.0037486]), 6: array([0.00875138]), 7: array([0.01828079]), 8: array([0.037937]), 9: array([0.11626266])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([5.18399225e-05]), 2: array([9.78434404e-05]), 3: array([0.00025582]), 4: array([0.00043824]), 5: array([0.0007688]), 6: array([0.0016872]), 7: array([0.00366207]), 8: array([0.00837138]), 9: array([0.04673293])}, 'ndcg': array([0.05111075])}
+time cost of epoch 31:  180.8345296382904
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+training: 6it [00:01,  3.94it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [01:47,  5.61it/s]
+EPOCH[32]:loss 1.179
+[TEST]
+{'precision': array([0.0279683]), 'recall': array([0.06190004]), 'recall_pop': {0: array([3.15776178e-05]), 1: array([0.00014736]), 2: array([0.00039472]), 3: array([0.00125626]), 4: array([0.00229735]), 5: array([0.00381965]), 6: array([0.00878015]), 7: array([0.01837635]), 8: array([0.03782715]), 9: array([0.11603266])}, 'recall_pop_Contribute': {0: array([3.5086242e-06]), 1: array([4.99739724e-05]), 2: array([8.35082043e-05]), 3: array([0.00024091]), 4: array([0.00043049]), 5: array([0.00077396]), 6: array([0.001699]), 7: array([0.00368919]), 8: array([0.00832451]), 9: array([0.046605])}, 'ndcg': array([0.05096867])}
+time cost of epoch 32:  133.09880447387695
+[Visualization]
+[t-SNE]
+[double-label]
+/home/cgm/code/CGM__GCLRec/code/augment.py:119: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -0.5).flatten()
+training: 4it [00:00,  5.46it/s]
+[AUGMENT]
+training: 18it [00:02,  7.65it/s]
+training: 34it [00:04,  8.35it/s]
+training: 51it [00:06,  8.30it/s]
+training: 68it [00:08,  7.80it/s]
+training: 80it [00:10,  5.95it/s]
+training: 91it [00:12,  5.94it/s]
+training: 103it [00:14,  5.93it/s]
+training: 115it [00:16,  5.94it/s]
+training: 127it [00:18,  5.95it/s]
+training: 139it [00:20,  5.93it/s]
+training: 151it [00:22,  5.65it/s]
+training: 162it [00:24,  5.64it/s]
+training: 174it [00:26,  5.93it/s]
+training: 186it [00:28,  5.93it/s]
+training: 198it [00:30,  5.96it/s]
+training: 210it [00:32,  6.10it/s]
+training: 222it [00:34,  5.92it/s]
+training: 232it [00:36,  4.75it/s]
+training: 244it [00:38,  5.90it/s]
+training: 256it [00:40,  5.87it/s]
+training: 267it [00:42,  5.92it/s]
+training: 278it [00:44,  5.52it/s]
+training: 290it [00:46,  5.86it/s]
+training: 302it [00:48,  5.92it/s]
+training: 337it [00:54,  5.85it/s]
+training: 349it [00:56,  5.84it/s]
+training: 361it [00:58,  5.86it/s]
+training: 374it [01:00,  7.58it/s]
+training: 391it [01:02,  8.20it/s]
+training: 407it [01:04,  7.72it/s]
+training: 423it [01:06,  8.11it/s]
+training: 436it [01:08,  5.91it/s]
+training: 447it [01:10,  5.86it/s]
+training: 459it [01:12,  5.88it/s]
+training: 471it [01:14,  5.88it/s]
+training: 483it [01:16,  5.90it/s]
+training: 495it [01:18,  5.21it/s]
+training: 516it [01:22,  5.26it/s]
+training: 526it [01:24,  5.33it/s]
+training: 536it [01:26,  4.92it/s]
+training: 546it [01:28,  5.06it/s]
+training: 557it [01:31,  5.19it/s]
+training: 567it [01:32,  5.31it/s]
+training: 573it [01:34,  5.30it/s]
+training: 588it [01:36,  5.19it/s]
+training: 598it [01:38,  5.36it/s]
+training: 604it [01:40,  6.04it/s]
+training: 604it [01:40,  6.04it/s]
+EPOCH[33]:loss 1.178
+[TEST]
+{'precision': array([0.02783567]), 'recall': array([0.06155589]), 'recall_pop': {0: array([6.31552356e-05]), 1: array([0.00014736]), 2: array([0.0004263]), 3: array([0.00132731]), 4: array([0.0023263]), 5: array([0.00387642]), 6: array([0.00897751]), 7: array([0.01839249]), 8: array([0.03773259]), 9: array([0.11477536])}, 'recall_pop_Contribute': {0: array([1.14030286e-05]), 1: array([4.99739724e-05]), 2: array([8.87711406e-05]), 3: array([0.00024872]), 4: array([0.00043561]), 5: array([0.00078235]), 6: array([0.00172371]), 7: array([0.00369244]), 8: array([0.00832613]), 9: array([0.04619677])}, 'ndcg': array([0.0507797])}
+time cost of epoch 33:  125.05098152160645
+[Visualization]
+[t-SNE]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[34]:loss 1.177
+[TEST]
+{'precision': array([0.02775357]), 'recall': array([0.06141271]), 'recall_pop': {0: array([6.31552356e-05]), 1: array([0.0001421]), 2: array([0.00047366]), 3: array([0.0013431]), 4: array([0.00233156]), 5: array([0.00407039]), 6: array([0.00923876]), 7: array([0.01837562]), 8: array([0.03731423]), 9: array([0.11425784])}, 'recall_pop_Contribute': {0: array([1.14030286e-05]), 1: array([4.76056511e-05]), 2: array([9.78434404e-05]), 3: array([0.00025152]), 4: array([0.00043854]), 5: array([0.00079941]), 6: array([0.0017714]), 7: array([0.00370052]), 8: array([0.00824792]), 9: array([0.04604654])}, 'ndcg': array([0.05066153])}
+time cost of epoch 34:  154.1710877418518
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[35]:loss 1.176
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.0277141]), 'recall': array([0.06125037]), 'recall_pop': {0: array([6.31552356e-05]), 1: array([0.00016841]), 2: array([0.00044735]), 3: array([0.0013431]), 4: array([0.00241577]), 5: array([0.00401382]), 6: array([0.00916385]), 7: array([0.01842084]), 8: array([0.03736906]), 9: array([0.11414169])}, 'recall_pop_Contribute': {0: array([1.14030286e-05]), 1: array([5.54248707e-05]), 2: array([8.98237279e-05]), 3: array([0.00025152]), 4: array([0.00044875]), 5: array([0.00079586]), 6: array([0.00177772]), 7: array([0.00369833]), 8: array([0.00824093]), 9: array([0.04588061])}, 'ndcg': array([0.05055951])}
+time cost of epoch 35:  179.28662729263306
+[Visualization]
+[t-SNE]
+[double-label]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[36]:loss 1.175
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.02761305]), 'recall': array([0.0610719]), 'recall_pop': {0: array([6.31552356e-05]), 1: array([0.00017894]), 2: array([0.00046314]), 3: array([0.00136942]), 4: array([0.00229999]), 5: array([0.00407039]), 6: array([0.00924625]), 7: array([0.01827299]), 8: array([0.03778175]), 9: array([0.11324569])}, 'recall_pop_Contribute': {0: array([1.14030286e-05]), 1: array([5.76804148e-05]), 2: array([9.61392515e-05]), 3: array([0.00026095]), 4: array([0.00043411]), 5: array([0.00079514]), 6: array([0.00179213]), 7: array([0.00365355]), 8: array([0.008352]), 9: array([0.0456188])}, 'ndcg': array([0.05043307])}
+time cost of epoch 36:  178.14759278297424
+[Visualization]
+[t-SNE]
+[double-label]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[37]:loss 1.175
+[TEST]
+{'precision': array([0.02760357]), 'recall': array([0.06100317]), 'recall_pop': {0: array([6.31552356e-05]), 1: array([0.00016841]), 2: array([0.00044735]), 3: array([0.00135626]), 4: array([0.0023342]), 5: array([0.00409832]), 6: array([0.00953939]), 7: array([0.01836983]), 8: array([0.03797656]), 9: array([0.1127751])}, 'recall_pop_Contribute': {0: array([1.14030286e-05]), 1: array([6.09133614e-05]), 2: array([8.80192926e-05]), 3: array([0.00025776]), 4: array([0.00043338]), 5: array([0.00080134]), 6: array([0.00184733]), 7: array([0.00367469]), 8: array([0.00839132]), 9: array([0.04543702])}, 'ndcg': array([0.05035829])}
+time cost of epoch 37:  180.20723843574524
+[Visualization]
+[t-SNE]
+[double-label]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[38]:loss 1.174
+[TEST]
+{'precision': array([0.02752621]), 'recall': array([0.06083015]), 'recall_pop': {0: array([6.31552356e-05]), 1: array([0.00020525]), 2: array([0.00044735]), 3: array([0.00136152]), 4: array([0.00234472]), 5: array([0.00423911]), 6: array([0.0094815]), 7: array([0.0186232]), 8: array([0.03757369]), 9: array([0.11206012])}, 'recall_pop_Contribute': {0: array([1.14030286e-05]), 1: array([6.57377197e-05]), 2: array([9.33323521e-05]), 3: array([0.00027086]), 4: array([0.00043829]), 5: array([0.00083878]), 6: array([0.00183629]), 7: array([0.00372267]), 8: array([0.00831957]), 9: array([0.04523321])}, 'ndcg': array([0.05026676])}
+time cost of epoch 38:  178.19958448410034
+[Visualization]
+[t-SNE]
+[double-label]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[39]:loss 1.173
+[TEST]
+{'precision': array([0.02742674]), 'recall': array([0.06060191]), 'recall_pop': {0: array([0.00012631]), 1: array([0.00020525]), 2: array([0.00052629]), 3: array([0.00142468]), 4: array([0.00237893]), 5: array([0.00432726]), 6: array([0.00956127]), 7: array([0.01851601]), 8: array([0.03769543]), 9: array([0.11146661])}, 'recall_pop_Contribute': {0: array([2.12271764e-05]), 1: array([6.49858716e-05]), 2: array([0.00010466]), 3: array([0.00028695]), 4: array([0.00045826]), 5: array([0.00085626]), 6: array([0.00186474]), 7: array([0.00370057]), 8: array([0.00832609]), 9: array([0.04491816])}, 'ndcg': array([0.05011467])}
+time cost of epoch 39:  177.63046598434448
+[Visualization]
+[t-SNE]
+[double-label]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[40]:loss 1.172
+[TEST]
+{'precision': array([0.02733043]), 'recall': array([0.06034968]), 'recall_pop': {0: array([0.00012631]), 1: array([0.00018947]), 2: array([0.00050524]), 3: array([0.00151152]), 4: array([0.00236314]), 5: array([0.00429989]), 6: array([0.00944128]), 7: array([0.01842864]), 8: array([0.03740831]), 9: array([0.11096729])}, 'recall_pop_Contribute': {0: array([2.12271764e-05]), 1: array([6.17643167e-05]), 2: array([0.00010185]), 3: array([0.00029472]), 4: array([0.00045353]), 5: array([0.00084544]), 6: array([0.00185322]), 7: array([0.00369184]), 8: array([0.00826406]), 9: array([0.04476203])}, 'ndcg': array([0.0499197])}
+time cost of epoch 40:  179.7016429901123
+[Visualization]
+[t-SNE]
+[double-label]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[41]:loss 1.172
+[TEST]
+{'precision': array([0.02724991]), 'recall': array([0.06028622]), 'recall_pop': {0: array([0.00012631]), 1: array([0.00027104]), 2: array([0.00048945]), 3: array([0.00138784]), 4: array([0.00236051]), 5: array([0.00434967]), 6: array([0.00946624]), 7: array([0.01867717]), 8: array([0.03755164]), 9: array([0.11050912])}, 'recall_pop_Contribute': {0: array([2.12271764e-05]), 1: array([8.22407842e-05]), 2: array([9.74048623e-05]), 3: array([0.00028349]), 4: array([0.00045214]), 5: array([0.00086175]), 6: array([0.00185492]), 7: array([0.00372462]), 8: array([0.00831961]), 9: array([0.04458882])}, 'ndcg': array([0.04987898])}
+time cost of epoch 41:  179.0159764289856
+[Visualization]
+[t-SNE]
+[double-label]
+  d_inv = np.power(rowsum, -0.5).flatten()
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[42]:loss 1.171
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.0271978]), 'recall': array([0.06011869]), 'recall_pop': {0: array([0.00012631]), 1: array([0.00019736]), 2: array([0.00050524]), 3: array([0.00141152]), 4: array([0.0023684]), 5: array([0.00460699]), 6: array([0.00970097]), 7: array([0.01856375]), 8: array([0.03753027]), 9: array([0.10990635])}, 'recall_pop_Contribute': {0: array([2.12271764e-05]), 1: array([6.40198608e-05]), 2: array([0.00010185]), 3: array([0.00028137]), 4: array([0.00044462]), 5: array([0.00090168]), 6: array([0.001895]), 7: array([0.00371564]), 8: array([0.00830645]), 9: array([0.04438683])}, 'ndcg': array([0.04973934])}
+time cost of epoch 42:  177.93769431114197
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[43]:loss 1.171
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.02721991]), 'recall': array([0.06009191]), 'recall_pop': {0: array([0.00015789]), 1: array([0.00022894]), 2: array([0.00050524]), 3: array([0.0014852]), 4: array([0.0025105]), 5: array([0.00455567]), 6: array([0.00966841]), 7: array([0.01822242]), 8: array([0.03787307]), 9: array([0.10972785])}, 'recall_pop_Contribute': {0: array([2.91215808e-05]), 1: array([7.32060769e-05]), 2: array([0.00010028]), 3: array([0.00030515]), 4: array([0.00047306]), 5: array([0.00089319]), 6: array([0.00187651]), 7: array([0.00363562]), 8: array([0.00837163]), 9: array([0.04433415])}, 'ndcg': array([0.04968542])}
+time cost of epoch 43:  180.15761494636536
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[44]:loss 1.170
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.02712044]), 'recall': array([0.05993489]), 'recall_pop': {0: array([0.0001342]), 1: array([0.00028683]), 2: array([0.00047366]), 3: array([0.00142731]), 4: array([0.0025684]), 5: array([0.00444515]), 6: array([0.00968157]), 7: array([0.01849846]), 8: array([0.03805698]), 9: array([0.1092102])}, 'recall_pop_Contribute': {0: array([3.01240449e-05]), 1: array([7.99727093e-05]), 2: array([9.10893388e-05]), 3: array([0.00028677]), 4: array([0.00047929]), 5: array([0.00087975]), 6: array([0.00185463]), 7: array([0.00370394]), 8: array([0.00842153]), 9: array([0.04410778])}, 'ndcg': array([0.0495546])}
+time cost of epoch 44:  177.76770281791687
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[45]:loss 1.170
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.02708097]), 'recall': array([0.05980596]), 'recall_pop': {0: array([0.00016578]), 1: array([0.00030262]), 2: array([0.00044209]), 3: array([0.00149046]), 4: array([0.00247366]), 5: array([0.00463725]), 6: array([0.00977139]), 7: array([0.01846922]), 8: array([0.03806176]), 9: array([0.10866558])}, 'recall_pop_Contribute': {0: array([3.64395685e-05]), 1: array([8.78671137e-05]), 2: array([8.47738152e-05]), 3: array([0.00029339]), 4: array([0.00045662]), 5: array([0.00091623]), 6: array([0.00188583]), 7: array([0.00367983]), 8: array([0.00839326]), 9: array([0.04397172])}, 'ndcg': array([0.04936119])}
+time cost of epoch 45:  181.25770950317383
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[46]:loss 1.169
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.02704465]), 'recall': array([0.05971003]), 'recall_pop': {0: array([0.0001342]), 1: array([0.00034209]), 2: array([0.00052103]), 3: array([0.00159835]), 4: array([0.00261742]), 5: array([0.00502464]), 6: array([0.00968473]), 7: array([0.01844928]), 8: array([0.03834275]), 9: array([0.10819477])}, 'recall_pop_Contribute': {0: array([3.01240449e-05]), 1: array([8.9295625e-05]), 2: array([0.00010192]), 3: array([0.00031634]), 4: array([0.00048171]), 5: array([0.00097267]), 6: array([0.00187238]), 7: array([0.00369163]), 8: array([0.00846875]), 9: array([0.0436852])}, 'ndcg': array([0.04926002])}
+time cost of epoch 46:  177.45947933197021
+[Visualization]
+[t-SNE]
+[double-label]
+[AUGMENT]
+[TRAIN]
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+  d_inv = np.power(rowsum, -0.5).flatten()
+EPOCH[47]:loss 1.169
+[TEST]
+  d_inv = np.power(rowsum, -0.5).flatten()
+{'precision': array([0.02704465]), 'recall': array([0.0596733]), 'recall_pop': {0: array([0.0001342]), 1: array([0.00034209]), 2: array([0.0005684]), 3: array([0.00157467]), 4: array([0.00252269]), 5: array([0.00484457]), 6: array([0.00977179]), 7: array([0.01843849]), 8: array([0.03830116]), 9: array([0.10810804])}, 'recall_pop_Contribute': {0: array([3.01240449e-05]), 1: array([9.08745059e-05]), 2: array([0.00011613]), 3: array([0.00031126]), 4: array([0.00045945]), 5: array([0.00094292]), 6: array([0.00189014]), 7: array([0.00370041]), 8: array([0.0084326]), 9: array([0.0436994])}, 'ndcg': array([0.04924408])}
+early stop triggerd at epoch 47, best recall: [0.06428329]

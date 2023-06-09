@@ -168,7 +168,8 @@ class Train():
         aver_loss = aver_loss / (total_batch)
         w.add_scalar(f"Average_{world.config['loss']}_Loss/{world.config['dataset']}", aver_loss, epoch)
         print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
-        return f"loss {aver_loss:.3f}"
+        # return f"loss {aver_loss:.3f}"
+        return aver_loss
 
 class Test():
     def __init__(self):
