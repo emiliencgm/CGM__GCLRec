@@ -16,20 +16,45 @@
 14. homophily的KMeans加速（莫名其妙地自己加速了……），以及考察使用全部/部分embedding进行聚类的效果的差异
 15. user/item分开聚类？
 ## 使用方法
-1. 建立目录如格式：
-CGM__GCLRec:
+可使用nohup指令在服务器后台运行，如：`nohup python -u runs.py --cuda 0 > nohups/runs.out 2>&1 & `，可改成`>> nohups/runs.out`变为追加写
 
-       CGM__GCLRec--|--code--|--xx.py
-                    |        |--checkpoints
-                    |        |--Fig
-                    |        |--Log
-                    |        |--nohups
-                    |        |--precalculate
-                    |        |--runs
-                    |
-                    |--data--|amazon-book--|test.txt
-                             |gowalla      |train.txt
-                             |MIND
-                             |yelp2018
-2. 见runs.py的示例
-3. 可使用nohup指令在服务器后台运行，如：nohup python -u runs.py --cuda 0 > nohups/runs.out 2>&1 & ，可改成>> nohups/runs.out变为追加写
+
+
+
+
+# Remote Server SSH Config
+```
+Host 外网新主2080x2(姜)
+    HostName 657yz61365.zicp.fun
+    User cgm
+    Port 17296
+
+Host 外网新主3090x1(壮)
+    HostName 657yz61365.zicp.fun
+    User cgm
+    Port 29475
+
+Host 外网114-1
+    HostName 3s6252y571.zicp.vip
+    User cgm
+    Port 31401
+
+Host A716
+    HostName 10.134.12.239
+    User a716
+
+Host 内网新主2080x2(姜)
+    HostName 10.134.148.148
+    User cgm
+    port 22
+
+Host 内网新主3090x1(壮)
+    HostName 10.134.148.185
+    User cgm
+    port 22
+
+Host 内网114-1
+    HostName 10.130.104.15
+    User cgm
+    Port 9125
+```
