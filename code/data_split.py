@@ -10,7 +10,12 @@ LightGCN原文的数据集为8:2
 import os
 from os.path import join
 import numpy as np
-
+import argparse
+def parse_args():
+    parser = argparse.ArgumentParser(description="Go GCLRec")
+    parser.add_argument('--task', type=str, default='yelp2018', help="dataset")
+    return parser.parse_args()
+task = parse_args().task
 def read_data(datasetpath):
     train_origin = join(datasetpath, 'train.txt')
     ui_dict_train = {}
@@ -23,8 +28,13 @@ def read_data(datasetpath):
                     num_items = len(items)
                     num_split = int(num_items/8)
                     if num_split<1:
-                        num_split = 1
-                    valid_index = np.random.choice(num_items, num_split, replace=False)
+                        if num_items<2:
+                            valid_index = []
+                        else:
+                            num_split = 1
+                            valid_index = np.random.choice(num_items, num_split, replace=False)
+                    else:
+                        valid_index = np.random.choice(num_items, num_split, replace=False)
                     uid = int(l[0])
                     ui_dict_valid[uid] = []
                     ui_dict_train[uid] = []
@@ -46,19 +56,24 @@ def write_data(filename, ui_dict, datasetpath):
 
     with open(file, mode='a') as f:
         for uid, items in ui_dict.items():
-            f.write(str(uid))
-            f.write(' ')
-            for item in items[:-1]:
-                f.write(str(item))
+            if len(items)>0:
+                f.write(str(uid))
                 f.write(' ')
-            f.write(str(items[-1]))
-            f.write('\n')
+                for item in items[:-1]:
+                    f.write(str(item))
+                    f.write(' ')
+                f.write(str(items[-1]))
+                f.write('\n')
+            else:
+                f.write(str(uid))
+                f.write(' ')
+                f.write('\n')
 
 def main():
     ROOT_PATH = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     DATA_PATH = join(ROOT_PATH, 'data')
 
-    datasetpath = join(DATA_PATH, 'yelp2018')
+    datasetpath = join(DATA_PATH, task)
     ui_dict_train, ui_dict_valid = read_data(datasetpath)
     write_data('train_7.txt', ui_dict_train, datasetpath)
     write_data('valid_1.txt', ui_dict_valid, datasetpath)
@@ -70,29 +85,29 @@ def main():
 
 main()
 
-def check_all_items_appeared_in_train():
-    ROOT_PATH = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    DATA_PATH = join(ROOT_PATH, 'data')
-    datasetpath = join(DATA_PATH, 'yelp2018')
-    train_origin = join(datasetpath, 'train.txt')
-    test_origin = join(datasetpath, 'test.txt')
-    train_item_set = set([])
-    test_item_set = set([])
+# def check_all_items_appeared_in_train():
+#     ROOT_PATH = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+#     DATA_PATH = join(ROOT_PATH, 'data')
+#     datasetpath = join(DATA_PATH, 'yelp2018')
+#     train_origin = join(datasetpath, 'train.txt')
+#     test_origin = join(datasetpath, 'test.txt')
+#     train_item_set = set([])
+#     test_item_set = set([])
 
-    with open(train_origin) as f:
-            for l in f.readlines():
-                if len(l) > 0:
-                    l = l.strip('\n').split(' ')
-                    items = [int(i) for i in l[1:]]
-                    for item in items:
-                        train_item_set.add(item)
+#     with open(train_origin) as f:
+#             for l in f.readlines():
+#                 if len(l) > 0:
+#                     l = l.strip('\n').split(' ')
+#                     items = [int(i) for i in l[1:]]
+#                     for item in items:
+#                         train_item_set.add(item)
 
-    with open(test_origin) as f:
-            for l in f.readlines():
-                if len(l) > 0:
-                    l = l.strip('\n').split(' ')
-                    items = [int(i) for i in l[1:]]
-                    for item in items:
-                        if item not in train_item_set:
-                            print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-    print('done')
+#     with open(test_origin) as f:
+#             for l in f.readlines():
+#                 if len(l) > 0:
+#                     l = l.strip('\n').split(' ')
+#                     items = [int(i) for i in l[1:]]
+#                     for item in items:
+#                         if item not in train_item_set:
+#                             print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+#     print('done')

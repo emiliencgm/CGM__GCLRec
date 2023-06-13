@@ -110,6 +110,20 @@ def RecallPrecision_ATk(groundTrues, groundTrues_popDict, r, r_popDict, k):
     return {'recall': recall, 'recall_popDIct': recall_popDict, 'recall_Contribute_popDict': recall_Contribute_popDict, 'precision': precis}
 
 
+def RecallPrecision_ATk_Valid(valid_data, r, k):
+    """
+    test_data should be a list? cause users may have different amount of pos items. shape (test_batch, k)
+    pred_data : shape (test_batch, k) NOTE: pred_data should be pre-sorted
+    k : top-k
+    """
+    right_pred = r[:, :k].sum(1)
+    precis_n = k
+    recall_n = np.array([len(valid_data[i]) for i in range(len(valid_data))])
+    recall = np.sum(right_pred/recall_n)
+    precis = np.sum(right_pred)/precis_n
+    return {'recall': recall, 'precision': precis}
+
+
 def MRRatK_r(r, k):
     """
     Mean Reciprocal Rank
@@ -141,18 +155,19 @@ def NDCGatK_r(test_data,r,k):
     ndcg[np.isnan(ndcg)] = 0.
     return np.sum(ndcg)
 
-'''
-def AUC(all_item_scores, dataset, test_data):
-    """
-        design for a single user
-    """
-    dataset : BasicDataset
-    r_all = np.zeros((dataset.m_items, ))
-    r_all[test_data] = 1
-    r = r_all[all_item_scores >= 0]
-    test_item_scores = all_item_scores[all_item_scores >= 0]
-    return roc_auc_score(r, test_item_scores)
-'''
+
+# def AUC(all_item_scores, dataset, test_data):
+#     """
+#         design for a single user
+#     """
+#     dataset : BasicDataset
+#     r_all = np.zeros((dataset.m_items, ))
+#     r_all[test_data] = 1
+#     r = r_all[all_item_scores >= 0]
+#     test_item_scores = all_item_scores[all_item_scores >= 0]
+#     return roc_auc_score(r, test_item_scores)
+
+
 def getLabel(groundTrues, groundTrue_popDicts, pred_data):
     r = []
     #================Pop=================#
@@ -179,5 +194,14 @@ def getLabel(groundTrues, groundTrue_popDicts, pred_data):
     #================Pop=================#
     return np.array(r).astype('float'), r_pop
 
+def getLabel_Valid(valid_data, pred_data):
+    r = []
+    for i in range(len(valid_data)):
+        groundTrue = valid_data[i]
+        predictTopK = pred_data[i]
+        pred = list(map(lambda x: x in groundTrue, predictTopK))
+        pred = np.array(pred).astype("float")
+        r.append(pred)
+    return np.array(r).astype('float')
 # ====================end Metrics=============================
 # =========================================================

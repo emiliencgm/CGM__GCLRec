@@ -34,8 +34,8 @@ class dataset(Dataset):
         self.m_item = 0
         if config['if_valid']:
             train_file = path + '/train_7.txt'
-            valid_file = path + '/test.txt' #TODO 为了正确统计数据集  后面的程序会受到“未见过test数据集”这一变化的影响
-            test_file = path + '/valid_1.txt'
+            valid_file = path + '/valid_1.txt' #TODO 为了正确统计数据集  后面的程序会受到“未见过test数据集”这一变化的影响
+            test_file = path + '/test.txt'
         else:
             train_file = path + '/train.txt'
             valid_file = path + '/valid.txt'
@@ -147,6 +147,8 @@ class dataset(Dataset):
         # self._allPos = self.getUserPosItems(list(range(self.n_user)))
         # self._allPos_item = self.getItemPosUsers(list(range(self.m_item)))
         self.__testDict = self.__build_test()
+        if world.config['if_valid']:
+            self.__validDict = self.__build_valid()
         self._edge_indices = self.get_edge_indices()
         #将计算邻接矩阵的过程提前
         self.getSparseGraph()
@@ -176,6 +178,10 @@ class dataset(Dataset):
     @property
     def testDict(self):
         return self.__testDict
+    
+    @property
+    def validDict(self):
+        return self.__validDict
 
     @property
     def allPos(self):
@@ -290,6 +296,20 @@ class dataset(Dataset):
             else:
                 test_data[user] = [item]
         return test_data
+    
+    def __build_valid(self):
+        """
+        return:
+            dict: {user: [items]}
+        """
+        valid_data = {}
+        for i, item in enumerate(self.validItem):
+            user = self.validUser[i]
+            if valid_data.get(user):
+                valid_data[user].append(item)
+            else:
+                valid_data[user] = [item]
+        return valid_data
 
     def getUserItemFeedback(self, users, items):
         """

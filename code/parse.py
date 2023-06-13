@@ -31,6 +31,7 @@ def parse_args():
     parser.add_argument('--k_aug', type=int, default=0, help="use k-th layer for augmentation in GCLRec, k in [0,1,2,... L]")
     parser.add_argument('--tau_plus', type=float, default=0.1, help="tau_plus in DCL: Debiased Contrastive Loss")
     parser.add_argument('--pop_gamma', type=float, default=0.02, help="gamma in PD(A): Popularity-bias Deconfounding (and Adjusting)")
+    parser.add_argument('--lambda_ForkMerge', type=float, default=0.5, help="lambda between theta(0) and theta(1) in ForkMerge")
     #===========================================================================================================================================
 
     parser.add_argument('--early_stop_steps', type=int, default=30, help="early stop steps")
@@ -43,7 +44,7 @@ def parse_args():
     parser.add_argument('--epochs', type=int, default=1000, help="training epochs")
     parser.add_argument('--if_multicore', type=int, default=1, help="whether use multicores in Test")
     parser.add_argument('--batch_size', type=int, default=2048, help="batch size in BPR_Contrast_Train")    
-    parser.add_argument('--topks', nargs='?', default='[20]', help="topks [@20] for test")
+    parser.add_argument('--topks', nargs='?', default='[20, 40]', help="topks [@20, @40] for test")
     parser.add_argument('--test_u_batch_size', type=int, default=2048, help="users batch size for test")
     parser.add_argument('--pop_group', type=int, default=10, help="Num of groups of Popularity")
     parser.add_argument('--if_big_matrix', type=int, default=0, help="whether the adj matrix is big, and then use matrix n_fold split")
@@ -60,7 +61,7 @@ def parse_args():
     
 
     #Architecture===========================================================================================================================================
-    parser.add_argument('--model', type=str, default='GCLRec', help="Now available:\n\
+    parser.add_argument('--model', type=str, default='LightGCN', help="Now available:\n\
                                                                     ###LightGCN\n\
                                                                     ###GTN (K=3, alpha=0.3)\n\
                                                                     ###SGL-ED: Edge Drop (Default drop prob = edge_drop_prob = 0.1 if if_pop==0)\n\
@@ -74,7 +75,7 @@ def parse_args():
     parser.add_argument('--augment', type=str, default='No', help="Augmentation: No, ED, RW, SVD, Adaptive, Learner")    
     parser.add_argument('--centroid_mode', type=str, default='eigenvector', help="Centroid mode: degree, pagerank, eigenvector")
     parser.add_argument('--commonNeighbor_mode', type=str, default='SC', help="Common Neighbor mode: JS, SC, CN, LHN")
-    parser.add_argument('--adaptive_method', type=str, default='None', help="Adaptive coef method: centroid, commonNeighbor, homophily, mlp")
+    parser.add_argument('--adaptive_method', type=str, default='mlp', help="Adaptive coef method: centroid, commonNeighbor, homophily, mlp")
     parser.add_argument('--init_method', type=str, default='Normal', help="UI embeddings init method: Xavier or Normal")
     parser.add_argument('--perplexity', type=int, default=50, help="perplexity for T-SNE")
     parser.add_argument('--GTN_K', type=int, default=3, help="K in GTN")

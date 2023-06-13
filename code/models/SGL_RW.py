@@ -5,19 +5,23 @@ def parse_args():
     parser.add_argument('--task', type=str, default='yelp2018', help="dataset")
     parser.add_argument('--device', type=int, default=0, help="device")
     parser.add_argument('--visual', type=int, default=0, help="visualization")
+    parser.add_argument('--valid', type=int, default=1, help="validation")
     return parser.parse_args()
 args = parse_args()
-
+if args.valid == 1:
+    project = 'GCLRec_Valid'
+else:
+    project = 'GCLRec_No_Valid'
 #hyperparameters: lambda1, p_drop, temp_tau
 
 if args.task == 'yelp2018':
-    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project GCLRec_No_Valid --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid 0 --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project {project} --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
 
 elif args.task == 'gowalla':
-    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project GCLRec_No_Valid --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid 0 --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project {project} --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
     
 elif args.task == 'amazon-book':
-    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project GCLRec_No_Valid --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid 0 --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project {project} --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
 
 elif args.task == 'ifashion':
-    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project GCLRec_No_Valid --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid 0 --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+    os.system(f'python main.py --lambda1 0.1 --p_drop 0.1 --temp_tau 0.2 --notes _ --project {project} --name SGL_ED+BPR_CL --model SGL --loss BPR_Contrast --augment RW --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag SGL --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')

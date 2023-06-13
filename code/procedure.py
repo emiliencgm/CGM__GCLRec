@@ -14,6 +14,7 @@ from tqdm import tqdm
 from tensorboardX import SummaryWriter
 from model import LightGCN
 from augment import Projector
+from collections import OrderedDict
 
 class Train():
     def __init__(self, loss_cal):
@@ -189,10 +190,60 @@ class Train():
         return l_all
     
     def BPR_train(self, batch_users, batch_pos, batch_neg):
-        if world.config['model'] in ['LightGCN', 'GTN', 'LightGCN_PyG']:
-            pass
         l_all = self.loss.bpr_loss(batch_users, batch_pos, batch_neg)
         return l_all
+
+    def ForkMerge_train(self, dataset, Recmodel, augmentation, epoch, optimizer, w:SummaryWriter=None):
+        Recmodel = Recmodel
+        Recmodel.train()
+        batch_size = world.config['batch_size']
+        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=True, num_workers=0)#每个batch为batch_size对(user, pos_item, neg_item), 见Dataset.__getitem__
+
+        total_batch = len(dataloader)
+        aver_loss = 0.
+        lr = world.config['lr']
+        lambda_ForkMerge = world.config['lambda_ForkMerge']
+
+        for batch_i, train_data in tqdm(enumerate(dataloader), desc='training'):
+            batch_users = train_data[0].long().to(world.device)
+            batch_pos = train_data[1].long().to(world.device)
+            batch_neg = train_data[2].long().to(world.device)
+
+            # 清零梯度
+            optimizer.zero_grad()
+
+            # 计算第一个损失的梯度
+            loss1 = self.BPR_train(batch_users, batch_pos, batch_neg)
+            loss1.backward(retain_graph=True)
+
+            # 保留第一个损失的梯度
+            grad1 = [param.grad.clone() for param in Recmodel.parameters()]
+
+            # 清零梯度
+            optimizer.zero_grad()
+
+            # 计算第二个损失的梯度
+            loss2 = self.BPR_Contrast_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
+            loss2.backward()
+
+            # 保留第二个损失的梯度
+            grad2 = [param.grad.clone() for param in Recmodel.parameters()]
+
+            # 组合梯度并更新参数
+            for param, g1, g2 in zip(Recmodel.parameters(), grad1, grad2):
+                param.grad = (1-lambda_ForkMerge)*g1 + (lambda_ForkMerge)*g2
+
+            # 参数更新
+            optimizer.step()
+            
+
+            aver_loss += (loss1+loss2).cpu().item()
+            # w.add_scalar(f"{world.config['loss']}_Loss/{world.config['dataset']}", l_all, epoch * int(len(batch_users) / world.config['batch_size']) + batch_i)
+        aver_loss = aver_loss / (total_batch)
+        # w.add_scalar(f"Average_{world.config['loss']}_Loss/{world.config['dataset']}", aver_loss, epoch)
+        print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
+        # return f"loss {aver_loss:.3f}"
+        return aver_loss 
 
 class Test():
     def __init__(self):
@@ -223,12 +274,14 @@ class Test():
             for group in range(num_group):
                 recall_pop_Contribute[group].append(ret['recall_Contribute_popDict'][group])
 
-            for group in range(num_group):
-                recall_pop[group] = np.array(recall_pop[group])
-            for group in range(num_group):
-                recall_pop_Contribute[group] = np.array(recall_pop_Contribute[group])
-
             ndcg.append(utils.NDCGatK_r(groundTrue,r,k))
+
+        
+        for group in range(num_group):
+            recall_pop[group] = np.array(recall_pop[group])
+        for group in range(num_group):
+            recall_pop_Contribute[group] = np.array(recall_pop_Contribute[group])
+
         return {'recall':np.array(recall), 
                 'recall_popDict':recall_pop,
                 'recall_Contribute_popDict':recall_pop_Contribute,
@@ -332,18 +385,108 @@ class Test():
             results['ndcg'] /= float(len(users))
             # results['auc'] = np.mean(auc_record)
             
-            w.add_scalars(f"Test/Recall@{world.config['topks']}", {'@'+str(world.config['topks'][i]): results['recall'][i] for i in range(len(world.config['topks']))}, epoch)
+            for i in range(len(world.config['topks'])):
+                k = world.config['topks'][i]
+                w.add_scalars(f"Test/Recall@{str(k)}", {'@'+str(k): results['recall'][i]}, epoch)
                 
-            for group in range(num_group):
-                w.add_scalars(f"Test-Groups/Recall_pop@{world.config['topks']}/group-{group}", {'@'+str(world.config['topks'][i]): results['recall_pop'][group][i] for i in range(len(world.config['topks']))}, epoch)
-                w.add_scalars(f"Test-Groups/Recall_pop_Contribute@{world.config['topks']}/group-{group}", {'@'+str(world.config['topks'][i]): results['recall_pop_Contribute'][group][i] for i in range(len(world.config['topks']))}, epoch)
-            w.add_scalars(f"Test/PopRating",  {str(group):value for group, value in RatingsPopDict.items()}, epoch)
-            w.add_scalars(f"Test/Precision@{world.config['topks']}", {'@'+str(world.config['topks'][i]): results['precision'][i] for i in range(len(world.config['topks']))}, epoch)
-            w.add_scalars(f"Test/NDCG@{world.config['topks']}", {'@'+str(world.config['topks'][i]): results['ndcg'][i] for i in range(len(world.config['topks']))}, epoch)
+                for group in range(num_group):
+                    w.add_scalars(f"Test-Groups/Recall_pop@{k}/group-{group}", {'@'+str(k): results['recall_pop'][group][i]}, epoch)
+                    w.add_scalars(f"Test-Groups/Recall_pop_Contribute@{k}/group-{group}", {'@'+str(k): results['recall_pop_Contribute'][group][i]}, epoch)
+                w.add_scalars(f"Test/PopRating",  {str(group):value for group, value in RatingsPopDict.items()}, epoch)
+                w.add_scalars(f"Test/Precision@{k}", {'@'+str(world.config['topks'][i]): results['precision'][i]}, epoch)
+                w.add_scalars(f"Test/NDCG@{k}", {'@'+str(world.config['topks'][i]): results['ndcg'][i]}, epoch)
             if multicore == 1:
                 pool.close()
             print(results)
             return results
     
 
-        
+    def valid_one_batch(self, X):
+        sorted_items = X[0].numpy()
+        groundTrue = X[1]
+        r= utils.getLabel_Valid(groundTrue, sorted_items)
+        pre, recall, ndcg = [], [], []
+
+        for k in world.config['topks']:
+            ret = utils.RecallPrecision_ATk_Valid(groundTrue, r, k)
+            pre.append(ret['precision'])
+            recall.append(ret['recall'])
+            ndcg.append(utils.NDCGatK_r(groundTrue,r,k))
+        return {'recall':np.array(recall),
+                'precision':np.array(pre), 
+                'ndcg':np.array(ndcg)}
+
+
+    def valid(self, dataset, Recmodel, precal, epoch, w:SummaryWriter=None, multicore=0):
+        u_batch_size = world.config['test_u_batch_size']
+        validDict: dict = dataset.validDict
+        Recmodel = Recmodel.eval()
+        max_K = max(world.config['topks'])
+        CORES = multiprocessing.cpu_count() // 2
+        # CORES = multiprocessing.cpu_count()
+        if multicore == 1:
+            pool = multiprocessing.Pool(CORES)
+        results = {'precision': np.zeros(len(world.config['topks'])),
+                'recall': np.zeros(len(world.config['topks'])),
+                'ndcg': np.zeros(len(world.config['topks']))}
+
+        with torch.no_grad():
+            users = list(validDict.keys())
+            try:
+                assert u_batch_size <= len(users) / 10
+            except AssertionError:
+                print(f"test_u_batch_size is too big for this dataset, try a small one {len(users) // 10}")
+            users_list = []
+            rating_list = []
+            groundTrue_list = []
+            # auc_record = []
+            # ratings = []
+            total_batch = len(users) // u_batch_size + 1
+            for batch_users in utils.minibatch(users, batch_size=u_batch_size):
+                allPos = dataset.getUserPosItems(batch_users)
+                groundTrue = [validDict[u] for u in batch_users]
+                batch_users_gpu = torch.Tensor(batch_users).long()
+                batch_users_gpu = batch_users_gpu.to(world.device)
+
+                rating = Recmodel.getUsersRating(batch_users_gpu)
+                #rating = rating.cpu()
+                exclude_index = []
+                exclude_items = []
+                for range_i, items in enumerate(allPos):
+                    exclude_index.extend([range_i] * len(items))
+                    exclude_items.extend(items)
+                rating[exclude_index, exclude_items] = -(1<<10)
+                _, rating_K = torch.topk(rating, k=max_K)
+                rating = rating.cpu().numpy()
+                # aucs = [ 
+                #         utils.AUC(rating[i],
+                #                   dataset, 
+                #                   test_data) for i, test_data in enumerate(groundTrue)
+                #     ]
+                # auc_record.extend(aucs)
+                del rating
+                users_list.append(batch_users)
+                rating_list.append(rating_K.cpu())
+                groundTrue_list.append(groundTrue)
+            assert total_batch == len(users_list)
+            X = zip(rating_list, groundTrue_list)
+            if multicore == 1:
+                pre_results = pool.map(self.valid_one_batch, X)
+            else:
+                pre_results = []
+                for x in X:
+                    pre_results.append(self.valid_one_batch(x))
+            scale = float(u_batch_size/len(users))
+                
+            for result in pre_results:
+                results['recall'] += result['recall']
+                results['precision'] += result['precision']
+                results['ndcg'] += result['ndcg']
+            results['recall'] /= float(len(users))
+            results['precision'] /= float(len(users))
+            results['ndcg'] /= float(len(users))
+            # results['auc'] = np.mean(auc_record)
+            if multicore == 1:
+                pool.close()
+            print('VALID',results)
+            return results
