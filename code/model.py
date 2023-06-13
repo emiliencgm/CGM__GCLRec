@@ -405,6 +405,25 @@ class GCLRec(LightGCN):
         neg_emb_ego = self.embedding_item(neg_items)
 
         return users_emb, pos_emb, neg_emb, users_emb_ego, pos_emb_ego, neg_emb_ego, embs_per_layer
+    
+    def bpr_loss(self, users, pos, neg):
+        '''
+        输入一个batch的users、pos_items、neg_items
+        reG_loss = users、pos_items、neg_items初始embedding的L2正则化loss
+        reC_loss = Σ{ softplus[ (ui,negi) - (ui,posi) ] }
+        '''
+        (users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, _) = self.getEmbedding(users.long(), pos.long(), neg.long())
+        users_emb, pos_emb, neg_emb = users_emb[-1], pos_emb[-1], neg_emb[-1]
+        reg_loss = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))#/float(len(users))
+        #TODO 这里的reg数量级有问题？除以了batch？？
+        pos_scores = torch.mul(users_emb, pos_emb)
+        pos_scores = torch.sum(pos_scores, dim=1)
+        neg_scores = torch.mul(users_emb, neg_emb)
+        neg_scores = torch.sum(neg_scores, dim=1)
+        # mean or sum
+        loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))#TODO SOFTPLUS()!!!
+        #loss = torch.sum((-(pos_scores - neg_scores)))#TODO SOFTPLUS()!!!
+        return loss, reg_loss
 
 
 class GNN_Encoder_edge_index(torch.nn.Module):

@@ -127,8 +127,8 @@ def main():
             #====================TRAIN====================
             cprint('[TRAIN]')
             start_train = time.time()
-            # avg_loss = train.ForkMerge_train(dataset, Recmodel, augmentation, epoch, optimizer, w)
-            avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+            avg_loss = train.ForkMerge_train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+            # avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
             end_train = time.time()
             wandb.log({ f"{world.config['dataset']}"+'/loss': avg_loss})
             wandb.log({f"{world.config['dataset']}"+f"/training_time": end_train - start_train})
@@ -137,7 +137,7 @@ def main():
                 #====================VALID====================
                 if world.config['if_valid']:
                     cprint("[valid]")
-                    result = test.valid(dataset, Recmodel, precal, epoch, w, world.config['if_multicore'])
+                    result = test.valid(dataset, Recmodel, multicore=world.config['if_multicore'])
                     if result["recall"][0] > best_valid_recall:#默认按照@20的效果early stop
                         stopping_valid_step = 0
                         advance = (result["recall"][0] - best_valid_recall)

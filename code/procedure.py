@@ -20,6 +20,7 @@ class Train():
     def __init__(self, loss_cal):
         self.loss = loss_cal
         self.projector = Projector().to(world.device)
+        self.test = Test()
 
     def train(self, dataset, Recmodel, augmentation, epoch, optimizer, w:SummaryWriter=None):
         Recmodel = Recmodel
@@ -202,12 +203,15 @@ class Train():
         total_batch = len(dataloader)
         aver_loss = 0.
         lr = world.config['lr']
-        lambda_ForkMerge = world.config['lambda_ForkMerge']
+        # lambda_ForkMerge = world.config['lambda_ForkMerge']
 
         for batch_i, train_data in tqdm(enumerate(dataloader), desc='training'):
             batch_users = train_data[0].long().to(world.device)
             batch_pos = train_data[1].long().to(world.device)
             batch_neg = train_data[2].long().to(world.device)
+
+            #记录模型当前参数
+            backup_params = [param.clone().detach() for param in Recmodel.parameters()]
 
             # 清零梯度
             optimizer.zero_grad()
@@ -229,10 +233,30 @@ class Train():
             # 保留第二个损失的梯度
             grad2 = [param.grad.clone() for param in Recmodel.parameters()]
 
-            # 组合梯度并更新参数
-            for param, g1, g2 in zip(Recmodel.parameters(), grad1, grad2):
-                param.grad = (1-lambda_ForkMerge)*g1 + (lambda_ForkMerge)*g2
+            #按照valid效果搜索最佳lambda_ForkMerge
+            best_valid = 0.
+            best_idx = 0
+            lambda_ForkMerge = [0.2, 0.4, 0.6, 0.8]
+            for idx in range(len(lambda_ForkMerge)):
+                # 组合梯度并更新参数
+                for param, g1, g2 in zip(Recmodel.parameters(), grad1, grad2):
+                    param.grad = (1-lambda_ForkMerge[idx])*g1 + (lambda_ForkMerge[idx])*g2
+                optimizer.step()
+                
+                #validation =========== time badly costing
+                valid_recall = self.test.valid_batch(dataset, Recmodel, batch_users)
+                if valid_recall > best_valid:
+                    best_idx = idx
+                    best_valid = valid_recall
 
+                # 将模型参数回退到更新之前的状态
+                with torch.no_grad():
+                    for param, backup_param in zip(Recmodel.parameters(), backup_params):
+                        param.copy_(backup_param)
+
+            #使用最佳lambda_ForkMerge组合
+            for param, g1, g2 in zip(Recmodel.parameters(), grad1, grad2):
+                    param.grad = (1-lambda_ForkMerge[best_idx])*g1 + (lambda_ForkMerge[best_idx])*g2
             # 参数更新
             optimizer.step()
             
@@ -415,9 +439,18 @@ class Test():
         return {'recall':np.array(recall),
                 'precision':np.array(pre), 
                 'ndcg':np.array(ndcg)}
+    
+    def valid_one_batch_batch(self, X):
+        sorted_items = X[0].numpy()
+        groundTrue = X[1]
+        r= utils.getLabel_Valid(groundTrue, sorted_items)
 
+        k = world.config['topks'][0]
+        ret = utils.RecallPrecision_ATk_Valid(groundTrue, r, k)
+        recall = ret['recall']
+        return recall
 
-    def valid(self, dataset, Recmodel, precal, epoch, w:SummaryWriter=None, multicore=0):
+    def valid(self, dataset, Recmodel, multicore=0, if_print=True):
         u_batch_size = world.config['test_u_batch_size']
         validDict: dict = dataset.validDict
         Recmodel = Recmodel.eval()
@@ -435,7 +468,8 @@ class Test():
             try:
                 assert u_batch_size <= len(users) / 10
             except AssertionError:
-                print(f"test_u_batch_size is too big for this dataset, try a small one {len(users) // 10}")
+                if if_print:
+                    print(f"test_u_batch_size is too big for this dataset, try a small one {len(users) // 10}")
             users_list = []
             rating_list = []
             groundTrue_list = []
@@ -488,5 +522,30 @@ class Test():
             # results['auc'] = np.mean(auc_record)
             if multicore == 1:
                 pool.close()
-            print('VALID',results)
+            if if_print:
+                print('VALID',results)
             return results
+
+
+    def valid_batch(self, dataset, Recmodel, batch_users):
+        batch_users = batch_users.cpu()
+        validDict: dict = dataset.validDict
+        Recmodel = Recmodel.eval()
+        max_K = max(world.config['topks'])
+
+        with torch.no_grad():
+            users = list(batch_users)
+            allPos = dataset.getUserPosItems(batch_users)
+            groundTrue = [validDict[u.item()] for u in batch_users]
+            batch_users_gpu = batch_users.to(world.device)
+
+            rating = Recmodel.getUsersRating(batch_users_gpu)
+            exclude_index = []
+            exclude_items = []
+            for range_i, items in enumerate(allPos):
+                exclude_index.extend([range_i] * len(items))
+                exclude_items.extend(items)
+            rating[exclude_index, exclude_items] = -(1<<10)
+            _, rating_K = torch.topk(rating, k=max_K)
+            recall = self.valid_one_batch_batch([rating_K.cpu(), groundTrue])
+            return recall/float(len(users))
