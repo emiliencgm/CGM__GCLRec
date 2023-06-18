@@ -1,0 +1,358 @@
+diff --git a/code/AdaAug+BPR_CL.py b/code/AdaAug+BPR_CL.py
+deleted file mode 100644
+index 5173b57..0000000
+--- a/code/AdaAug+BPR_CL.py
++++ /dev/null
+@@ -1,32 +0,0 @@
+-import os
+-import argparse
+-def parse_args():
+-    parser = argparse.ArgumentParser(description="Go GCLRec")
+-    parser.add_argument('--task', type=str, default='yelp2018', help="dataset")
+-    parser.add_argument('--device', type=int, default=0, help="device")
+-    parser.add_argument('--visual', type=int, default=0, help="visualization")
+-    parser.add_argument('--valid', type=int, default=1, help="validation")
+-    parser.add_argument('--L', type=int, default=3, help="total layers of LightGCN")
+-    parser.add_argument('--k', type=int, default=0, help="k-th layer to perturbate")
+-    parser.add_argument('--eps', type=float, default=0.1, help="epsilon_GCLRec")
+-    parser.add_argument('--w', type=float, default=0.1, help="w_GCLRec")
+-    return parser.parse_args()
+-args = parse_args()
+-if args.valid == 1:
+-    project = 'GCLRec_Valid'
+-else:
+-    project = 'GCLRec_No_Valid'
+-
+-#hyperparameters: InfoNCE:[temp_tau, lambda1, alpha], epsilon_GCLRec, w_GCLRec, k_aug, num_layers
+-
+-if args.task == 'yelp2018':
+-    os.system(f'python main.py --notes L={str(args.L)}_k={str(args.k)} --alpha 0.5 --temp_tau 0.1 --lambda1 0.1 --epsilon_GCLRec {args.eps} --w_GCLRec {args.w} --k_aug {args.k} --project {project} --name Adaptive_Aug+BPR_Contrast --model GCLRec --loss BPR_Contrast --augment Adaptive --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers {args.L} --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_Aug --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+-
+-elif args.task == 'gowalla':
+-    os.system(f'python main.py --notes L={str(args.L)}_k={str(args.k)} --alpha 0.5 --temp_tau 0.1 --lambda1 0.1 --epsilon_GCLRec {args.eps} --w_GCLRec {args.w} --k_aug {args.k} --project {project} --name Adaptive_Aug+BPR_Contrast --model GCLRec --loss BPR_Contrast --augment Adaptive --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers {args.L} --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_Aug --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+-    
+-elif args.task == 'amazon-book':
+-    os.system(f'python main.py --notes L={str(args.L)}_k={str(args.k)} --alpha 0.5 --temp_tau 0.1 --lambda1 0.1 --epsilon_GCLRec {args.eps} --w_GCLRec {args.w} --k_aug {args.k} --project {project} --name Adaptive_Aug+BPR_Contrast --model GCLRec --loss BPR_Contrast --augment Adaptive --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers {args.L} --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_Aug --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+-
+-elif args.task == 'ifashion':
+-    os.system(f'python main.py --notes L={str(args.L)}_k={str(args.k)} --alpha 0.5 --temp_tau 0.1 --lambda1 0.1 --epsilon_GCLRec {args.eps} --w_GCLRec {args.w} --k_aug {args.k} --project {project} --name Adaptive_Aug+BPR_Contrast --model GCLRec --loss BPR_Contrast --augment Adaptive --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers {args.L} --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_Aug --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 1')
+\ No newline at end of file
+diff --git a/code/augment.py b/code/augment.py
+index 0ae0ad2..853b144 100755
+--- a/code/augment.py
++++ b/code/augment.py
+@@ -15,12 +15,13 @@ import torch.nn.functional as F
+ from sklearn.cluster import KMeans
+ from precalcul import precalculate
+ import time
+-from k_means import kmeans
++from kmeans_gpu import kmeans
+ import faiss
+ import torch_sparse
+ from scipy.sparse import csr_matrix
+ from dataloader import dataset
+ import torch_geometric
++import copy
+ 
+ 
+ class Homophily:
+@@ -46,7 +47,8 @@ class Homophily:
+                 kmeans_faiss.train(embs_KMeans_numpy)
+                 centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
+             else:
+-                cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
++                # cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
++                cluster_ids_x, cluster_centers, dis = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device)
+                 centroids = cluster_centers.to(world.device)            
+             
+             logits = []
+@@ -60,14 +62,14 @@ class Homophily:
+             batch_user_prob, batch_item_prob = torch.split(probs, [batch_user.shape[0], batch_item.shape[0]])
+         return batch_user_prob, batch_item_prob
+ 
+-    def get_homophily_batch_any(self, batch_embs1:torch.Tensor, batch_embs2:torch.Tensor):
++    def get_homophily_batch_any(self, embs_KMeans):
+         '''
+         return prob distribution of users and items in batch.
+         '''
+         sigma = world.config['sigma_gausse']
+         ncluster = world.config['n_cluster']
+         #edge_index = self.model.dataset.Graph.cpu().indices()
+-        embs_KMeans = torch.cat((batch_embs1, batch_embs2), dim=0)
++        # embs_KMeans = torch.cat((batch_embs1, batch_embs2), dim=0)
+         
+         if ncluster > 99:
+             embs_KMeans_numpy = embs_KMeans.detach().cpu().numpy()
+@@ -75,19 +77,21 @@ class Homophily:
+             kmeans_faiss.train(embs_KMeans_numpy)
+             centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
+         else:
+-            cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
++            # cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
++            cluster_ids_x, cluster_centers, dis = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device)
+             centroids = cluster_centers.to(world.device)            
+         
+         logits = []
+         for c in centroids:
+             logits.append((-torch.square(embs_KMeans - c).sum(1)/sigma).view(-1, 1))
+         logits = torch.cat(logits, axis=1)
+-        probs = F.softmax(logits, dim=1)
+-        #probs = F.normalize(logits, dim=1)# TODO
++        # probs = F.softmax(logits, dim=1)
++        probs = F.normalize(logits, dim=1)# TODO
+         #loss = F.l1_loss(probs[edge_index[0]], probs[edge_index[1]])
+-        batch_prob1, batch_prob2 = torch.split(probs, [batch_embs1.shape[0], batch_embs2.shape[0]])
++        # batch_prob1, batch_prob2 = torch.split(probs, [batch_embs1.shape[0], batch_embs2.shape[0]])
+         
+-        return batch_prob1, batch_prob2
++        # return batch_prob1, batch_prob2
++        return probs
+ 
+ 
+ class ED_Uniform():
+@@ -378,3 +382,99 @@ class Augment_Learner(torch.nn.Module):
+     #     index = torch.stack([row, col])
+     #     data = torch.FloatTensor(coo.data)
+     #     return torch.sparse.FloatTensor(index, data, torch.Size(coo.shape))
++
++
++class Others():
++    def __init__(self) -> None:
++        pass
++
++    def diffusion_adj(self, adj, self_loop=True, mode="ppr", transport_rate=0.2):
++        """
++        graph diffusion
++        :param adj: input adj matrix
++        :param self_loop: if add the self loop or not
++        :param mode: the mode of graph diffusion
++        :param transport_rate: the transport rate
++        - personalized page rank
++        -
++        :return diff_adj: the graph diffusion
++        """
++        # add the self_loop
++        if self_loop:
++            adj_tmp = adj + np.eye(adj.shape[0])
++        else:
++            adj_tmp = adj
++
++        # calculate degree matrix and it's inverse matrix
++        d = np.diag(adj_tmp.sum(0))
++        d_inv = np.linalg.inv(d)
++        sqrt_d_inv = np.sqrt(d_inv)
++
++        # calculate norm adj
++        norm_adj = np.matmul(np.matmul(sqrt_d_inv, adj_tmp), sqrt_d_inv)
++
++        # calculate graph diffusion
++        if mode == "ppr":
++            diff_adj = transport_rate * np.linalg.inv((np.eye(d.shape[0]) - (1 - transport_rate) * norm_adj))
++
++        return diff_adj
++
++
++    def drop_edge(self, adj, drop_rate=0.2):
++        """
++        drop edges randomly
++        :param adj: input adj matrix
++        :param drop_rate: drop rate
++        :return drop_adj: edge dropped adj matrix
++        """
++        # drop adj
++        drop_adj = copy.deepcopy(adj)
++
++        # dropping mask
++        mask = np.ones(adj.shape[0] * adj.shape[1])
++        mask[:int(len(mask) * drop_rate)] = 0
++        np.random.shuffle(mask)
++        mask = mask.reshape(adj.shape[0], adj.shape[1])
++        drop_adj *= mask
++
++        return drop_adj
++
++
++    def add_edge(self, adj, add_rate=0.2):
++        """
++        add edges randomly
++        :param adj: input adj matrix
++        :param add_rate: drop rate
++        :return add_adj: edge added adj matrix
++        """
++        # add adj
++        add_adj = copy.deepcopy(adj)
++
++        # add mask
++        mask = np.zeros(adj.shape[0] * adj.shape[1])
++        mask[:int(len(mask) * add_rate)] = 1
++        np.random.shuffle(mask)
++        mask = mask.reshape(adj.shape[0], adj.shape[1])
++        add_adj += mask
++
++        return add_adj
++
++
++    def mask_feat(self, feat, mask_rate=0.2):
++        """
++        mask features randomly
++        :param feat: input feat matrix
++        :param mask_rate: mask rate
++        :return masked_feat: mask features
++        """
++        # mask feat
++        masked_feat = copy.deepcopy(feat)
++
++        # add mask
++        mask = np.ones(feat.shape[0] * feat.shape[1])
++        mask[:int(len(mask) * mask_rate)] = 0
++        np.random.shuffle(mask)
++        mask = mask.reshape(feat.shape[0], feat.shape[1])
++        masked_feat *= mask
++
++        return masked_feat
+\ No newline at end of file
+diff --git a/code/loss.py b/code/loss.py
+index 3acaba6..4212b68 100755
+--- a/code/loss.py
++++ b/code/loss.py
+@@ -112,7 +112,7 @@ class Softmax_loss():
+ 
+         softmax_loss = torch.mean(torch.negative(torch.log(numerator / denominator)))
+ 
+-        regularizer = 0.5 * torch.norm(userEmb0) ** 2 + 0.5 * torch.norm(posEmb0) ** 2 + 0.5 ** torch.norm(negEmb0)
++        regularizer = 0.5 * torch.norm(userEmb0) ** 2 + 0.5 * torch.norm(posEmb0) ** 2 + 0.5 * torch.norm(negEmb0) ** 2
+         regularizer = regularizer / self.config['batch_size']
+         reg_loss = self.config['weight_decay'] * regularizer
+ 
+@@ -553,3 +553,48 @@ class Causal_popularity_BPR_loss():
+ 
+         return loss
+ 
++#=============================================================HSAN loss============================================================#
++class All_weighted_InfoNCE(Adaptive_softmax_loss):
++    def __init__(self, config, model:LightGCN, precal:precalculate, homophily:Homophily):
++        super(Adaptive_softmax_loss, self).__init__(config, model, precal, homophily)
++        self.tau = config['temp_tau']
++        self.alpha = config['alpha']
++        self.MLP_model = MLP(5+2*0).to(world.device)
++
++    def all_weighted_infonce(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
++        # reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)#TODO
++        reg = (0.5)*(torch.norm(userEmb0) ** 2 + torch.norm(posEmb0) ** 2 + torch.norm(negEmb0) ** 2)
++        reg = torch.mean(reg)
++
++        
++        node_num = 2 * len(batch_pos)
++        E1 = torch.cat([aug_users1[batch_user], aug_items1[batch_pos]])
++        E2 = torch.cat([aug_users2[batch_user], aug_items2[batch_pos]])
++        S = self.similarity(E1,E2)
++        mask = torch.ones([node_num * 2, node_num * 2]) - torch.eye(node_num * 2).to(world.device)
++        M1 = torch.ones([node_num * 2, node_num * 2]).to(world.device)
++        M2 = torch.ones(node_num * 2).to(world.device)
++        lossCL = self.hard_sample_aware_infoNCE(Sim=S, Mask=mask, pos_neg_weight=M1, pos_weight=M2, node_num=node_num)
++
++        lossRec = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
++        
++        
++        return lossRec + self.config['lambda1']*lossCL + self.config['weight_decay']*reg
++
++
++    def hard_sample_aware_infoNCE(self, Sim, Mask, pos_neg_weight, pos_weight, node_num):
++        pos_neg = Mask * torch.exp(Sim * pos_neg_weight / self.tau)
++        pos = torch.cat([torch.diag(Sim, node_num), torch.diag(Sim, -node_num)], dim=0)
++        pos = torch.exp(pos * pos_weight / self.tau)
++        neg = (torch.sum(pos_neg, dim=1) - pos)
++        infoNCE = (-torch.log(pos / (pos + neg))).sum() / (2 * node_num)
++        return infoNCE
++
++    def weight_homophily(self, embs):
++        probs = self.homophily.get_homophily_batch_any(embs)
++        return 
++    
++    def similarity(self, E1, E2):
++        S = torch.cat([torch.cat([E1 @ E1.T, E1 @ E2.T], dim=1),
++                        torch.cat([E2 @ E1.T, E2 @ E2.T], dim=1)], dim=0)
++        return S
+\ No newline at end of file
+diff --git a/code/main.py b/code/main.py
+index cdce041..3283367 100755
+--- a/code/main.py
++++ b/code/main.py
+@@ -127,8 +127,8 @@ def main():
+             #====================TRAIN====================
+             cprint('[TRAIN]')
+             start_train = time.time()
+-            avg_loss = train.ForkMerge_train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+-            # avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
++            # avg_loss = train.ForkMerge_train(dataset, Recmodel, augmentation, epoch, optimizer, w)
++            avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+             end_train = time.time()
+             wandb.log({ f"{world.config['dataset']}"+'/loss': avg_loss})
+             wandb.log({f"{world.config['dataset']}"+f"/training_time": end_train - start_train})
+diff --git a/code/parse.py b/code/parse.py
+index aace72c..b73a1c7 100755
+--- a/code/parse.py
++++ b/code/parse.py
+@@ -45,7 +45,7 @@ def parse_args():
+     parser.add_argument('--if_multicore', type=int, default=1, help="whether use multicores in Test")
+     parser.add_argument('--batch_size', type=int, default=2048, help="batch size in BPR_Contrast_Train")    
+     parser.add_argument('--topks', nargs='?', default='[20, 40]', help="topks [@20, @40] for test")
+-    parser.add_argument('--test_u_batch_size', type=int, default=4096, help="users batch size for test")
++    parser.add_argument('--test_u_batch_size', type=int, default=2048, help="users batch size for test")
+     parser.add_argument('--pop_group', type=int, default=10, help="Num of groups of Popularity")
+     parser.add_argument('--if_big_matrix', type=int, default=0, help="whether the adj matrix is big, and then use matrix n_fold split")
+     parser.add_argument('--n_fold', type=int, default=2, help="split the matrix to n_fold")
+diff --git a/code/procedure.py b/code/procedure.py
+index 1fb5430..3e4f960 100755
+--- a/code/procedure.py
++++ b/code/procedure.py
+@@ -57,6 +57,9 @@ class Train():
+             elif world.config['loss'] == 'DCL':
+                 l_all = self.DCL_train(Recmodel, batch_users, batch_pos, batch_neg)
+ 
++            elif world.config['loss'] == 'AllWeight':                
++                l_all = self.AllWeightInfoNCE_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
++
+             else:
+                 l_all = None
+                 raise TypeError('No demanded loss')
+@@ -73,7 +76,38 @@ class Train():
+         print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
+         # return f"loss {aver_loss:.3f}"
+         return aver_loss
+-    
++    def AllWeightInfoNCE_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
++        users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
++        #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
++        
++        if world.config['model'] in ['SGL']:
++            aug_users1, aug_items1 = Recmodel.view_computer(augmentation.augAdjMatrix1)
++            aug_users2, aug_items2 = Recmodel.view_computer(augmentation.augAdjMatrix2)
++        elif world.config['model'] in ['SimGCL']:
++            aug_users1, aug_items1 = Recmodel.view_computer()
++            aug_users2, aug_items2 = Recmodel.view_computer()
++        # elif world.config['model'] in ['LightGCN', 'GTN', 'LightGCN_PyG']:
++        #     aug_users1, aug_items1 = None, None
++        #     aug_users2, aug_items2 = None, None
++        elif world.config['model'] in ['GCLRec']:
++            k = world.config['k_aug']
++            aug_users1, aug_items1 = torch.split(embs_per_layer_or_all_embs[k], [Recmodel.num_users, Recmodel.num_items])
++            aug_users2, aug_items2 = augmentation.get_adaptive_neighbor_augment(embs_per_layer_or_all_embs, batch_users, batch_pos, batch_neg, k)
++        
++        if world.config['augment'] in ['SVD'] and world.config['model'] in ['LightGCN', 'LightGCN_PyG']: #or world.config['model'] in ['LightGCL']:
++            #SVD + LightGCN
++            aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
++            aug_users2, aug_items2 = augmentation.reconstruct_graph_computer()
++
++
++        if world.config['model'] in ['GCLRec']:
++            l_all = self.loss.all_weighted_infonce(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
++        else:
++            l_all = self.loss.all_weighted_infonce(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
++
++        return l_all
++
++
+     def DCL_train(self, Recmodel, batch_users, batch_pos, batch_neg):
+         users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs= Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
+ 

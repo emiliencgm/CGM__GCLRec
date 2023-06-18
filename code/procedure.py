@@ -57,6 +57,9 @@ class Train():
             elif world.config['loss'] == 'DCL':
                 l_all = self.DCL_train(Recmodel, batch_users, batch_pos, batch_neg)
 
+            elif world.config['loss'] == 'AllWeight':                
+                l_all = self.AllWeightInfoNCE_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
+
             else:
                 l_all = None
                 raise TypeError('No demanded loss')
@@ -73,7 +76,38 @@ class Train():
         print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
         # return f"loss {aver_loss:.3f}"
         return aver_loss
-    
+    def AllWeightInfoNCE_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
+        users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
+        #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
+        
+        if world.config['model'] in ['SGL']:
+            aug_users1, aug_items1 = Recmodel.view_computer(augmentation.augAdjMatrix1)
+            aug_users2, aug_items2 = Recmodel.view_computer(augmentation.augAdjMatrix2)
+        elif world.config['model'] in ['SimGCL']:
+            aug_users1, aug_items1 = Recmodel.view_computer()
+            aug_users2, aug_items2 = Recmodel.view_computer()
+        # elif world.config['model'] in ['LightGCN', 'GTN', 'LightGCN_PyG']:
+        #     aug_users1, aug_items1 = None, None
+        #     aug_users2, aug_items2 = None, None
+        elif world.config['model'] in ['GCLRec']:
+            k = world.config['k_aug']
+            aug_users1, aug_items1 = torch.split(embs_per_layer_or_all_embs[k], [Recmodel.num_users, Recmodel.num_items])
+            aug_users2, aug_items2 = augmentation.get_adaptive_neighbor_augment(embs_per_layer_or_all_embs, batch_users, batch_pos, batch_neg, k)
+        
+        if world.config['augment'] in ['SVD'] and world.config['model'] in ['LightGCN', 'LightGCN_PyG']: #or world.config['model'] in ['LightGCL']:
+            #SVD + LightGCN
+            aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
+            aug_users2, aug_items2 = augmentation.reconstruct_graph_computer()
+
+
+        if world.config['model'] in ['GCLRec']:
+            l_all = self.loss.all_weighted_infonce(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+        else:
+            l_all = self.loss.all_weighted_infonce(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+
+        return l_all
+
+
     def DCL_train(self, Recmodel, batch_users, batch_pos, batch_neg):
         users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs= Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
 

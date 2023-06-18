@@ -45,7 +45,7 @@ def parse_args():
     parser.add_argument('--if_multicore', type=int, default=1, help="whether use multicores in Test")
     parser.add_argument('--batch_size', type=int, default=2048, help="batch size in BPR_Contrast_Train")    
     parser.add_argument('--topks', nargs='?', default='[20, 40]', help="topks [@20, @40] for test")
-    parser.add_argument('--test_u_batch_size', type=int, default=4096, help="users batch size for test")
+    parser.add_argument('--test_u_batch_size', type=int, default=2048, help="users batch size for test")
     parser.add_argument('--pop_group', type=int, default=10, help="Num of groups of Popularity")
     parser.add_argument('--if_big_matrix', type=int, default=0, help="whether the adj matrix is big, and then use matrix n_fold split")
     parser.add_argument('--n_fold', type=int, default=2, help="split the matrix to n_fold")

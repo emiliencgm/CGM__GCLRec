@@ -112,7 +112,7 @@ class Softmax_loss():
 
         softmax_loss = torch.mean(torch.negative(torch.log(numerator / denominator)))
 
-        regularizer = 0.5 * torch.norm(userEmb0) ** 2 + 0.5 * torch.norm(posEmb0) ** 2 + 0.5 ** torch.norm(negEmb0)
+        regularizer = 0.5 * torch.norm(userEmb0) ** 2 + 0.5 * torch.norm(posEmb0) ** 2 + 0.5 * torch.norm(negEmb0) ** 2
         regularizer = regularizer / self.config['batch_size']
         reg_loss = self.config['weight_decay'] * regularizer
 
@@ -553,3 +553,60 @@ class Causal_popularity_BPR_loss():
 
         return loss
 
+#=============================================================HSAN loss============================================================#
+class All_weighted_InfoNCE(Adaptive_softmax_loss):
+    def __init__(self, config, model:LightGCN, precal:precalculate, homophily:Homophily):
+        super(All_weighted_InfoNCE, self).__init__(config, model, precal, homophily)
+        self.tau = config['temp_tau']
+        self.alpha = config['alpha']
+        self.MLP_model = MLP(5+2*0).to(world.device)
+        self.w = torch.nn.Parameter(torch.Tensor(1, ))
+        self.w.data = torch.tensor(0.99999).to(world.device)
+
+    def all_weighted_infonce(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
+        # reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)#TODO
+        reg = (0.5)*(torch.norm(userEmb0) ** 2 + torch.norm(posEmb0) ** 2 + torch.norm(negEmb0) ** 2)
+        reg = torch.mean(reg)
+
+        
+        node_num = 2 * len(batch_pos)
+        E1 = torch.cat([aug_users1[batch_user], aug_items1[batch_pos]])
+        E2 = torch.cat([aug_users2[batch_user], aug_items2[batch_pos]])
+        S = self.similarity(E1,E2)
+        mask = torch.ones([node_num * 2, node_num * 2]) - torch.eye(node_num * 2)
+        mask = mask.to(world.device)
+        # M1 = torch.ones([node_num * 2, node_num * 2]).to(world.device)
+        M2 = torch.ones(node_num * 2).to(world.device)
+        P= self.weight_homophily(torch.cat([users_emb, pos_emb]))
+        M1 = torch.sigmoid(self.similarity(P, P) * self.w )       
+        lossCL = self.hard_sample_aware_infoNCE(Sim=S, Mask=mask, pos_neg_weight=M1, pos_weight=M2, node_num=node_num)
+
+
+        pos_scores = torch.sum(torch.mul(users_emb, pos_emb), dim=1)
+        neg_scores = torch.sum(torch.mul(users_emb, neg_emb), dim=1)
+        lossRec = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))
+        # lossRec = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
+        
+        
+        return lossRec + self.config['lambda1']*lossCL + self.config['weight_decay']*reg
+
+
+    def hard_sample_aware_infoNCE(self, Sim, Mask, pos_neg_weight, pos_weight, node_num):
+        pos_neg = Mask * torch.exp(Sim * pos_neg_weight / self.tau)
+        pos = torch.cat([torch.diag(Sim, node_num), torch.diag(Sim, -node_num)], dim=0)
+        pos = torch.exp(pos * pos_weight / self.tau)
+        neg = (torch.sum(pos_neg, dim=1) - pos)
+        infoNCE = (-torch.log(pos / (pos + neg))).sum() / (2 * node_num)
+        return infoNCE
+
+    def weight_homophily(self, embs):
+        with torch.no_grad():            
+            # embs = F.normalize(embs, dim = -1)
+            probs = self.homophily.get_homophily_batch_any(embs)
+            # batch_prob1, batch_prob2 = torch.split(probs, [self.config['batch_size']*1, self.config['batch_size']*1])
+        return probs
+    
+    def similarity(self, E1, E2):
+        S = torch.cat([torch.cat([E1 @ E1.T, E1 @ E2.T], dim=1),
+                        torch.cat([E2 @ E1.T, E2 @ E2.T], dim=1)], dim=0)
+        return S

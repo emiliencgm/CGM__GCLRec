@@ -15,12 +15,13 @@ import torch.nn.functional as F
 from sklearn.cluster import KMeans
 from precalcul import precalculate
 import time
-from k_means import kmeans
+from kmeans_gpu import kmeans
 import faiss
 import torch_sparse
 from scipy.sparse import csr_matrix
 from dataloader import dataset
 import torch_geometric
+import copy
 
 
 class Homophily:
@@ -46,7 +47,8 @@ class Homophily:
                 kmeans_faiss.train(embs_KMeans_numpy)
                 centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
             else:
-                cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
+                # cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
+                cluster_ids_x, cluster_centers, dis = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device)
                 centroids = cluster_centers.to(world.device)            
             
             logits = []
@@ -60,14 +62,14 @@ class Homophily:
             batch_user_prob, batch_item_prob = torch.split(probs, [batch_user.shape[0], batch_item.shape[0]])
         return batch_user_prob, batch_item_prob
 
-    def get_homophily_batch_any(self, batch_embs1:torch.Tensor, batch_embs2:torch.Tensor):
+    def get_homophily_batch_any(self, embs_KMeans):
         '''
         return prob distribution of users and items in batch.
         '''
         sigma = world.config['sigma_gausse']
         ncluster = world.config['n_cluster']
         #edge_index = self.model.dataset.Graph.cpu().indices()
-        embs_KMeans = torch.cat((batch_embs1, batch_embs2), dim=0)
+        # embs_KMeans = torch.cat((batch_embs1, batch_embs2), dim=0)
         
         if ncluster > 99:
             embs_KMeans_numpy = embs_KMeans.detach().cpu().numpy()
@@ -75,19 +77,21 @@ class Homophily:
             kmeans_faiss.train(embs_KMeans_numpy)
             centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
         else:
-            cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
+            # cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
+            cluster_ids_x, cluster_centers, dis = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='cosine', device=world.device)
             centroids = cluster_centers.to(world.device)            
         
         logits = []
         for c in centroids:
             logits.append((-torch.square(embs_KMeans - c).sum(1)/sigma).view(-1, 1))
         logits = torch.cat(logits, axis=1)
-        probs = F.softmax(logits, dim=1)
-        #probs = F.normalize(logits, dim=1)# TODO
+        # probs = F.softmax(logits, dim=1)
+        probs = F.normalize(logits, dim=1)# TODO
         #loss = F.l1_loss(probs[edge_index[0]], probs[edge_index[1]])
-        batch_prob1, batch_prob2 = torch.split(probs, [batch_embs1.shape[0], batch_embs2.shape[0]])
+        # batch_prob1, batch_prob2 = torch.split(probs, [batch_embs1.shape[0], batch_embs2.shape[0]])
         
-        return batch_prob1, batch_prob2
+        # return batch_prob1, batch_prob2
+        return probs
 
 
 class ED_Uniform():
@@ -378,3 +382,99 @@ class Augment_Learner(torch.nn.Module):
     #     index = torch.stack([row, col])
     #     data = torch.FloatTensor(coo.data)
     #     return torch.sparse.FloatTensor(index, data, torch.Size(coo.shape))
+
+
+class Others():
+    def __init__(self) -> None:
+        pass
+
+    def diffusion_adj(self, adj, self_loop=True, mode="ppr", transport_rate=0.2):
+        """
+        graph diffusion
+        :param adj: input adj matrix
+        :param self_loop: if add the self loop or not
+        :param mode: the mode of graph diffusion
+        :param transport_rate: the transport rate
+        - personalized page rank
+        -
+        :return diff_adj: the graph diffusion
+        """
+        # add the self_loop
+        if self_loop:
+            adj_tmp = adj + np.eye(adj.shape[0])
+        else:
+            adj_tmp = adj
+
+        # calculate degree matrix and it's inverse matrix
+        d = np.diag(adj_tmp.sum(0))
+        d_inv = np.linalg.inv(d)
+        sqrt_d_inv = np.sqrt(d_inv)
+
+        # calculate norm adj
+        norm_adj = np.matmul(np.matmul(sqrt_d_inv, adj_tmp), sqrt_d_inv)
+
+        # calculate graph diffusion
+        if mode == "ppr":
+            diff_adj = transport_rate * np.linalg.inv((np.eye(d.shape[0]) - (1 - transport_rate) * norm_adj))
+
+        return diff_adj
+
+
+    def drop_edge(self, adj, drop_rate=0.2):
+        """
+        drop edges randomly
+        :param adj: input adj matrix
+        :param drop_rate: drop rate
+        :return drop_adj: edge dropped adj matrix
+        """
+        # drop adj
+        drop_adj = copy.deepcopy(adj)
+
+        # dropping mask
+        mask = np.ones(adj.shape[0] * adj.shape[1])
+        mask[:int(len(mask) * drop_rate)] = 0
+        np.random.shuffle(mask)
+        mask = mask.reshape(adj.shape[0], adj.shape[1])
+        drop_adj *= mask
+
+        return drop_adj
+
+
+    def add_edge(self, adj, add_rate=0.2):
+        """
+        add edges randomly
+        :param adj: input adj matrix
+        :param add_rate: drop rate
+        :return add_adj: edge added adj matrix
+        """
+        # add adj
+        add_adj = copy.deepcopy(adj)
+
+        # add mask
+        mask = np.zeros(adj.shape[0] * adj.shape[1])
+        mask[:int(len(mask) * add_rate)] = 1
+        np.random.shuffle(mask)
+        mask = mask.reshape(adj.shape[0], adj.shape[1])
+        add_adj += mask
+
+        return add_adj
+
+
+    def mask_feat(self, feat, mask_rate=0.2):
+        """
+        mask features randomly
+        :param feat: input feat matrix
+        :param mask_rate: mask rate
+        :return masked_feat: mask features
+        """
+        # mask feat
+        masked_feat = copy.deepcopy(feat)
+
+        # add mask
+        mask = np.ones(feat.shape[0] * feat.shape[1])
+        mask[:int(len(mask) * mask_rate)] = 0
+        np.random.shuffle(mask)
+        mask = mask.reshape(feat.shape[0], feat.shape[1])
+        masked_feat *= mask
+
+        return masked_feat

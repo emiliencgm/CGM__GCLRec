@@ -1,0 +1,200 @@
+{
+    "os": "Linux-5.15.0-71-generic-x86_64-with-glibc2.31",
+    "python": "3.9.13",
+    "heartbeatAt": "2023-06-13T14:21:50.226883",
+    "startedAt": "2023-06-13T14:21:48.812903",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--notes",
+        "L=3_k=0",
+        "--alpha",
+        "0.5",
+        "--temp_tau",
+        "0.1",
+        "--lambda1",
+        "0.1",
+        "--epsilon_GCLRec",
+        "0.1",
+        "--w_GCLRec",
+        "0.1",
+        "--k_aug",
+        "0",
+        "--project",
+        "GCLRec_Valid",
+        "--name",
+        "Adaptive_Aug+BPR_Contrast",
+        "--model",
+        "GCLRec",
+        "--loss",
+        "BPR_Contrast",
+        "--augment",
+        "Adaptive",
+        "--dataset",
+        "yelp2018",
+        "--init_method",
+        "Normal",
+        "--lr",
+        "0.001",
+        "--weight_decay",
+        "1e-4",
+        "--cuda",
+        "0",
+        "--num_layers",
+        "3",
+        "--latent_dim_rec",
+        "64",
+        "--batch_size",
+        "2048",
+        "--comment",
+        "_",
+        "--if_valid",
+        "1",
+        "--tag",
+        "Adaptive_Aug",
+        "--group",
+        "Ours",
+        "--job_type",
+        "yelp2018",
+        "--if_visual",
+        "0",
+        "--visual_epoch",
+        "1"
+    ],
+    "state": "running",
+    "program": "/home/cgm/code/CGM__GCLRec/code/main.py",
+    "codePath": "code/main.py",
+    "git": {
+        "remote": "https://github.com/emiliencgm/CGM__GCLRec.git",
+        "commit": "af0a8d5561e54b6278ac3a6e45529088e1f5cf7f"
+    },
+    "email": "131215707706@163.com",
+    "root": "/home/cgm/code/CGM__GCLRec",
+    "host": "user-System-Product-Name",
+    "username": "cgm",
+    "executable": "/home/cgm/anaconda3/bin/python",
+    "cpu_count": 10,
+    "cpu_count_logical": 20,
+    "cpu_freq": {
+        "current": 3.709500000000001,
+        "min": 800.0,
+        "max": 5300.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.43,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 3.7,
+            "min": 800.0,
+            "max": 5300.0
+        }
+    ],
+    "disk": {
+        "total": 915.3232879638672,
+        "used": 848.6949920654297
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        }
+    ],
+    "memory": {
+        "total": 62.657814025878906
+    }
+}
