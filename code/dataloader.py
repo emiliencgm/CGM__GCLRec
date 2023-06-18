@@ -244,13 +244,26 @@ class dataset(Dataset):
                 s = time()
                 adj_mat = sp.dok_matrix((self.n_users + self.m_items, self.n_users + self.m_items), dtype=np.float32)
                 adj_mat = adj_mat.tolil()
-                R = self.UserItemNet.tolil()
+                # R = self.UserItemNet.tolil()
                 #此处会显存爆炸
-                adj_mat[:self.n_users, self.n_users:] = R
-                adj_mat[self.n_users:, :self.n_users] = R.T
-                adj_mat = adj_mat.todok()
+                # adj_mat[:self.n_users, self.n_users:] = R
+                # adj_mat[self.n_users:, :self.n_users] = R.T
+                # adj_mat = adj_mat.todok()
                 # adj_mat = adj_mat + sp.eye(adj_mat.shape[0]) TODO 无自连接
-                
+                # 逐步构建邻接矩阵
+                batch_size = 30000  # 每次处理的批大小
+                num_batches = int(np.ceil(self.n_users / batch_size))
+
+                for batch_idx in range(num_batches):
+                    start_idx = batch_idx * batch_size
+                    end_idx = min((batch_idx + 1) * batch_size, self.n_users)
+                    # 构建用户部分的邻接矩阵
+                    batch_R = self.UserItemNet[start_idx:end_idx].tolil()
+                    adj_mat[start_idx:end_idx, self.n_users:] = batch_R
+                    adj_mat[self.n_users:, start_idx:end_idx] = batch_R.T
+
+                adj_mat = adj_mat.todok()
+
                 rowsum = np.array(adj_mat.sum(axis=1))#度
                 d_inv = np.power(rowsum, -0.5).flatten()
                 d_inv[np.isinf(d_inv)] = 0.
