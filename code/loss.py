@@ -525,8 +525,8 @@ class Causal_popularity_BPR_loss():
         reg_loss = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))
         reg_loss = reg_loss * self.config['weight_decay']
 
-        pos_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label)[batch_pos].to(world.device)
-        neg_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label)[batch_neg].to(world.device)
+        pos_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label).to(world.device)[batch_pos]
+        neg_items_pop = torch.tensor(self.precalculate.popularity.item_pop_degree_label).to(world.device)[batch_neg]
         # pos_pop_emb = self.model.embed_item_pop(pos_items_pop)
         # neg_pop_emb = self.model.embed_item_pop(neg_items_pop)
         norm_pos_items_pop = pos_items_pop / self.precalculate.popularity.item_pop_sum
