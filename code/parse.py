@@ -86,6 +86,7 @@ def parse_args():
     parser.add_argument('--comment', type=str, default='_', help="comment for the experiment")
     parser.add_argument('--if_valid', type=int, default=0, help="whether use validtion set")
     parser.add_argument('--adaloss_mode', type=str, default='pos', help="mode of AdaLoss: pos, pos+neg, pos+neg+cl")
+    parser.add_argument('--train_mode', type=str, default='forkmerge', help="mode of training")
     #===========================================================================================================================================
 
     return parser.parse_args()

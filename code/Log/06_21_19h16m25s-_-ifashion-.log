@@ -1,0 +1,107 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaloss_mode': 'pos',
+ 'adaptive_method': 'mlp',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'ifashion',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'Ours',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'ifashion',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'lambda_ForkMerge': 0.5,
+ 'latent_dim_rec': 64,
+ 'loss': 'Adaptive',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+AdaLoss',
+ 'notes': 'LGN_+_AdaLoss_mlp',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['Adaptive_loss'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.12,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20, 40],
+ 'train_mode': 'origin',
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 3,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[0;30;43m[DATALOADER--START][0m
+loading [/home/cgm/code/CGM__GCLRec/data/ifashion]
+1255447 interactions for training
+352366 interactions for testing
+ifashion Sparsity : 6.566736916051985e-05
+loading adjacency matrix
+successfully loaded...
+[0;30;43mRemember to delete this pre-calculed mat while changing data split ![0m
+ifashion is ready to go
+[0;30;43m[DATALOADER--END][0m
+[0;30;43m[PRECALCULATE--START][0m
+Loading Eigenvector.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/ifashion/EigenvectorCentroid
+eigenvector_centrality cost:  0.0010676383972167969
+Loading CommonNeighbor_sp.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/ifashion/CommonNeighbor/SC
+CN_simi_unsymmetry_mat_sp cost:  0.0900728702545166
+shape test : 2510894 == 2510894
+precal cost :  3.715806484222412
+[0;30;43m[PRECALCULATE--END][0m
+user:300000, item:81614
+[0;30;43muse NORMAL distribution UI for Embedding[0m
+GCL Model is ready to go!
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[0]:loss nan
+[0;30;43m[TEST][0m
+{'precision': array([0.00028976, 0.00023266]), 'recall': array([0.00462748, 0.00745324]), 'recall_pop': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([3.71958772e-06, 3.71958772e-06]), 7: array([0.00000000e+00, 8.09010329e-05]), 8: array([4.46350527e-05, 6.88123728e-05]), 9: array([0.00481686, 0.00768636])}, 'recall_pop_Contribute': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([1.85979386e-06, 1.85979386e-06]), 7: array([0.00000000e+00, 6.88123728e-05]), 8: array([3.37862551e-05, 5.54838502e-05]), 9: array([0.00459183, 0.00732709])}, 'ndcg': array([0.00182908, 0.00242534])}
+[5;37;44mfind a better recall[0m [0;37;44m0.004627480947413573[0m [0;37;44m++0.004627480947413573[0m
+total time cost of epoch 0:  106.09452295303345
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[1]:loss nan
+[0;30;43m[TEST][0m
+{'precision': array([0.00028976, 0.00023266]), 'recall': array([0.00462748, 0.00745324]), 'recall_pop': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([3.71958772e-06, 3.71958772e-06]), 7: array([0.00000000e+00, 8.09010329e-05]), 8: array([4.46350527e-05, 6.88123728e-05]), 9: array([0.00481686, 0.00768636])}, 'recall_pop_Contribute': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([1.85979386e-06, 1.85979386e-06]), 7: array([0.00000000e+00, 6.88123728e-05]), 8: array([3.37862551e-05, 5.54838502e-05]), 9: array([0.00459183, 0.00732709])}, 'ndcg': array([0.00182908, 0.00242534])}
+total time cost of epoch 1:  108.10067391395569
+[0;30;43m[AUGMENT][0m
+[0;30;43m[TRAIN][0m
+EPOCH[2]:loss nan
+[0;30;43m[TEST][0m

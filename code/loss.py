@@ -84,6 +84,59 @@ class BPR_Contrast_loss(BPR_loss):
                 z2 = F.normalize(z2)
                 #return ( torch.mm(z1, z2.t()) + 1 ) / 2
                 return torch.mm(z1, z2.t())
+            
+class InfoNCE_loss():
+    def __init__(self):
+        self.tau = world.config['temp_tau']
+
+    def infonce_loss(self, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
+
+        # reg_loss = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))/self.config['batch_size']
+        
+        contrastloss = self.info_nce_loss_overall(aug_users1[batch_user], aug_users2[batch_user], aug_users2) \
+                        + self.info_nce_loss_overall(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2)
+        return contrastloss
+
+    def info_nce_loss_overall(self, z1, z2, z_all):
+        '''
+        z1--z2: pos,  z_all: neg\n
+        return: InfoNCEloss
+        '''
+        f = lambda x: torch.exp(x / self.tau)
+        between_sim = f(self.sim(z1, z2))
+        all_sim = f(self.sim(z1, z_all))
+        positive_pairs = (between_sim)
+        negative_pairs = torch.sum(all_sim, 1)
+        loss = torch.sum(-torch.log(positive_pairs / negative_pairs))#TODO softplus
+        #print('positive_pairs / negative_pairs',max(positive_pairs / negative_pairs))
+        loss = loss/world.config['batch_size']
+        return loss
+
+
+    def sim(self, z1: torch.Tensor, z2: torch.Tensor, mode='inner_product'):#TODO
+        '''
+        计算一个z1和一个z2两个向量的相似度/或者一个z1和多个z2的各自相似度。
+        即两个输入的向量数（行数）可能不同。
+        '''
+        if mode == 'inner_product':
+            if z1.size()[0] == z2.size()[0]:
+                #return F.cosine_similarity(z1,z2)
+                z1 = F.normalize(z1)
+                z2 = F.normalize(z2)
+                return torch.sum(torch.mul(z1,z2) ,dim=1)
+            else:
+                z1 = F.normalize(z1)
+                z2 = F.normalize(z2)
+                #return ( torch.mm(z1, z2.t()) + 1 ) / 2
+                return torch.mm(z1, z2.t())
+        elif mode == 'cos':
+            if z1.size()[0] == z2.size()[0]:
+                return F.cosine_similarity(z1,z2)
+            else:
+                z1 = F.normalize(z1)
+                z2 = F.normalize(z2)
+                #return ( torch.mm(z1, z2.t()) + 1 ) / 2
+                return torch.mm(z1, z2.t())
 #=============================================================Softmax loss============================================================#
 class Softmax_loss():
     def __init__(self, config, model:LightGCN, precalculate:precalculate, homophily:Homophily):
@@ -291,8 +344,9 @@ class Adaptive_softmax_loss(torch.nn.Module):
             pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
             theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
             M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
+            # M = torch.ones_like(M) - M
             # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
-            ratings_diag = torch.cos(theta + M)
+            ratings_diag = torch.cos(theta + M)#TODO + or -
             # ratings_diag = ratings_diag * pos_ratings_margin
             #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
             if world.config['adaloss_mode'] in ['pos_neg', 'pos_neg_cl']:

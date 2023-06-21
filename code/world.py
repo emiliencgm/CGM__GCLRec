@@ -77,6 +77,7 @@ config['if_valid'] = args.if_valid
 config['temp_tau_pop'] = args.temp_tau_pop
 config['lambda_ForkMerge'] = args.lambda_ForkMerge
 config['adaloss_mode'] = args.adaloss_mode
+config['train_mode'] = args.train_mode
 #备注
 config['comment'] = args.comment
 #加载预训练的embedding

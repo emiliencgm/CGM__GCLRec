@@ -15,12 +15,14 @@ from tensorboardX import SummaryWriter
 from model import LightGCN
 from augment import Projector
 from collections import OrderedDict
+import loss
 
 class Train():
     def __init__(self, loss_cal):
         self.loss = loss_cal
         self.projector = Projector().to(world.device)
         self.test = Test()
+        self.INFONCE = loss.InfoNCE_loss()
 
     def train(self, dataset, Recmodel, augmentation, epoch, optimizer, w:SummaryWriter=None):
         Recmodel = Recmodel
@@ -157,6 +159,20 @@ class Train():
 
         return l_all
     
+    def AdaLoss_rec_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation, epoch):
+        users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
+        #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
+        
+        aug_users1, aug_items1 = None, None
+        aug_users2, aug_items2 = None, None
+
+        if world.config['model'] in ['GCLRec']:
+            l_all = self.loss.adaptive_softmax_loss(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2, epoch)
+        else:
+            l_all = self.loss.adaptive_softmax_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2, epoch)
+
+        return l_all
+
     def BC_train(self, epoch, batch_users, batch_pos, batch_neg):
         if epoch < world.config['epoch_only_pop_for_BCloss']:
                     mode = 'only_pop'
@@ -223,6 +239,49 @@ class Train():
 
         return l_all
     
+    def InfoNCE_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
+        #前向计算-原视图
+        users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs= Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
+        #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
+        #if Recmodel's encoder is LightGCN, then embs_per_layer_or_all_embs = [all_users, all_items]
+        
+        #数据增强视图
+        if world.config['model'] in ['SGL']:
+            aug_users1, aug_items1 = Recmodel.view_computer(augmentation.augAdjMatrix1)
+            aug_users2, aug_items2 = Recmodel.view_computer(augmentation.augAdjMatrix2)
+        elif world.config['model'] in ['SimGCL']:
+            aug_users1, aug_items1 = Recmodel.view_computer()
+            aug_users2, aug_items2 = Recmodel.view_computer()
+        elif world.config['model'] in ['GCLRec']:
+            k = world.config['k_aug']
+            aug_users1, aug_items1 = torch.split(embs_per_layer_or_all_embs[k], [Recmodel.num_users, Recmodel.num_items])
+            aug_users2, aug_items2 = augmentation.get_adaptive_neighbor_augment(embs_per_layer_or_all_embs, batch_users, batch_pos, batch_neg, k)
+
+        
+        if world.config['augment'] in ['SVD'] and world.config['model'] in ['LightGCN', 'LightGCN_PyG']: #or world.config['model'] in ['LightGCL']:
+            #SVD + LightGCN
+            aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
+            aug_users2, aug_items2 = augmentation.reconstruct_graph_computer()
+            
+        if world.config['augment'] in ['Learner'] and world.config['model'] in ['LightGCN_PyG', 'LightGCN']:
+            #Augment_Learner + LightGCN
+            aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
+            aug_users2, aug_items2 = Recmodel.view_computer(augmentation.forward())
+
+        #投影头——只有aug_users/items计算CL loss，因此只对其投影。users/items_emb则是计算BPR的，不用投影
+        if world.config['if_projector']:
+            aug_users1, aug_items1, aug_users2, aug_items2 = self.projector(aug_users1), self.projector(aug_items1), self.projector(aug_users2), self.projector(aug_items2)
+        else:
+            pass
+
+        #计算loss
+        if world.config['model'] in ['GCLRec']:
+            l_all = self.INFONCE.infonce_loss(batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+        else:
+            l_all = self.INFONCE.infonce_loss(batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+
+        return l_all
+
     def PD_train(self, batch_users, batch_pos, batch_neg):
         if world.config['model'] in ['LightGCN', 'GTN', 'LightGCN_PyG']:
             pass
@@ -256,7 +315,7 @@ class Train():
             optimizer.zero_grad()
 
             # 计算第一个损失的梯度
-            loss1 = self.BPR_train(batch_users, batch_pos, batch_neg)
+            loss1 = self.AdaLoss_rec_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation, epoch)
             loss1.backward(retain_graph=True)
 
             # 保留第一个损失的梯度
@@ -266,7 +325,7 @@ class Train():
             optimizer.zero_grad()
 
             # 计算第二个损失的梯度
-            loss2 = self.BPR_Contrast_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
+            loss2 = self.InfoNCE_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
             loss2.backward()
 
             # 保留第二个损失的梯度
@@ -275,7 +334,7 @@ class Train():
             #按照valid效果搜索最佳lambda_ForkMerge
             best_valid = 0.
             best_idx = 0
-            lambda_ForkMerge = [0.2, 0.4, 0.6, 0.8]
+            lambda_ForkMerge = [0.05, 0.10, 0.15]
             for idx in range(len(lambda_ForkMerge)):
                 # 组合梯度并更新参数
                 for param, g1, g2 in zip(Recmodel.parameters(), grad1, grad2):

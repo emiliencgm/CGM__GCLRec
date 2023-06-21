@@ -1,0 +1,133 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaloss_mode': 'pos',
+ 'adaptive_method': 'mlp',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'yelp2018',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'Ours',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'yelp2018',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'lambda_ForkMerge': 0.5,
+ 'latent_dim_rec': 64,
+ 'loss': 'Adaptive',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+AdaLoss',
+ 'notes': 'LGN_+_AdaLoss_mlp',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['Adaptive_loss'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.12,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20, 40],
+ 'train_mode': 'origin',
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 3,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[DATALOADER--START]
+loading [/home/cgm/code/CGM__GCLRec/data/yelp2018]
+1237259 interactions for training
+324147 interactions for testing
+yelp2018 Sparsity : 0.0012958757851778647
+loading adjacency matrix
+generating adjacency matrix --- All train data
+costing 49.02504515647888s, saved norm_mat...
+yelp2018 is ready to go
+[DATALOADER--END]
+[PRECALCULATE--START]
+Loading Eigenvector.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/yelp2018/EigenvectorCentroid
+eigenvector_centrality cost:  0.0008869171142578125
+Loading CommonNeighbor_sp.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/yelp2018/CommonNeighbor/SC
+CN_simi_unsymmetry_mat_sp cost:  0.07464218139648438
+shape test : 2474518 == 2474518
+precal cost :  0.8096301555633545
+[PRECALCULATE--END]
+user:31668, item:38048
+use NORMAL distribution UI for Embedding
+GCL Model is ready to go!
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [00:23, 26.81it/s]
+EPOCH[0]:loss 0.046
+
+training: 604it [00:23, 25.61it/s]
+{'precision': array([0.00022578, 0.00021789]), 'recall': array([0.00049925, 0.00095739]), 'recall_pop': {0: array([0.00034685, 0.00062892]), 1: array([0.00035051, 0.00068208]), 2: array([0.00016578, 0.00041946]), 3: array([8.71391881e-05, 2.64763288e-04]), 4: array([0.00024473, 0.00036841]), 5: array([0.00025788, 0.0005605 ]), 6: array([0.00035367, 0.00064927]), 7: array([0.0002421 , 0.00068777]), 8: array([0.00046507, 0.00067822]), 9: array([0.00013007, 0.00029164])}, 'recall_pop_Contribute': {0: array([8.10678837e-05, 1.37932388e-04]), 1: array([4.41108725e-05, 8.87791607e-05]), 2: array([2.65295732e-05, 5.38548825e-05]), 3: array([8.60599618e-06, 3.42520101e-05]), 4: array([3.64279635e-05, 5.99077923e-05]), 5: array([3.53040299e-05, 7.95768429e-05]), 6: array([5.42678309e-05, 1.02813296e-04]), 7: array([5.36484694e-05, 1.34631322e-04]), 8: array([9.79850531e-05, 1.40518919e-04]), 9: array([6.12997132e-05, 1.25120220e-04])}, 'ndcg': array([0.00037541, 0.0005497 ])}
+[5mfind a better recall[25m 0.000499247385554985 ++0.000499247385554985
+total time cost of epoch 0:  30.3341326713562
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [00:23, 26.12it/s]
+EPOCH[1]:loss -0.441
+[TEST]
+{'precision': array([0.00020052, 0.00019657]), 'recall': array([0.00036186, 0.00071882]), 'recall_pop': {0: array([0.00149257, 0.0026624 ]), 1: array([0.00037893, 0.00072207]), 2: array([0.00018947, 0.00037998]), 3: array([4.21034904e-05, 2.15780388e-04]), 4: array([6.31552356e-05, 1.81571302e-04]), 5: array([4.73664267e-05, 1.52625153e-04]), 6: array([0., 0.]), 7: array([3.15776178e-05, 3.15776178e-05]), 8: array([0., 0.]), 9: array([0., 0.])}, 'recall_pop_Contribute': {0: array([0.00024836, 0.00044848]), 1: array([5.04421810e-05, 9.75822407e-05]), 2: array([2.91717040e-05, 6.03519917e-05]), 3: array([8.57106768e-06, 3.49688482e-05]), 4: array([6.37624974e-06, 3.47961058e-05]), 5: array([1.26310471e-05, 3.63279304e-05]), 6: array([0., 0.]), 7: array([6.31552356e-06, 6.31552356e-06]), 8: array([0., 0.]), 9: array([0., 0.])}, 'ndcg': array([0.00032014, 0.00045299])}
+total time cost of epoch 1:  30.025468111038208
+[AUGMENT]
+[TRAIN]
+
+
+training: 89it [00:03, 25.57it/s]

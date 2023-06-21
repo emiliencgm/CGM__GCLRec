@@ -1,0 +1,1549 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaloss_mode': 'pos',
+ 'adaptive_method': 'mlp',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'ifashion',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'Ours',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'ifashion',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'lambda_ForkMerge': 0.5,
+ 'latent_dim_rec': 64,
+ 'loss': 'Adaptive',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+AdaLoss',
+ 'notes': 'LGN_+_AdaLoss_mlp',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['Adaptive_loss'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.12,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20, 40],
+ 'train_mode': 'origin',
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 3,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[DATALOADER--START]
+loading [/home/cgm/code/CGM__GCLRec/data/ifashion]
+1255447 interactions for training
+352366 interactions for testing
+ifashion Sparsity : 6.566736916051985e-05
+loading adjacency matrix
+successfully loaded...
+Remember to delete this pre-calculed mat while changing data split !
+ifashion is ready to go
+[DATALOADER--END]
+[PRECALCULATE--START]
+Loading Eigenvector.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/ifashion/EigenvectorCentroid
+eigenvector_centrality cost:  0.0010676383972167969
+Loading CommonNeighbor_sp.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/ifashion/CommonNeighbor/SC
+CN_simi_unsymmetry_mat_sp cost:  0.0900728702545166
+shape test : 2510894 == 2510894
+precal cost :  3.715806484222412
+[PRECALCULATE--END]
+user:300000, item:81614
+use NORMAL distribution UI for Embedding
+GCL Model is ready to go!
+[AUGMENT]
+[TRAIN]
+training: 0it [00:00, ?it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 1it [00:00,  1.17it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 3it [00:00,  3.76it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 5it [00:01,  5.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 7it [00:01,  7.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 9it [00:01,  9.86it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 11it [00:01, 11.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 13it [00:01, 13.00it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 15it [00:01, 14.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 17it [00:01, 14.98it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 19it [00:01, 15.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 21it [00:02, 15.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 23it [00:02, 14.35it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 25it [00:02, 15.07it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 27it [00:02, 15.83it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 29it [00:02, 16.09it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 31it [00:02, 16.57it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 33it [00:02, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 35it [00:02, 16.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 37it [00:03, 17.26it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 39it [00:03, 16.91it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 41it [00:03, 14.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 43it [00:03, 15.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 45it [00:03, 15.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 47it [00:03, 16.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 49it [00:03, 16.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 51it [00:03, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 53it [00:04, 17.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 55it [00:04, 17.29it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 57it [00:04, 16.00it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 59it [00:04, 14.98it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 61it [00:04, 15.75it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 63it [00:04, 15.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 65it [00:04, 16.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 67it [00:04, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 69it [00:05, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 71it [00:05, 17.11it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 73it [00:05, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 75it [00:05, 15.11it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 77it [00:05, 15.53it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 79it [00:05, 16.18it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 81it [00:05, 16.34it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 83it [00:05, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 85it [00:06, 16.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 87it [00:06, 16.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 89it [00:06, 17.28it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 91it [00:06, 17.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 93it [00:06, 14.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 95it [00:06, 15.60it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 97it [00:06, 15.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 99it [00:06, 16.46it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 101it [00:06, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 103it [00:07, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 105it [00:07, 17.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 107it [00:07, 17.39it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 119it [00:08, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 111it [00:07, 14.83it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 113it [00:07, 15.63it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 115it [00:07, 15.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 117it [00:07, 16.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 119it [00:08, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 121it [00:08, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 123it [00:08, 17.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 125it [00:08, 16.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 127it [00:08, 14.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 129it [00:08, 15.52it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 131it [00:08, 16.17it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 133it [00:08, 16.28it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 135it [00:09, 16.75it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 137it [00:09, 16.65it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 139it [00:09, 16.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 173it [00:11, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 143it [00:09, 16.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 145it [00:09, 14.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 147it [00:09, 15.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 149it [00:09, 16.00it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 151it [00:10, 16.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 153it [00:10, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 155it [00:10, 16.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 157it [00:10, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 159it [00:10, 16.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 161it [00:10, 14.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 163it [00:10, 15.42it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 165it [00:10, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 167it [00:11, 16.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 169it [00:11, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 171it [00:11, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 173it [00:11, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 175it [00:11, 17.28it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 177it [00:11, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 179it [00:11, 14.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 181it [00:11, 15.54it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 183it [00:12, 15.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 185it [00:12, 16.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 187it [00:12, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 189it [00:12, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 191it [00:12, 17.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 193it [00:12, 17.42it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 195it [00:12, 16.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 197it [00:12, 14.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 199it [00:13, 15.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 201it [00:13, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 203it [00:13, 16.54it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 205it [00:13, 16.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 207it [00:13, 16.70it/s]
+training: 209it [00:13, 17.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 211it [00:13, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 213it [00:13, 14.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 215it [00:14, 15.40it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 217it [00:14, 16.08it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 219it [00:14, 16.25it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 221it [00:14, 16.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 223it [00:14, 16.73it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 225it [00:14, 17.00it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 227it [00:14, 17.26it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 229it [00:14, 16.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 231it [00:15, 14.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 233it [00:15, 15.57it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 235it [00:15, 15.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 237it [00:15, 16.36it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 239it [00:15, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 243it [00:15, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 245it [00:15, 17.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 247it [00:15, 15.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 249it [00:16, 14.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 251it [00:16, 15.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 253it [00:16, 15.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 255it [00:16, 16.39it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 257it [00:16, 16.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 259it [00:16, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 261it [00:16, 17.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 263it [00:16, 16.91it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 265it [00:17, 14.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 267it [00:17, 15.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 269it [00:17, 16.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 271it [00:17, 16.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 273it [00:17, 16.72it/s]
+training: 277it [00:17, 16.93it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 279it [00:17, 17.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 281it [00:18, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 283it [00:18, 14.86it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 285it [00:18, 15.65it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 287it [00:18, 15.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 289it [00:18, 16.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 291it [00:18, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 293it [00:18, 16.65it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 295it [00:18, 16.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 297it [00:19, 17.25it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 299it [00:19, 15.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 301it [00:19, 14.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 303it [00:19, 15.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 305it [00:19, 15.93it/s]
+training: 311it [00:19, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 313it [00:19, 17.07it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 315it [00:20, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 317it [00:20, 14.91it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 319it [00:20, 15.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 321it [00:20, 16.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 323it [00:20, 16.15it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 325it [00:20, 16.64it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 327it [00:20, 16.56it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 329it [00:20, 16.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 331it [00:21, 17.19it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 333it [00:21, 16.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 335it [00:21, 14.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 337it [00:21, 15.65it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 345it [00:21, 16.76it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 347it [00:22, 17.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 349it [00:22, 17.08it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 351it [00:22, 15.15it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 353it [00:22, 15.23it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 355it [00:22, 15.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 357it [00:22, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 359it [00:22, 16.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 361it [00:22, 16.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 363it [00:23, 16.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 365it [00:23, 17.18it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 367it [00:23, 16.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 369it [00:23, 14.81it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 379it [00:24, 16.72it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 381it [00:24, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 383it [00:24, 17.08it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 385it [00:24, 15.17it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 387it [00:24, 15.23it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 389it [00:24, 15.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 391it [00:24, 16.14it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 393it [00:24, 16.63it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 395it [00:25, 16.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 397it [00:25, 16.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 399it [00:25, 17.19it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 401it [00:25, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 403it [00:25, 14.78it/s]
+training: 413it [00:26, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 415it [00:26, 17.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 417it [00:26, 17.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 419it [00:26, 15.09it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 421it [00:26, 15.38it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 423it [00:26, 16.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 425it [00:26, 16.23it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 427it [00:27, 16.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 429it [00:27, 16.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 431it [00:27, 16.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 433it [00:27, 17.16it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 435it [00:27, 17.21it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 447it [00:28, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 449it [00:28, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 451it [00:28, 17.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 453it [00:28, 16.76it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 455it [00:28, 14.83it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 457it [00:28, 15.63it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 459it [00:28, 15.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 461it [00:29, 16.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 463it [00:29, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 465it [00:29, 16.76it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 467it [00:29, 17.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 469it [00:29, 17.33it/s]
+training: 481it [00:30, 16.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 483it [00:30, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 485it [00:30, 17.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 487it [00:30, 16.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 489it [00:30, 14.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 491it [00:30, 15.38it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 493it [00:31, 16.07it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 495it [00:31, 16.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 497it [00:31, 16.61it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 499it [00:31, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 501it [00:31, 16.94it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 515it [00:32, 16.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 517it [00:32, 16.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 519it [00:32, 16.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 521it [00:32, 17.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 523it [00:32, 16.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 525it [00:33, 14.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 527it [00:33, 15.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 529it [00:33, 15.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 531it [00:33, 16.39it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 533it [00:33, 16.82it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 549it [00:34, 16.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 551it [00:34, 16.79it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 553it [00:34, 16.73it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 555it [00:34, 17.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 557it [00:34, 16.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 559it [00:35, 14.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 561it [00:35, 15.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 563it [00:35, 16.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 565it [00:35, 16.32it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 567it [00:35, 16.75it/s]
+training: 583it [00:36, 16.46it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 585it [00:36, 16.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 587it [00:36, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 589it [00:36, 17.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 591it [00:37, 17.31it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 593it [00:37, 16.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 595it [00:37, 14.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 597it [00:37, 15.51it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 599it [00:37, 16.17it/s]
+training: 583it [00:36, 16.46it/s]WARNING:root:NaN or Inf found in input tensor.
+EPOCH[0]:loss nan
+[TEST]
+training: 583it [00:36, 16.46it/s]WARNING:root:NaN or Inf found in input tensor.
+{'precision': array([0.00028976, 0.00023266]), 'recall': array([0.00462748, 0.00745324]), 'recall_pop': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([3.71958772e-06, 3.71958772e-06]), 7: array([0.00000000e+00, 8.09010329e-05]), 8: array([4.46350527e-05, 6.88123728e-05]), 9: array([0.00481686, 0.00768636])}, 'recall_pop_Contribute': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([1.85979386e-06, 1.85979386e-06]), 7: array([0.00000000e+00, 6.88123728e-05]), 8: array([3.37862551e-05, 5.54838502e-05]), 9: array([0.00459183, 0.00732709])}, 'ndcg': array([0.00182908, 0.00242534])}
+[5mfind a better recall[25m 0.004627480947413573 ++0.004627480947413573
+total time cost of epoch 0:  106.09452295303345
+[AUGMENT]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 0it [00:00, ?it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 1it [00:00,  8.33it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 3it [00:00, 12.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 5it [00:00, 14.70it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 7it [00:00, 15.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 9it [00:00, 14.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 11it [00:00, 13.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 13it [00:00, 15.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 15it [00:01, 15.43it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 17it [00:01, 16.07it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 19it [00:01, 16.57it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 21it [00:01, 16.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 23it [00:01, 16.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 25it [00:01, 17.16it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 31it [00:02, 15.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 33it [00:02, 16.23it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 35it [00:02, 16.70it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 37it [00:02, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 39it [00:02, 16.75it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 41it [00:02, 17.07it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 43it [00:02, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 45it [00:02, 14.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 47it [00:02, 15.53it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 49it [00:03, 16.17it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 51it [00:03, 16.18it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 53it [00:03, 16.67it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 55it [00:03, 16.70it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 57it [00:03, 16.98it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 65it [00:04, 15.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 67it [00:04, 15.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 69it [00:04, 16.38it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 71it [00:04, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 73it [00:04, 16.60it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 75it [00:04, 16.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 77it [00:04, 16.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 79it [00:04, 14.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 81it [00:05, 15.44it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 83it [00:05, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 85it [00:05, 16.28it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 87it [00:05, 16.72it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 89it [00:05, 16.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 99it [00:06, 15.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 101it [00:06, 15.83it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 103it [00:06, 16.35it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 105it [00:06, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 107it [00:06, 16.72it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 109it [00:06, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 111it [00:06, 17.32it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 113it [00:07, 15.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 115it [00:07, 14.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 117it [00:07, 15.65it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 119it [00:07, 15.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 121it [00:07, 16.38it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 133it [00:08, 14.91it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 135it [00:08, 15.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 137it [00:08, 16.02it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 139it [00:08, 16.46it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 141it [00:08, 16.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 143it [00:08, 16.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 145it [00:08, 16.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 147it [00:09, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 149it [00:09, 14.98it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 151it [00:09, 15.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 153it [00:09, 16.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 155it [00:09, 16.09it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 167it [00:10, 14.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 169it [00:10, 15.61it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 171it [00:10, 15.93it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 173it [00:10, 16.39it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 175it [00:10, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 177it [00:10, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 179it [00:11, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 181it [00:11, 17.25it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 183it [00:11, 15.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 185it [00:11, 14.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 187it [00:11, 15.61it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 201it [00:12, 14.70it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 203it [00:12, 15.52it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 205it [00:12, 16.16it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 207it [00:12, 16.26it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 209it [00:12, 16.72it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 211it [00:13, 16.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 213it [00:13, 16.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 215it [00:13, 17.21it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 217it [00:13, 16.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 219it [00:13, 14.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 235it [00:14, 15.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 237it [00:14, 14.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 239it [00:14, 15.56it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 241it [00:14, 15.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 243it [00:15, 16.44it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 245it [00:15, 16.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 247it [00:15, 16.79it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 249it [00:15, 17.11it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 251it [00:15, 17.35it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 253it [00:15, 16.36it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 269it [00:16, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 271it [00:16, 14.75it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 273it [00:16, 15.55it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 275it [00:16, 16.20it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 277it [00:17, 16.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 279it [00:17, 16.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 281it [00:17, 16.72it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 283it [00:17, 16.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 285it [00:17, 17.25it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 303it [00:18, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 305it [00:18, 16.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 307it [00:18, 17.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 309it [00:19, 17.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 311it [00:19, 15.51it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 313it [00:19, 15.18it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 315it [00:19, 15.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 317it [00:19, 15.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 337it [00:20, 16.67it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 339it [00:20, 16.76it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 341it [00:21, 17.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 343it [00:21, 17.28it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 345it [00:21, 16.39it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 347it [00:21, 14.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 349it [00:21, 15.70it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 351it [00:21, 15.99it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 371it [00:22, 16.67it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 373it [00:22, 16.75it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 375it [00:23, 17.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 377it [00:23, 17.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 379it [00:23, 16.34it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 381it [00:23, 14.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 383it [00:23, 15.66it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 405it [00:25, 16.48it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 407it [00:25, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 409it [00:25, 16.76it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 411it [00:25, 17.01it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 439it [00:27, 17.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 441it [00:27, 17.44it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 443it [00:27, 17.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 445it [00:27, 17.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 473it [00:29, 17.30it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 475it [00:29, 17.42it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 477it [00:29, 17.08it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 479it [00:29, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 507it [00:31, 16.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 509it [00:31, 16.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 511it [00:31, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 513it [00:31, 16.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 541it [00:33, 17.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 543it [00:33, 17.29it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 545it [00:33, 17.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 547it [00:33, 17.30it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 575it [00:35, 17.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 577it [00:35, 17.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 579it [00:35, 17.58it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 581it [00:35, 17.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 583it [00:35, 17.28it/s]
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+training: 609it [00:37, 16.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 611it [00:37, 16.35it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 613it [00:37, 16.26it/s]
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.:NaN or Inf found in input tensor.
+EPOCH[1]:loss nan
+[TEST]
+{'precision': array([0.00028976, 0.00023266]), 'recall': array([0.00462748, 0.00745324]), 'recall_pop': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([3.71958772e-06, 3.71958772e-06]), 7: array([0.00000000e+00, 8.09010329e-05]), 8: array([4.46350527e-05, 6.88123728e-05]), 9: array([0.00481686, 0.00768636])}, 'recall_pop_Contribute': {0: array([0., 0.]), 1: array([0., 0.]), 2: array([0., 0.]), 3: array([0., 0.]), 4: array([0., 0.]), 5: array([0., 0.]), 6: array([1.85979386e-06, 1.85979386e-06]), 7: array([0.00000000e+00, 6.88123728e-05]), 8: array([3.37862551e-05, 5.54838502e-05]), 9: array([0.00459183, 0.00732709])}, 'ndcg': array([0.00182908, 0.00242534])}
+total time cost of epoch 1:  108.10067391395569
+[AUGMENT]
+training: 21it [00:01, 16.77it/s]WARNING:root:NaN or Inf found in input tensor..
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 0it [00:00, ?it/s]WARNING:root:NaN or Inf found in input tensor.
+training: 1it [00:00,  8.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 3it [00:00, 12.93it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 5it [00:00, 14.44it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 7it [00:00, 15.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 9it [00:00, 13.40it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 11it [00:00, 14.65it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 13it [00:00, 15.54it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 15it [00:01, 15.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 17it [00:01, 16.41it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 19it [00:01, 16.40it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 21it [00:01, 16.77it/s]WARNING:root:NaN or Inf found in input tensor..
+WARNING:root:NaN or Inf found in input tensor.
+training: 23it [00:01, 17.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 25it [00:01, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 27it [00:01, 14.79it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 29it [00:01, 15.61it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 31it [00:02, 15.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 33it [00:02, 16.43it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 35it [00:02, 16.86it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 37it [00:02, 16.73it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 39it [00:02, 17.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 41it [00:02, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 43it [00:02, 15.20it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 45it [00:02, 15.26it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 47it [00:02, 15.98it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 49it [00:03, 16.14it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 51it [00:03, 16.61it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 53it [00:03, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 55it [00:03, 16.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 57it [00:03, 17.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 59it [00:03, 16.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 61it [00:03, 14.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 63it [00:03, 15.44it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 65it [00:04, 16.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 67it [00:04, 16.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 69it [00:04, 16.61it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 71it [00:04, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 73it [00:04, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 75it [00:04, 17.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 77it [00:04, 16.91it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 79it [00:04, 14.67it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 81it [00:05, 15.51it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 83it [00:05, 15.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 85it [00:05, 16.26it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 87it [00:05, 16.72it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 89it [00:05, 16.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 91it [00:05, 17.18it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 93it [00:05, 17.40it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 95it [00:05, 16.46it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 97it [00:06, 15.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 99it [00:06, 15.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 101it [00:06, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 103it [00:06, 16.55it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 105it [00:06, 16.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 107it [00:06, 16.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 109it [00:06, 17.16it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 111it [00:06, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 113it [00:07, 15.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 115it [00:07, 15.40it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 117it [00:07, 16.07it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 119it [00:07, 16.19it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 121it [00:07, 16.64it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 123it [00:07, 16.67it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 125it [00:07, 16.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 127it [00:07, 17.14it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 129it [00:07, 17.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 131it [00:08, 14.63it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 133it [00:08, 15.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 135it [00:08, 16.14it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 137it [00:08, 16.35it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 139it [00:08, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 141it [00:08, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 143it [00:08, 17.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 145it [00:08, 17.32it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 147it [00:09, 17.35it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 149it [00:09, 14.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 151it [00:09, 15.63it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 153it [00:09, 16.26it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 155it [00:09, 16.34it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 157it [00:09, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 159it [00:09, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 161it [00:09, 16.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 163it [00:10, 17.23it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 165it [00:10, 16.83it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 167it [00:10, 14.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 169it [00:10, 15.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 171it [00:10, 15.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 173it [00:10, 16.43it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 175it [00:10, 16.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 177it [00:10, 16.61it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 179it [00:11, 16.98it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 181it [00:11, 17.25it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 183it [00:11, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 185it [00:11, 14.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 187it [00:11, 15.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 189it [00:11, 15.93it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 191it [00:11, 16.41it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 193it [00:11, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 195it [00:12, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 197it [00:12, 17.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 199it [00:12, 16.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 201it [00:12, 14.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 203it [00:12, 15.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 205it [00:12, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 207it [00:12, 16.29it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 209it [00:12, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 211it [00:13, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 213it [00:13, 17.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 215it [00:13, 17.30it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 217it [00:13, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 219it [00:13, 14.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 221it [00:13, 15.59it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 223it [00:13, 15.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 225it [00:13, 16.30it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 227it [00:13, 16.75it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 229it [00:14, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 231it [00:14, 17.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 233it [00:14, 17.44it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 235it [00:14, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 237it [00:14, 14.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 239it [00:14, 15.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 241it [00:14, 16.00it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 243it [00:14, 16.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 245it [00:15, 16.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 247it [00:15, 16.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 249it [00:15, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 251it [00:15, 17.25it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 253it [00:15, 16.09it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 255it [00:15, 15.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 257it [00:15, 15.79it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 259it [00:15, 15.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 261it [00:16, 16.42it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 263it [00:16, 16.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 265it [00:16, 16.62it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 267it [00:16, 16.99it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 269it [00:16, 16.93it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 271it [00:16, 15.02it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 273it [00:16, 15.46it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 275it [00:16, 16.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 277it [00:17, 16.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 279it [00:17, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 281it [00:17, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 283it [00:17, 16.90it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 285it [00:17, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 287it [00:17, 17.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 289it [00:17, 14.57it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 291it [00:17, 15.42it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 293it [00:18, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 295it [00:18, 16.14it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 297it [00:18, 16.65it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 299it [00:18, 16.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 301it [00:18, 16.96it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 303it [00:18, 17.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 305it [00:18, 17.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 307it [00:18, 14.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 309it [00:19, 15.50it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 311it [00:19, 16.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 313it [00:19, 16.46it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 315it [00:19, 16.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 317it [00:19, 16.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 319it [00:19, 17.00it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 321it [00:19, 17.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 323it [00:19, 16.68it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 325it [00:20, 14.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 327it [00:20, 15.67it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 329it [00:20, 15.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 331it [00:20, 16.38it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 333it [00:20, 16.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 335it [00:20, 16.75it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 337it [00:20, 17.08it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 339it [00:20, 17.11it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 341it [00:21, 15.16it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 343it [00:21, 15.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 345it [00:21, 15.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 347it [00:21, 16.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 349it [00:21, 16.52it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 351it [00:21, 16.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 353it [00:21, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 355it [00:21, 17.29it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 357it [00:21, 17.11it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 359it [00:22, 14.83it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 361it [00:22, 15.58it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 363it [00:22, 16.21it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 365it [00:22, 16.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 367it [00:22, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 369it [00:22, 16.64it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 371it [00:22, 16.94it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 373it [00:22, 17.21it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 375it [00:23, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 377it [00:23, 14.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 379it [00:23, 15.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 381it [00:23, 15.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 383it [00:23, 16.33it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 385it [00:23, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 387it [00:23, 16.59it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 389it [00:23, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 391it [00:24, 17.24it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 393it [00:24, 16.29it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 395it [00:24, 15.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 397it [00:24, 15.78it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 399it [00:24, 16.08it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 401it [00:24, 16.52it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 403it [00:24, 16.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 405it [00:24, 16.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 407it [00:25, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 409it [00:25, 16.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 411it [00:25, 15.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 413it [00:25, 15.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 415it [00:25, 16.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 417it [00:25, 16.26it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 419it [00:25, 16.72it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 421it [00:25, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 423it [00:26, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 425it [00:26, 17.18it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 427it [00:26, 17.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 429it [00:26, 14.66it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 431it [00:26, 15.49it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 433it [00:26, 16.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 435it [00:26, 16.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 437it [00:26, 16.85it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 439it [00:26, 16.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 441it [00:27, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 443it [00:27, 17.28it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 445it [00:27, 16.91it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 447it [00:27, 14.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 449it [00:27, 15.56it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 451it [00:27, 15.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 453it [00:27, 16.37it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 455it [00:27, 16.80it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 457it [00:28, 16.59it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 459it [00:28, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 461it [00:28, 17.21it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 463it [00:28, 16.02it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 465it [00:28, 14.98it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 467it [00:28, 15.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 469it [00:28, 15.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 471it [00:28, 16.40it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 473it [00:29, 16.82it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 475it [00:29, 16.83it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 477it [00:29, 17.12it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 479it [00:29, 17.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 481it [00:29, 15.04it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 483it [00:29, 15.41it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 485it [00:29, 16.07it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 487it [00:29, 16.10it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 489it [00:30, 16.60it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 491it [00:30, 16.65it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 493it [00:30, 16.92it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 495it [00:30, 17.19it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 497it [00:30, 16.87it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 499it [00:30, 14.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 501it [00:30, 15.51it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 503it [00:30, 15.84it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 505it [00:31, 16.28it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 507it [00:31, 16.69it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 509it [00:31, 16.51it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 511it [00:31, 16.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 513it [00:31, 17.17it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 515it [00:31, 16.01it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 517it [00:31, 14.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 519it [00:31, 15.71it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 521it [00:32, 15.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 523it [00:32, 16.36it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 525it [00:32, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 527it [00:32, 16.79it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 529it [00:32, 17.09it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 531it [00:32, 16.95it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 533it [00:32, 14.88it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 535it [00:32, 15.22it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 537it [00:33, 15.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 539it [00:33, 15.64it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 541it [00:33, 16.13it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 543it [00:33, 16.63it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 545it [00:33, 16.45it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 547it [00:33, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 549it [00:33, 16.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 551it [00:33, 17.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 553it [00:33, 17.29it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 555it [00:34, 16.53it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 557it [00:34, 14.79it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 559it [00:34, 15.59it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 561it [00:34, 15.81it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 563it [00:34, 16.32it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 565it [00:34, 16.77it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 567it [00:34, 16.70it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 569it [00:34, 17.02it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 571it [00:35, 17.05it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 573it [00:35, 15.11it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 575it [00:35, 15.17it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 577it [00:35, 15.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 579it [00:35, 15.97it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 581it [00:35, 16.49it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 583it [00:35, 16.86it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 585it [00:35, 17.02it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 587it [00:36, 17.27it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 589it [00:37,  4.06it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 591it [00:37,  5.02it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 593it [00:37,  6.40it/s]WARNING:root:NaN or Inf found in input tensor.
+EPOCH[2]:loss nan
+[TEST]
+WARNING:root:NaN or Inf found in input tensor.
+training: 595it [00:37,  7.91it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 597it [00:37,  9.47it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 599it [00:38, 11.03it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 601it [00:38, 12.23it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 603it [00:38, 13.46it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 605it [00:38, 14.53it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 607it [00:38, 14.89it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 609it [00:38, 13.73it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 611it [00:38, 14.74it/s]WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+training: 613it [00:39, 15.70it/s]
+WARNING:root:NaN or Inf found in input tensor.
