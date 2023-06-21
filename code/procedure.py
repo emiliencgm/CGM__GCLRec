@@ -52,7 +52,7 @@ class Train():
                 l_all = self.BC_train(epoch, batch_users, batch_pos, batch_neg)            
             
             elif world.config['loss'] == 'Adaptive':                
-                l_all = self.AdaLoss_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
+                l_all = self.AdaLoss_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation, epoch)
             
             elif world.config['loss'] == 'DCL':
                 l_all = self.DCL_train(Recmodel, batch_users, batch_pos, batch_neg)
@@ -121,7 +121,7 @@ class Train():
         l_all = self.loss.debiased_contrastive_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
         return l_all
     
-    def AdaLoss_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
+    def AdaLoss_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation, epoch):
         users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
         #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
         
@@ -143,12 +143,17 @@ class Train():
             #SVD + LightGCN
             aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
             aug_users2, aug_items2 = augmentation.reconstruct_graph_computer()
+            
+        if world.config['augment'] in ['Learner'] and world.config['model'] in ['LightGCN_PyG', 'LightGCN']:
+            #Augment_Learner + LightGCN
+            aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
+            aug_users2, aug_items2 = Recmodel.view_computer(augmentation.forward())
 
 
         if world.config['model'] in ['GCLRec']:
-            l_all = self.loss.adaptive_softmax_loss(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+            l_all = self.loss.adaptive_softmax_loss(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2, epoch)
         else:
-            l_all = self.loss.adaptive_softmax_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
+            l_all = self.loss.adaptive_softmax_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2, epoch)
 
         return l_all
     

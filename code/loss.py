@@ -238,7 +238,6 @@ class MLP(torch.nn.Module):
         return x
 
 
-
 class Adaptive_softmax_loss(torch.nn.Module):
     def __init__(self, config, model:LightGCN, precal:precalculate, homophily:Homophily):
         super(Adaptive_softmax_loss, self).__init__()
@@ -251,15 +250,17 @@ class Adaptive_softmax_loss(torch.nn.Module):
         self.alpha = config['alpha']
         self.f = lambda x: torch.exp(x / self.tau)
         self.MLP_model = MLP(5+2*0).to(world.device)
+        self.MLP_model_CL = MLP(2+2*0).to(world.device)
+        self.MLP_model_negative = MLP(3+2*0).to(world.device)
 
-    def adaptive_softmax_loss(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
+    def adaptive_softmax_loss(self, users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2, epoch):
         
         reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
-        loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'])
+        loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, batch_user, batch_pos, self.config['adaptive_method'], self.config['centroid_mode'], epoch)
         #loss1 = self.calculate_loss(users_emb, pos_emb, neg_emb, None, None, None, None)
         if not (aug_users1 is None):
-            loss2 = self.calculate_loss(aug_users1[batch_user], aug_users2[batch_user], aug_users2, None, None, None, None)
-            loss3 = self.calculate_loss(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2, None, None, None, None)
+            loss2 = self.calculate_loss(aug_users1[batch_user], aug_users2[batch_user], aug_users2, None, None, None, None, epoch)
+            loss3 = self.calculate_loss(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2, None, None, None, None, epoch)
             loss = self.config['weight_decay']*reg + loss1 + self.config['lambda1']*(loss2 + loss3)
         else:
             loss = self.config['weight_decay']*reg + loss1
@@ -269,7 +270,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
         return loss
 
 
-    def calculate_loss(self, batch_target_emb, batch_pos_emb, batch_negs_emb, batch_target, batch_pos, method, mode):
+    def calculate_loss(self, batch_target_emb, batch_pos_emb, batch_negs_emb, batch_target, batch_pos, method, mode, epoch):
         '''
         input : embeddings, not index.
         '''
@@ -293,9 +294,16 @@ class Adaptive_softmax_loss(torch.nn.Module):
             ratings_diag = torch.cos(theta + M)
             # ratings_diag = ratings_diag * pos_ratings_margin
             #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
+
+            neg_ratings_margin = self.get_coef_adaptive_negative(batch_target, batch_pos, method=method, mode=mode, epoch=epoch).squeeze()
+            theta = torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))
+            M = torch.arccos(torch.clamp(neg_ratings_margin,-1+1e-7,1-1e-7))
+            ratings = torch.cos(theta+M)
         else:
-            # pos_ratings_margin = self.get_coef_adaptive_aug(batch_target_emb, batch_pos_emb)
-            # ratings_diag = torch.cos(torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))+torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7)))
+            pos_ratings_margin = self.get_coef_adaptive_CL(batch_target, batch_target, epoch=epoch)
+            theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
+            M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
+            ratings_diag = torch.cos(theta + M)
             pass
         
         numerator = torch.exp(ratings_diag / self.tau)
@@ -333,6 +341,21 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight = torch.sum(torch.mul(batch_user_prob, batch_item_prob) ,dim=1)
         return batch_weight
     
+    def get_homophily_CL(self, batch_user, batch_pos_item, epoch):
+        with torch.no_grad():
+            batch_user_prob, _ = self.homophily.get_homophily_batch_epoch(batch_user, batch_pos_item, epoch=epoch)
+            batch_weight = torch.sum(torch.mul(batch_user_prob, batch_user_prob) ,dim=1)
+        return batch_weight
+    
+    def get_homophily_negative(self, batch_user, batch_pos_item, epoch):
+        '''
+        shape: batch_u * batch_i
+        '''
+        with torch.no_grad():
+            batch_user_prob, batch_item_prob = self.homophily.get_homophily_batch_epoch(batch_user, batch_pos_item, epoch=epoch)
+            batch_weight = torch.matmul(batch_user_prob, torch.transpose(batch_item_prob, 0, 1))
+        return batch_weight
+    
     def get_centroid(self, batch_user, batch_pos_item, centroid='eigenvector', aggr='mean', mode='GCA'):
         with torch.no_grad():
             batch_weight = self.precal.centroid.cal_centroid_weights_batch(batch_user, batch_pos_item, centroid=centroid, aggr=aggr, mode=mode)
@@ -362,6 +385,15 @@ class Adaptive_softmax_loss(torch.nn.Module):
         for i in range(1,len(features)):
             U = torch.cat((U, features[i].unsqueeze(0)), dim=0)
         return U.T
+    
+    def get_mlp_input_negative(self, features):
+        '''
+        features = [tensor, tensor, ...]
+        '''
+        U = features[0].unsqueeze(-1)
+        for i in range(1,len(features)):
+            U = torch.cat((U, features[i].unsqueeze(-1)), dim=2)
+        return U
 
 
     def get_coef_adaptive(self, batch_user, batch_pos_item, method='mlp', mode='eigenvector'):
@@ -408,7 +440,56 @@ class Adaptive_softmax_loss(torch.nn.Module):
         # batch_weight = torch.sigmoid(batch_weight)#TODO
         
         return batch_weight
+    
+    def get_coef_adaptive_CL(self, batch_user, batch_pos_user, method='mlp', mode='eigenvector', epoch=None):
+        '''
+        input: index batch_user & batch_pos_item\n
+        return tensor([adaptive coefficient of u_n-i_n])\n
+        the bigger, the more reliable, the more important
+        '''
+        if method == 'mlp':
+            batch_weight_pop_user, _ = self.get_popdegree(batch_user, batch_pos_user)
+            batch_weight_pop_user= torch.log(batch_weight_pop_user)
+            batch_weight_homophily = self.get_homophily_CL(batch_user, torch.tensor([0]), epoch=epoch)
+            features = [batch_weight_pop_user, batch_weight_homophily]
+            batch_weight = self.get_mlp_input(features)
+            batch_weight = self.MLP_model_CL(batch_weight)
 
+        else:
+            batch_weight = None
+            raise TypeError('adaptive method not implemented')
+
+        # batch_weight = torch.sigmoid(batch_weight)#TODO
+        
+        return batch_weight
+
+
+    def get_coef_adaptive_negative(self, batch_user, batch_pos_item, method='mlp', mode='eigenvector', epoch=None):
+        '''
+        input: index batch_user & batch_pos_item\n
+        return tensor([adaptive coefficient of u_n-i_m])\n
+        ## shape: batch_u * batch_i\n
+        the bigger, the more reliable, the more important
+        '''
+        if method == 'mlp':
+            batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
+            batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user).unsqueeze(1), torch.log(batch_weight_pop_item).unsqueeze(1)#TODO problem of grandeur
+            all_ones = torch.ones_like(batch_weight_pop_user)
+            batch_weight_pop_user = torch.matmul(batch_weight_pop_user, torch.transpose(all_ones, 0, 1))
+            batch_weight_pop_item = torch.matmul(all_ones, torch.transpose(batch_weight_pop_item, 0, 1))
+            batch_weight_homophily = self.get_homophily_negative(batch_user, batch_pos_item, epoch)
+            features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_homophily]
+            
+            batch_weight = self.get_mlp_input_negative(features)
+            batch_weight = self.MLP_model_negative(batch_weight)
+
+        else:
+            batch_weight = None
+            raise TypeError('adaptive method not implemented')
+
+        # batch_weight = torch.sigmoid(batch_weight)#TODO
+        
+        return batch_weight
 
     def get_coef_adaptive_aug(self, aug1, aug2):
         return 0
