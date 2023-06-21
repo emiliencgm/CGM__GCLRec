@@ -285,6 +285,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
         # ratings_margin = self.get_coef_adaptive_all(batch_target_emb.detach(), batch_pos_emb.detach())
         # ratings = torch.cos(torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))+ratings_margin)
         ratings_diag = torch.diag(ratings)
+        #UI
         if not (method is None):
             #Adaptive coef between User and Item
             pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
@@ -294,16 +295,18 @@ class Adaptive_softmax_loss(torch.nn.Module):
             ratings_diag = torch.cos(theta + M)
             # ratings_diag = ratings_diag * pos_ratings_margin
             #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
-
-            neg_ratings_margin = self.get_coef_adaptive_negative(batch_target, batch_pos, method=method, mode=mode, epoch=epoch).squeeze()
-            theta = torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))
-            M = torch.arccos(torch.clamp(neg_ratings_margin,-1+1e-7,1-1e-7))
-            ratings = torch.cos(theta+M)
+            if world.config['adaloss_mode'] in ['pos_neg', 'pos_neg_cl']:
+                neg_ratings_margin = self.get_coef_adaptive_negative(batch_target, batch_pos, method=method, mode=mode, epoch=epoch).squeeze()
+                theta = torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))
+                M = torch.arccos(torch.clamp(neg_ratings_margin,-1+1e-7,1-1e-7))
+                ratings = torch.cos(theta+M)
+        #UU, II
         else:
-            pos_ratings_margin = self.get_coef_adaptive_CL(batch_target, batch_target, epoch=epoch)
-            theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
-            M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
-            ratings_diag = torch.cos(theta + M)
+            if world.config['adaloss_mode'] in ['pos_neg_cl']:
+                pos_ratings_margin = self.get_coef_adaptive_CL(batch_target, batch_target, epoch=epoch)
+                theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
+                M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
+                ratings_diag = torch.cos(theta + M)
             pass
         
         numerator = torch.exp(ratings_diag / self.tau)
@@ -472,6 +475,8 @@ class Adaptive_softmax_loss(torch.nn.Module):
         the bigger, the more reliable, the more important
         '''
         if method == 'mlp':
+            batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
+            batch_weight_emb = torch.matmul(batch_weight_emb_user, torch.transpose(batch_weight_emb_item, 0, 1))
             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user).unsqueeze(1), torch.log(batch_weight_pop_item).unsqueeze(1)#TODO problem of grandeur
             all_ones = torch.ones_like(batch_weight_pop_user)

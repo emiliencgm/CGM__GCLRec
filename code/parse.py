@@ -85,6 +85,7 @@ def parse_args():
     parser.add_argument('--if_projector', type=int, default=0, help="whether use Projector(a 2-Layer MLP) for augmented-view embedding")
     parser.add_argument('--comment', type=str, default='_', help="comment for the experiment")
     parser.add_argument('--if_valid', type=int, default=0, help="whether use validtion set")
+    parser.add_argument('--adaloss_mode', type=str, default='pos', help="mode of AdaLoss: pos, pos+neg, pos+neg+cl")
     #===========================================================================================================================================
 
     return parser.parse_args()

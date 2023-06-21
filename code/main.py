@@ -66,6 +66,8 @@ def main():
     models = {'LightGCN':model.LightGCN, 'GTN':model.GTN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec, 'LightGCN_PyG':model.LightGCN_PyG}
     Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
 
+    wandb.watch(Recmodel, log='all')
+
     homophily = Homophily(Recmodel)
 
     augments = {'No':None, 'ED':augment.ED_Uniform, 'RW':augment.RW_Uniform, 'SVD':augment.SVD_Augment, 'Adaptive':augment.Adaptive_Neighbor_Augment, 'Learner':augment.Augment_Learner}
@@ -76,8 +78,13 @@ def main():
     else:
         augmentation = None
 
+    wandb.watch(augmentation, log='all')
+    
+
     losss = {'BPR': loss.BPR_loss, 'BPR_Contrast':loss.BPR_Contrast_loss, 'Softmax':loss.Softmax_loss, 'BC':loss.BC_loss, 'Adaptive':loss.Adaptive_softmax_loss, 'Causal_pop':loss.Causal_popularity_BPR_loss, 'DCL':loss.Debiased_Contrastive_loss, 'AllWeight':loss.All_weighted_InfoNCE}
     total_loss = losss[world.config['loss']](world.config, Recmodel, precal, homophily)
+
+    wandb.watch(total_loss, log='all')
 
     w = SummaryWriter(join(world.BOARD_PATH, time.strftime("%m-%d-%Hh%Mm%Ss-") + "-" + str([(key,value)for key,value in world.log.items()])))
 
