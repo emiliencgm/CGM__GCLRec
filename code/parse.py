@@ -87,6 +87,7 @@ def parse_args():
     parser.add_argument('--if_valid', type=int, default=0, help="whether use validtion set")
     parser.add_argument('--adaloss_mode', type=str, default='pos', help="mode of AdaLoss: pos, pos+neg, pos+neg+cl")
     parser.add_argument('--train_mode', type=str, default='forkmerge', help="mode of training")
+    parser.add_argument('--if_adaptive', type=int, default=1, help="=1: use adaptive coef. =0: use +1.")
     #===========================================================================================================================================
 
     return parser.parse_args()

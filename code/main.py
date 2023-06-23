@@ -22,7 +22,12 @@ from pprint import pprint
 import utils
 from augment import Homophily
 import wandb
-
+import math
+import os
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import pyplot as plt
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 def main():
     project = world.config['project']
@@ -31,6 +36,7 @@ def main():
     notes = world.config['notes']
     group = world.config['group']
     job_type = world.config['job_type']
+    os.environ['WANDB_MODE'] = 'dryrun'
     wandb.init(project=project, name=name, tags=tag, group=group, job_type=job_type, config=world.config, save_code=True, sync_tensorboard=False, notes=notes)
     wandb.define_metric("custom_epoch")
     wandb.define_metric(f"{world.config['dataset']}"+'/loss', step_metric='custom_epoch')
@@ -210,6 +216,41 @@ def main():
 
             during = time.time() - start
             print(f"total time cost of epoch {epoch}: ", during)
+
+            # if world.config['loss'] == 'Adaptive':
+            # #plot MLP(pop)
+            #     with torch.no_grad():
+            #         if epoch % 3 == 0:
+            #             max_pop_i = precal.popularity.max_pop_i
+            #             pop_i = np.arange(1, max_pop_i, 10)
+            #             max_pop_i = math.log(max_pop_i)
+            #             centroid = np.arange(0, 1, 0.01)
+
+            #             input_mlp_batch = []
+            #             for i in pop_i:
+            #                 input_mlp_batch.append([0., max_pop_i-math.log(i), 0., 0., 0.])
+            #             input_mlp_batch = torch.Tensor(input_mlp_batch).to(world.device)
+            #             output_mlp_batch = np.array(total_loss.MLP_model(input_mlp_batch).cpu())
+            #             plt1 = plt.plot(pop_i, output_mlp_batch)
+            #             plt.savefig("my_plot_pop_item.png")
+            #             wandb.log({"MLP(pop_item)": wandb.Image("my_plot_pop_item.png", caption="epoch:{}".format(epoch))})
+            #             plt.clf()
+            #             input_mlp_batch = []
+            #             for i in centroid:
+            #                 input_mlp_batch.append([0., 0., i, 0., 0.])
+            #             input_mlp_batch = torch.Tensor(input_mlp_batch).to(world.device)
+            #             output_mlp_batch = np.array(total_loss.MLP_model(input_mlp_batch).cpu())
+            #             plt2 = plt.plot(centroid, output_mlp_batch)
+            #             plt.savefig("my_plot_centroid.png")
+            #             wandb.log({"MLP(centroid)": wandb.Image("my_plot_centroid.png", caption="epoch:{}".format(epoch))})
+            #             plt.clf()
+
+            #             plt.hist(x=np.array(total_loss.batch_weight.cpu()), bins=30, density=True)
+            #             plt.savefig("my_plot_hist.png")
+            #             wandb.log({"Hist(pos_weight)": wandb.Image("my_plot_hist.png", caption="epoch:{}".format(epoch))})
+            #             plt.clf()
+
+
     finally:
         w.close()
         wandb.finish()

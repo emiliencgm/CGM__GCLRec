@@ -1,0 +1,586 @@
+diff --git a/code/models/Adaloss.py b/code/Adaloss.py
+similarity index 50%
+rename from code/models/Adaloss.py
+rename to code/Adaloss.py
+index 60dcf62..a49b427 100644
+--- a/code/models/Adaloss.py
++++ b/code/Adaloss.py
+@@ -11,6 +11,7 @@ def parse_args():
+     parser.add_argument('--CN', type=str, default='SC', help="commonNeighbor_mode")
+ 
+     parser.add_argument('--mode', type=str, default='pos', help="Adaloss mode: [pos, pos+neg, pos+neg+cl]")
++    parser.add_argument('--train', type=str, default='origin', help="Adaloss training mode: [origin, forkmerge]")
+     parser.add_argument('--model', type=str, default='LightGCN', help="model for AdaLoss [LightGCN, LightGCN_PyG, GTN, SGL, SimGCL, GCLRec]")
+     parser.add_argument('--augment', type=str, default='No', help="Augmentation for AdaLoss [SGL--ED/RW, SimGCL--No, SVD, Adaptive, Learner]")
+ 
+@@ -20,86 +21,86 @@ if args.valid == 1:
+     project = 'GCLRec_Valid'
+ else:
+     project = 'GCLRec_No_Valid'
+-#hyperparameters: temp_tau, [adaptive_method==mlp, centroid_mode==eigenvector (pagerank, degree), commonNeighbor_mode==SC (JS, CN, LHN)]
++#hyperparameters: temp_tau, [adaptive_method==mlp, centroid_mode==eigenvector (pagerank, degree), commonNeighbor_mode==SC (JS, CN, LHN)], alpha
+ 
+ if args.task == 'yelp2018':
+     if args.model=='SimGCL':
+-        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-ED':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-RW':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN':
+-        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN_PyG':
+-        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GTN':
+-        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-SVD':
+-        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-Learner':
+-        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GCLRec':
+-        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     
+ 
+ elif args.task == 'gowalla':
+     if args.model=='SimGCL':
+-        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-ED':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-RW':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN':
+-        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN_PyG':
+-        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GTN':
+-        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-SVD':
+-        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-Learner':
+-        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GCLRec':
+-        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     
+ elif args.task == 'amazon-book':
+     if args.model=='SimGCL':
+-        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-ED':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-RW':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN':
+-        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN_PyG':
+-        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GTN':
+-        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-SVD':
+-        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-Learner':
+-        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GCLRec':
+-        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     
+ elif args.task == 'ifashion':
+     if args.model=='SimGCL':
+-        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SimGCL+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SimGCL+infoNCE+AdaLoss --model SimGCL --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-ED':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment ED --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='SGL-RW':
+-        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes SGL_ED+InfoNCE_+_AdaLoss_mlp --lambda1 0.1 --eps_SimGCL 0.1 --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name SGL+infoNCE+AdaLoss --model SGL --augment RW --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN':
+-        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+AdaLoss --model LightGCN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN_PyG':
+-        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_PyG_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN_PyG+AdaLoss --model LightGCN_PyG --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GTN':
+-        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GTN_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GTN+AdaLoss --model GTN --augment No --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-SVD':
+-        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_SVD_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+SVD+AdaLoss --model LightGCN --augment SVD --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='LightGCN-Learner':
+-        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes LGN_+_Learner_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name LightGCN+Learner+AdaLoss --model LightGCN --augment Learner --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     if args.model=='GCLRec':
+-        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
++        os.system(f'python main.py --notes GCLRec_+_AdaNeigh_+_AdaLoss_mlp --temp_tau {args.tau} --adaptive_method mlp --centroid_mode {args.centroid} --commonNeighbor_mode {args.CN} --project {project} --name GCLRec+AdaNeigh+AdaLoss --model GCLRec --augment Adaptive --loss Adaptive --adaloss_mode {args.mode} --train_mode {args.train} --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag Adaptive_loss --group Ours --job_type {args.task} --if_visual {args.visual} --visual_epoch 3')
+     
+\ No newline at end of file
+diff --git a/code/__pycache__/augment.cpython-39.pyc b/code/__pycache__/augment.cpython-39.pyc
+new file mode 100644
+index 0000000..8f0c867
+Binary files /dev/null and b/code/__pycache__/augment.cpython-39.pyc differ
+diff --git a/code/__pycache__/dataloader.cpython-39.pyc b/code/__pycache__/dataloader.cpython-39.pyc
+new file mode 100644
+index 0000000..d273308
+Binary files /dev/null and b/code/__pycache__/dataloader.cpython-39.pyc differ
+diff --git a/code/__pycache__/gtn_propagation.cpython-39.pyc b/code/__pycache__/gtn_propagation.cpython-39.pyc
+new file mode 100644
+index 0000000..b2cccf1
+Binary files /dev/null and b/code/__pycache__/gtn_propagation.cpython-39.pyc differ
+diff --git a/code/__pycache__/kmeans_gpu.cpython-39.pyc b/code/__pycache__/kmeans_gpu.cpython-39.pyc
+new file mode 100644
+index 0000000..3838370
+Binary files /dev/null and b/code/__pycache__/kmeans_gpu.cpython-39.pyc differ
+diff --git a/code/__pycache__/loss.cpython-39.pyc b/code/__pycache__/loss.cpython-39.pyc
+new file mode 100644
+index 0000000..dd3c1dd
+Binary files /dev/null and b/code/__pycache__/loss.cpython-39.pyc differ
+diff --git a/code/__pycache__/model.cpython-39.pyc b/code/__pycache__/model.cpython-39.pyc
+new file mode 100644
+index 0000000..146b5dd
+Binary files /dev/null and b/code/__pycache__/model.cpython-39.pyc differ
+diff --git a/code/__pycache__/parse.cpython-39.pyc b/code/__pycache__/parse.cpython-39.pyc
+new file mode 100644
+index 0000000..f9ae08f
+Binary files /dev/null and b/code/__pycache__/parse.cpython-39.pyc differ
+diff --git a/code/__pycache__/precalcul.cpython-39.pyc b/code/__pycache__/precalcul.cpython-39.pyc
+new file mode 100644
+index 0000000..eec4d39
+Binary files /dev/null and b/code/__pycache__/precalcul.cpython-39.pyc differ
+diff --git a/code/__pycache__/procedure.cpython-39.pyc b/code/__pycache__/procedure.cpython-39.pyc
+new file mode 100644
+index 0000000..0250e93
+Binary files /dev/null and b/code/__pycache__/procedure.cpython-39.pyc differ
+diff --git a/code/__pycache__/utils.cpython-39.pyc b/code/__pycache__/utils.cpython-39.pyc
+new file mode 100644
+index 0000000..8281217
+Binary files /dev/null and b/code/__pycache__/utils.cpython-39.pyc differ
+diff --git a/code/__pycache__/visual.cpython-39.pyc b/code/__pycache__/visual.cpython-39.pyc
+new file mode 100644
+index 0000000..664e01d
+Binary files /dev/null and b/code/__pycache__/visual.cpython-39.pyc differ
+diff --git a/code/__pycache__/world.cpython-39.pyc b/code/__pycache__/world.cpython-39.pyc
+new file mode 100644
+index 0000000..8ba2381
+Binary files /dev/null and b/code/__pycache__/world.cpython-39.pyc differ
+diff --git a/code/loss.py b/code/loss.py
+index 2dfdbd8..fff7fa0 100755
+--- a/code/loss.py
++++ b/code/loss.py
+@@ -60,6 +60,59 @@ class BPR_Contrast_loss(BPR_loss):
+         return loss
+ 
+ 
++    def sim(self, z1: torch.Tensor, z2: torch.Tensor, mode='inner_product'):#TODO
++        '''
++        计算一个z1和一个z2两个向量的相似度/或者一个z1和多个z2的各自相似度。
++        即两个输入的向量数（行数）可能不同。
++        '''
++        if mode == 'inner_product':
++            if z1.size()[0] == z2.size()[0]:
++                #return F.cosine_similarity(z1,z2)
++                z1 = F.normalize(z1)
++                z2 = F.normalize(z2)
++                return torch.sum(torch.mul(z1,z2) ,dim=1)
++            else:
++                z1 = F.normalize(z1)
++                z2 = F.normalize(z2)
++                #return ( torch.mm(z1, z2.t()) + 1 ) / 2
++                return torch.mm(z1, z2.t())
++        elif mode == 'cos':
++            if z1.size()[0] == z2.size()[0]:
++                return F.cosine_similarity(z1,z2)
++            else:
++                z1 = F.normalize(z1)
++                z2 = F.normalize(z2)
++                #return ( torch.mm(z1, z2.t()) + 1 ) / 2
++                return torch.mm(z1, z2.t())
++            
++class InfoNCE_loss():
++    def __init__(self):
++        self.tau = world.config['temp_tau']
++
++    def infonce_loss(self, batch_user, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2):
++
++        # reg_loss = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))/self.config['batch_size']
++        
++        contrastloss = self.info_nce_loss_overall(aug_users1[batch_user], aug_users2[batch_user], aug_users2) \
++                        + self.info_nce_loss_overall(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2)
++        return contrastloss
++
++    def info_nce_loss_overall(self, z1, z2, z_all):
++        '''
++        z1--z2: pos,  z_all: neg\n
++        return: InfoNCEloss
++        '''
++        f = lambda x: torch.exp(x / self.tau)
++        between_sim = f(self.sim(z1, z2))
++        all_sim = f(self.sim(z1, z_all))
++        positive_pairs = (between_sim)
++        negative_pairs = torch.sum(all_sim, 1)
++        loss = torch.sum(-torch.log(positive_pairs / negative_pairs))#TODO softplus
++        #print('positive_pairs / negative_pairs',max(positive_pairs / negative_pairs))
++        loss = loss/world.config['batch_size']
++        return loss
++
++
+     def sim(self, z1: torch.Tensor, z2: torch.Tensor, mode='inner_product'):#TODO
+         '''
+         计算一个z1和一个z2两个向量的相似度/或者一个z1和多个z2的各自相似度。
+@@ -291,8 +344,9 @@ class Adaptive_softmax_loss(torch.nn.Module):
+             pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
+             theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
+             M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
++            # M = torch.ones_like(M) - M
+             # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
+-            ratings_diag = torch.cos(theta + M)
++            ratings_diag = torch.cos(theta + M)#TODO + or -
+             # ratings_diag = ratings_diag * pos_ratings_margin
+             #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
+             if world.config['adaloss_mode'] in ['pos_neg', 'pos_neg_cl']:
+@@ -421,7 +475,8 @@ class Adaptive_softmax_loss(torch.nn.Module):
+         elif method == 'mlp':
+             batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
+             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
+-            batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)#TODO problem of grandeur
++            batch_weight_pop_user = torch.ones_like(batch_weight_pop_user)*math.log(self.precal.popularity.max_pop_u)-torch.log(batch_weight_pop_user)#TODO problem of grandeur and +-
++            batch_weight_pop_item = torch.ones_like(batch_weight_pop_item)*math.log(self.precal.popularity.max_pop_i)-torch.log(batch_weight_pop_item)
+             #batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
+             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
+             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
+@@ -442,6 +497,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
+ 
+         # batch_weight = torch.sigmoid(batch_weight)#TODO
+         
++        self.batch_weight = batch_weight
+         return batch_weight
+     
+     def get_coef_adaptive_CL(self, batch_user, batch_pos_user, method='mlp', mode='eigenvector', epoch=None):
+diff --git a/code/main.py b/code/main.py
+index e95f77a..9cc7346 100755
+--- a/code/main.py
++++ b/code/main.py
+@@ -22,7 +22,12 @@ from pprint import pprint
+ import utils
+ from augment import Homophily
+ import wandb
+-
++import math
++import os
++import numpy as np
++from mpl_toolkits.mplot3d import Axes3D
++from matplotlib import pyplot as plt
++from matplotlib.ticker import LinearLocator, FormatStrFormatter
+ 
+ def main():
+     project = world.config['project']
+@@ -31,6 +36,7 @@ def main():
+     notes = world.config['notes']
+     group = world.config['group']
+     job_type = world.config['job_type']
++    # os.environ['WANDB_MODE'] = 'dryrun'
+     wandb.init(project=project, name=name, tags=tag, group=group, job_type=job_type, config=world.config, save_code=True, sync_tensorboard=False, notes=notes)
+     wandb.define_metric("custom_epoch")
+     wandb.define_metric(f"{world.config['dataset']}"+'/loss', step_metric='custom_epoch')
+@@ -66,7 +72,10 @@ def main():
+     models = {'LightGCN':model.LightGCN, 'GTN':model.GTN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec, 'LightGCN_PyG':model.LightGCN_PyG}
+     Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
+ 
+-    wandb.watch(Recmodel, log='all')
++    try:
++        wandb.watch(Recmodel, log='all')
++    except:
++        pass
+ 
+     homophily = Homophily(Recmodel)
+ 
+@@ -78,13 +87,19 @@ def main():
+     else:
+         augmentation = None
+ 
+-    wandb.watch(augmentation, log='all')
++    try:
++        wandb.watch(augmentation, log='all')
++    except:
++        pass
+     
+ 
+     losss = {'BPR': loss.BPR_loss, 'BPR_Contrast':loss.BPR_Contrast_loss, 'Softmax':loss.Softmax_loss, 'BC':loss.BC_loss, 'Adaptive':loss.Adaptive_softmax_loss, 'Causal_pop':loss.Causal_popularity_BPR_loss, 'DCL':loss.Debiased_Contrastive_loss, 'AllWeight':loss.All_weighted_InfoNCE}
+     total_loss = losss[world.config['loss']](world.config, Recmodel, precal, homophily)
+-
+-    wandb.watch(total_loss, log='all')
++    
++    try:
++        wandb.watch(total_loss, log='all')
++    except:
++        pass
+ 
+     w = SummaryWriter(join(world.BOARD_PATH, time.strftime("%m-%d-%Hh%Mm%Ss-") + "-" + str([(key,value)for key,value in world.log.items()])))
+ 
+@@ -134,8 +149,10 @@ def main():
+             #====================TRAIN====================
+             cprint('[TRAIN]')
+             start_train = time.time()
+-            # avg_loss = train.ForkMerge_train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+-            avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
++            if world.config['train_mode']=='origin':
++                avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
++            elif world.config['train_mode']=='forkmerge':
++                avg_loss = train.ForkMerge_train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+             end_train = time.time()
+             wandb.log({ f"{world.config['dataset']}"+'/loss': avg_loss})
+             wandb.log({f"{world.config['dataset']}"+f"/training_time": end_train - start_train})
+@@ -199,6 +216,41 @@ def main():
+ 
+             during = time.time() - start
+             print(f"total time cost of epoch {epoch}: ", during)
++
++            if world.config['loss'] == 'Adaptive':
++            #plot MLP(pop)
++                with torch.no_grad():
++                    if epoch % 3 == 0:
++                        max_pop_i = precal.popularity.max_pop_i
++                        pop_i = np.arange(1, max_pop_i, 10)
++                        max_pop_i = math.log(max_pop_i)
++                        centroid = np.arange(0, 1, 0.01)
++
++                        input_mlp_batch = []
++                        for i in pop_i:
++                            input_mlp_batch.append([0., max_pop_i-math.log(i), 0., 0., 0.])
++                        input_mlp_batch = torch.Tensor(input_mlp_batch).to(world.device)
++                        output_mlp_batch = np.array(total_loss.MLP_model(input_mlp_batch).cpu())
++                        plt1 = plt.plot(pop_i, output_mlp_batch)
++                        plt.savefig("my_plot_pop_item.png")
++                        wandb.log({"MLP(pop_item)": wandb.Image("my_plot_pop_item.png", caption="epoch:{}".format(epoch))})
++                        plt.clf()
++                        input_mlp_batch = []
++                        for i in centroid:
++                            input_mlp_batch.append([0., 0., i, 0., 0.])
++                        input_mlp_batch = torch.Tensor(input_mlp_batch).to(world.device)
++                        output_mlp_batch = np.array(total_loss.MLP_model(input_mlp_batch).cpu())
++                        plt2 = plt.plot(centroid, output_mlp_batch)
++                        plt.savefig("my_plot_centroid.png")
++                        wandb.log({"MLP(centroid)": wandb.Image("my_plot_centroid.png", caption="epoch:{}".format(epoch))})
++                        plt.clf()
++
++                        plt.hist(x=np.array(total_loss.batch_weight.cpu()), bins=30, density=True)
++                        plt.savefig("my_plot_hist.png")
++                        wandb.log({"Hist(pos_weight)": wandb.Image("my_plot_hist.png", caption="epoch:{}".format(epoch))})
++                        plt.clf()
++
++
+     finally:
+         w.close()
+         wandb.finish()
+diff --git a/code/parse.py b/code/parse.py
+index 3114c9b..f5f4e80 100755
+--- a/code/parse.py
++++ b/code/parse.py
+@@ -86,6 +86,7 @@ def parse_args():
+     parser.add_argument('--comment', type=str, default='_', help="comment for the experiment")
+     parser.add_argument('--if_valid', type=int, default=0, help="whether use validtion set")
+     parser.add_argument('--adaloss_mode', type=str, default='pos', help="mode of AdaLoss: pos, pos+neg, pos+neg+cl")
++    parser.add_argument('--train_mode', type=str, default='forkmerge', help="mode of training")
+     #===========================================================================================================================================
+ 
+     return parser.parse_args()
+\ No newline at end of file
+diff --git a/code/precalcul.py b/code/precalcul.py
+index 3730e37..a4f14a5 100755
+--- a/code/precalcul.py
++++ b/code/precalcul.py
+@@ -163,6 +163,7 @@ class Pop():
+         num_group = world.config['pop_group']
+         item_per_group = int(self.num_item / num_group)
+         TrainPopSorted = sorted(self.TrainPop_item.items(), key=lambda x: x[1])
++        self.max_pop_i = TrainPopSorted[-1][1]
+         ItemPopGroupDict = {}#查询分组中有哪些item的字典
+         testDict_PopGroup = {}#查询不同分组下用户在Test集中交互过的item的字典
+         reverse_ItemPopGroupDict = {}#查询item属于哪个分组的字典
+@@ -211,6 +212,7 @@ class Pop():
+         num_group = world.config['pop_group']
+         user_per_group = int(self.num_user / num_group)
+         TrainPopSorted = sorted(self.TrainPop_user.items(), key=lambda x: x[1])
++        self.max_pop_u = TrainPopSorted[-1][1]
+         UserPopGroupDict = {}#查询分组中有哪些item的字典
+         reverse_UserPopGroupDict = {}#查询item属于哪个分组的字典
+         self._user_pop_label = [0]*self.num_user
+diff --git a/code/procedure.py b/code/procedure.py
+index 8b609bd..f0277a0 100755
+--- a/code/procedure.py
++++ b/code/procedure.py
+@@ -15,12 +15,14 @@ from tensorboardX import SummaryWriter
+ from model import LightGCN
+ from augment import Projector
+ from collections import OrderedDict
++import loss
+ 
+ class Train():
+     def __init__(self, loss_cal):
+         self.loss = loss_cal
+         self.projector = Projector().to(world.device)
+         self.test = Test()
++        self.INFONCE = loss.InfoNCE_loss()
+ 
+     def train(self, dataset, Recmodel, augmentation, epoch, optimizer, w:SummaryWriter=None):
+         Recmodel = Recmodel
+@@ -157,6 +159,20 @@ class Train():
+ 
+         return l_all
+     
++    def AdaLoss_rec_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation, epoch):
++        users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
++        #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
++        
++        aug_users1, aug_items1 = None, None
++        aug_users2, aug_items2 = None, None
++
++        if world.config['model'] in ['GCLRec']:
++            l_all = self.loss.adaptive_softmax_loss(users_emb[-1], pos_emb[-1], neg_emb[-1], userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2, epoch)
++        else:
++            l_all = self.loss.adaptive_softmax_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2, epoch)
++
++        return l_all
++
+     def BC_train(self, epoch, batch_users, batch_pos, batch_neg):
+         if epoch < world.config['epoch_only_pop_for_BCloss']:
+                     mode = 'only_pop'
+@@ -223,6 +239,49 @@ class Train():
+ 
+         return l_all
+     
++    def InfoNCE_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
++        #前向计算-原视图
++        users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs= Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
++        #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
++        #if Recmodel's encoder is LightGCN, then embs_per_layer_or_all_embs = [all_users, all_items]
++        
++        #数据增强视图
++        if world.config['model'] in ['SGL']:
++            aug_users1, aug_items1 = Recmodel.view_computer(augmentation.augAdjMatrix1)
++            aug_users2, aug_items2 = Recmodel.view_computer(augmentation.augAdjMatrix2)
++        elif world.config['model'] in ['SimGCL']:
++            aug_users1, aug_items1 = Recmodel.view_computer()
++            aug_users2, aug_items2 = Recmodel.view_computer()
++        elif world.config['model'] in ['GCLRec']:
++            k = world.config['k_aug']
++            aug_users1, aug_items1 = torch.split(embs_per_layer_or_all_embs[k], [Recmodel.num_users, Recmodel.num_items])
++            aug_users2, aug_items2 = augmentation.get_adaptive_neighbor_augment(embs_per_layer_or_all_embs, batch_users, batch_pos, batch_neg, k)
++
++        
++        if world.config['augment'] in ['SVD'] and world.config['model'] in ['LightGCN', 'LightGCN_PyG']: #or world.config['model'] in ['LightGCL']:
++            #SVD + LightGCN
++            aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
++            aug_users2, aug_items2 = augmentation.reconstruct_graph_computer()
++            
++        if world.config['augment'] in ['Learner'] and world.config['model'] in ['LightGCN_PyG', 'LightGCN']:
++            #Augment_Learner + LightGCN
++            aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
++            aug_users2, aug_items2 = Recmodel.view_computer(augmentation.forward())
++
++        #投影头——只有aug_users/items计算CL loss，因此只对其投影。users/items_emb则是计算BPR的，不用投影
++        if world.config['if_projector']:
++            aug_users1, aug_items1, aug_users2, aug_items2 = self.projector(aug_users1), self.projector(aug_items1), self.projector(aug_users2), self.projector(aug_items2)
++        else:
++            pass
++
++        #计算loss
++        if world.config['model'] in ['GCLRec']:
++            l_all = self.INFONCE.infonce_loss(batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
++        else:
++            l_all = self.INFONCE.infonce_loss(batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
++
++        return l_all
++
+     def PD_train(self, batch_users, batch_pos, batch_neg):
+         if world.config['model'] in ['LightGCN', 'GTN', 'LightGCN_PyG']:
+             pass
+@@ -256,7 +315,7 @@ class Train():
+             optimizer.zero_grad()
+ 
+             # 计算第一个损失的梯度
+-            loss1 = self.BPR_train(batch_users, batch_pos, batch_neg)
++            loss1 = self.AdaLoss_rec_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation, epoch)
+             loss1.backward(retain_graph=True)
+ 
+             # 保留第一个损失的梯度
+@@ -266,7 +325,7 @@ class Train():
+             optimizer.zero_grad()
+ 
+             # 计算第二个损失的梯度
+-            loss2 = self.BPR_Contrast_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
++            loss2 = self.InfoNCE_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
+             loss2.backward()
+ 
+             # 保留第二个损失的梯度
+@@ -275,7 +334,7 @@ class Train():
+             #按照valid效果搜索最佳lambda_ForkMerge
+             best_valid = 0.
+             best_idx = 0
+-            lambda_ForkMerge = [0.2, 0.4, 0.6, 0.8]
++            lambda_ForkMerge = [0.05, 0.10, 0.15]
+             for idx in range(len(lambda_ForkMerge)):
+                 # 组合梯度并更新参数
+                 for param, g1, g2 in zip(Recmodel.parameters(), grad1, grad2):
+diff --git a/code/wandb/debug-cli.cgm.log b/code/wandb/debug-cli.cgm.log
+new file mode 100644
+index 0000000..e69de29
+diff --git a/code/wandb/debug-internal.log b/code/wandb/debug-internal.log
+new file mode 120000
+index 0000000..0d164ee
+--- /dev/null
++++ b/code/wandb/debug-internal.log
+@@ -0,0 +1 @@
++run-20230623_162339-lrt84rdv/logs/debug-internal.log
+\ No newline at end of file
+diff --git a/code/wandb/debug.log b/code/wandb/debug.log
+new file mode 120000
+index 0000000..5df85f9
+--- /dev/null
++++ b/code/wandb/debug.log
+@@ -0,0 +1 @@
++run-20230623_162339-lrt84rdv/logs/debug.log
+\ No newline at end of file
+diff --git a/code/wandb/latest-run b/code/wandb/latest-run
+new file mode 120000
+index 0000000..abe3c64
+--- /dev/null
++++ b/code/wandb/latest-run
+@@ -0,0 +1 @@
++run-20230623_162339-lrt84rdv
+\ No newline at end of file
+diff --git a/code/world.py b/code/world.py
+index 9138559..913f5a7 100755
+--- a/code/world.py
++++ b/code/world.py
+@@ -77,6 +77,7 @@ config['if_valid'] = args.if_valid
+ config['temp_tau_pop'] = args.temp_tau_pop
+ config['lambda_ForkMerge'] = args.lambda_ForkMerge
+ config['adaloss_mode'] = args.adaloss_mode
++config['train_mode'] = args.train_mode
+ #备注
+ config['comment'] = args.comment
+ #加载预训练的embedding

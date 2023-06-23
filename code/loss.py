@@ -341,7 +341,11 @@ class Adaptive_softmax_loss(torch.nn.Module):
         #UI
         if not (method is None):
             #Adaptive coef between User and Item
-            pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
+            if world.config['if_adaptive']:
+                pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
+            else:
+                pos_ratings_margin = torch.ones_like(ratings_diag)
+                
             theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
             M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
             # M = torch.ones_like(M) - M
@@ -475,7 +479,8 @@ class Adaptive_softmax_loss(torch.nn.Module):
         elif method == 'mlp':
             batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
-            batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)#TODO problem of grandeur
+            batch_weight_pop_user = torch.ones_like(batch_weight_pop_user)*math.log(self.precal.popularity.max_pop_u)-torch.log(batch_weight_pop_user)#TODO problem of grandeur and +-
+            batch_weight_pop_item = torch.ones_like(batch_weight_pop_item)*math.log(self.precal.popularity.max_pop_i)-torch.log(batch_weight_pop_item)
             #batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
@@ -496,6 +501,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
 
         # batch_weight = torch.sigmoid(batch_weight)#TODO
         
+        self.batch_weight = batch_weight
         return batch_weight
     
     def get_coef_adaptive_CL(self, batch_user, batch_pos_user, method='mlp', mode='eigenvector', epoch=None):

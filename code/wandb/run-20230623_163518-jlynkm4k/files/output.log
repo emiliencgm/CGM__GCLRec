@@ -1,0 +1,124 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaloss_mode': 'pos',
+ 'adaptive_method': 'mlp',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'centroid_mode': 'eigenvector',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'yelp2018',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 30,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'group': 'Ours',
+ 'if_SVD': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'yelp2018',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'lambda_ForkMerge': 0.5,
+ 'latent_dim_rec': 64,
+ 'loss': 'Adaptive',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+AdaLoss',
+ 'notes': 'LGN_+_AdaLoss_mlp',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['Adaptive_loss'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.12,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20, 40],
+ 'train_mode': 'origin',
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 3,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[DATALOADER--START]
+loading [/home/cgm/code/CGM__GCLRec/data/yelp2018]
+1237259 interactions for training
+324147 interactions for testing
+yelp2018 Sparsity : 0.0012958757851778647
+loading adjacency matrix
+successfully loaded...
+Remember to delete this pre-calculed mat while changing data split !
+yelp2018 is ready to go
+[DATALOADER--END]
+[PRECALCULATE--START]
+training: 0it [00:00, ?it/s]
+Loading Eigenvector.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/yelp2018/EigenvectorCentroid
+eigenvector_centrality cost:  0.0008931159973144531
+Loading CommonNeighbor_sp.pt from /home/cgm/code/CGM__GCLRec/code/precalculate/yelp2018/CommonNeighbor/SC
+CN_simi_unsymmetry_mat_sp cost:  0.07466697692871094
+shape test : 2474518 == 2474518
+precal cost :  0.8154301643371582
+[PRECALCULATE--END]
+user:31668, item:38048
+use NORMAL distribution UI for Embedding
+GCL Model is ready to go!
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 604it [00:52, 11.50it/s]
+EPOCH[0]:loss 6.030
+[TEST]
+{'precision': array([0.01940445, 0.01626563]), 'recall': array([0.04096284, 0.06857195]), 'recall_pop': {0: array([3.15776178e-05, 1.02627258e-04]), 1: array([3.15776178e-05, 1.32625995e-04]), 2: array([6.31552356e-06, 3.14197297e-04]), 3: array([0.00023683, 0.00077658]), 4: array([0.00019473, 0.00092996]), 5: array([0.00090715, 0.0027494 ]), 6: array([0.00141528, 0.00399161]), 7: array([0.00431582, 0.0096597 ]), 8: array([0.01286906, 0.02975548]), 9: array([0.09732336, 0.15308969])}, 'recall_pop_Contribute': {0: array([5.26293630e-06, 1.87962011e-05]), 1: array([5.26293630e-06, 2.12647688e-05]), 2: array([7.01724840e-07, 4.61865229e-05]), 3: array([4.66956288e-05, 1.32664037e-04]), 4: array([3.68435086e-05, 1.47991919e-04]), 5: array([0.00013295, 0.00044417]), 6: array([0.00023042, 0.00070183]), 7: array([0.00081892, 0.0017894 ]), 8: array([0.00278687, 0.00645877]), 9: array([0.03689892, 0.05881088])}, 'ndcg': array([0.03402998, 0.04438684])}
+[5mfind a better recall[25m 0.04096284369532736 ++0.04096284369532736
+total time cost of epoch 0:  59.70171642303467

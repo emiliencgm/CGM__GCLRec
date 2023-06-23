@@ -163,6 +163,7 @@ class Pop():
         num_group = world.config['pop_group']
         item_per_group = int(self.num_item / num_group)
         TrainPopSorted = sorted(self.TrainPop_item.items(), key=lambda x: x[1])
+        self.max_pop_i = TrainPopSorted[-1][1]
         ItemPopGroupDict = {}#查询分组中有哪些item的字典
         testDict_PopGroup = {}#查询不同分组下用户在Test集中交互过的item的字典
         reverse_ItemPopGroupDict = {}#查询item属于哪个分组的字典
@@ -211,6 +212,7 @@ class Pop():
         num_group = world.config['pop_group']
         user_per_group = int(self.num_user / num_group)
         TrainPopSorted = sorted(self.TrainPop_user.items(), key=lambda x: x[1])
+        self.max_pop_u = TrainPopSorted[-1][1]
         UserPopGroupDict = {}#查询分组中有哪些item的字典
         reverse_UserPopGroupDict = {}#查询item属于哪个分组的字典
         self._user_pop_label = [0]*self.num_user
