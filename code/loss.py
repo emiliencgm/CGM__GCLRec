@@ -265,15 +265,17 @@ class MLP(torch.nn.Module):
         super(MLP, self).__init__()
 
         #1-->2-->2-->1
-        self.linear1=torch.nn.Linear(in_dim,3*in_dim)
-        self.activation1=torch.nn.ReLU()
-        self.linear2=torch.nn.Linear(3*in_dim, in_dim)
-        self.activation2=torch.nn.ReLU()
-        self.linear3=torch.nn.Linear(in_dim,1)
+        # self.linear1=torch.nn.Linear(in_dim,3*in_dim)
+        # self.activation1=torch.nn.ReLU()
+        # self.linear2=torch.nn.Linear(3*in_dim, in_dim)
+        # self.activation2=torch.nn.ReLU()
+        # self.linear3=torch.nn.Linear(in_dim,1)
         #TODO from CV projector:
         self.linear = torch.nn.Linear(in_dim,4*in_dim)
         self.BatchNorm = torch.nn.BatchNorm1d(4*in_dim, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        self.activation = torch.nn.ReLU()
+        # self.activation = torch.nn.ReLU()
+        self.activation = torch.nn.ELU()
+        self.linear_hidden = torch.nn.Linear(4*in_dim,4*in_dim)
         self.linear_out = torch.nn.Linear(4*in_dim, 1)
 
     def forward(self, x):
@@ -285,6 +287,8 @@ class MLP(torch.nn.Module):
         # x = self.linear3(x)
         x = self.linear(x)
         # x = self.BatchNorm(x)
+        x = self.activation(x)
+        x = self.linear_hidden(x)
         x = self.activation(x)
         x = self.linear_out(x)
         x = torch.sigmoid(x)
@@ -302,7 +306,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
         self.tau = config['temp_tau']
         self.alpha = config['alpha']
         self.f = lambda x: torch.exp(x / self.tau)
-        self.MLP_model = MLP(5+2*0).to(world.device)
+        self.MLP_model = MLP(5+2*64).to(world.device)
         self.MLP_model_CL = MLP(2+2*0).to(world.device)
         self.MLP_model_negative = MLP(3+2*0).to(world.device)
 
@@ -433,9 +437,17 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight2 = torch.tensor(np.array(batch_weight2).reshape((-1,))).to(world.device)
         return batch_weight1, batch_weight2
 
-    def get_embs(self, batch_user, batch_pos_item):
+    def get_embs_perturb(self, batch_user, batch_pos_item):
         with torch.no_grad():
             batch_weight_user, batch_weight_item = self.model.embedding_user(batch_user), self.model.embedding_item(batch_pos_item)
+            low = torch.zeros_like(batch_weight_user).float()
+            high = torch.ones_like(batch_weight_user).float()
+            random_noise_user = torch.distributions.uniform.Uniform(low, high).sample()
+            noise_user = torch.mul(torch.sign(batch_weight_user),torch.nn.functional.normalize(random_noise_user, dim=1)) * world.config['eps_SimGCL']
+            batch_weight_user += noise_user
+            random_noise_item = torch.distributions.uniform.Uniform(low, high).sample()
+            noise_item = torch.mul(torch.sign(batch_weight_item),torch.nn.functional.normalize(random_noise_item, dim=1)) * world.config['eps_SimGCL']
+            batch_weight_item += noise_item
         return batch_weight_user, batch_weight_item
 
     def get_mlp_input(self, features):
@@ -477,7 +489,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight = 1. * batch_weight
 
         elif method == 'mlp':
-            batch_weight_emb_user, batch_weight_emb_item = self.get_embs(batch_user, batch_pos_item)
+            batch_weight_emb_user, batch_weight_emb_item = self.get_embs_perturb(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
             batch_weight_pop_user = torch.ones_like(batch_weight_pop_user)*math.log(self.precal.popularity.max_pop_u)-torch.log(batch_weight_pop_user)#TODO problem of grandeur and +-
             batch_weight_pop_item = torch.ones_like(batch_weight_pop_item)*math.log(self.precal.popularity.max_pop_i)-torch.log(batch_weight_pop_item)
@@ -485,12 +497,11 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
             features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
-            # features = []
-            # with torch.no_grad():
-            #     for i in range(self.config['latent_dim_rec']):
-            #         features.append(batch_weight_emb_user[:,i])
-            #     for i in range(self.config['latent_dim_rec']):
-            #         features.append(batch_weight_emb_item[:,i])
+            
+            for i in range(self.config['latent_dim_rec']):
+                features.append(batch_weight_emb_user[:,i])
+            for i in range(self.config['latent_dim_rec']):
+                features.append(batch_weight_emb_item[:,i])
             
             batch_weight = self.get_mlp_input(features)
             batch_weight = self.MLP_model(batch_weight)
@@ -498,8 +509,6 @@ class Adaptive_softmax_loss(torch.nn.Module):
         else:
             batch_weight = None
             raise TypeError('adaptive method not implemented')
-
-        # batch_weight = torch.sigmoid(batch_weight)#TODO
         
         self.batch_weight = batch_weight
         return batch_weight
