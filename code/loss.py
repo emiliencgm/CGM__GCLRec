@@ -306,7 +306,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
         self.tau = config['temp_tau']
         self.alpha = config['alpha']
         self.f = lambda x: torch.exp(x / self.tau)
-        self.MLP_model = MLP(5+2*64).to(world.device)
+        self.MLP_model = MLP(5+2*0).to(world.device)
         self.MLP_model_CL = MLP(2+2*0).to(world.device)
         self.MLP_model_negative = MLP(3+2*0).to(world.device)
 
@@ -489,7 +489,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight = 1. * batch_weight
 
         elif method == 'mlp':
-            batch_weight_emb_user, batch_weight_emb_item = self.get_embs_perturb(batch_user, batch_pos_item)
+            # batch_weight_emb_user, batch_weight_emb_item = self.get_embs_perturb(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
             batch_weight_pop_user = torch.ones_like(batch_weight_pop_user)*math.log(self.precal.popularity.max_pop_u)-torch.log(batch_weight_pop_user)#TODO problem of grandeur and +-
             batch_weight_pop_item = torch.ones_like(batch_weight_pop_item)*math.log(self.precal.popularity.max_pop_i)-torch.log(batch_weight_pop_item)
@@ -498,10 +498,10 @@ class Adaptive_softmax_loss(torch.nn.Module):
             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
             features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
             
-            for i in range(self.config['latent_dim_rec']):
-                features.append(batch_weight_emb_user[:,i])
-            for i in range(self.config['latent_dim_rec']):
-                features.append(batch_weight_emb_item[:,i])
+            # for i in range(self.config['latent_dim_rec']):
+            #     features.append(batch_weight_emb_user[:,i])
+            # for i in range(self.config['latent_dim_rec']):
+            #     features.append(batch_weight_emb_item[:,i])
             
             batch_weight = self.get_mlp_input(features)
             batch_weight = self.MLP_model(batch_weight)

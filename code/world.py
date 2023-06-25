@@ -79,6 +79,7 @@ config['lambda_ForkMerge'] = args.lambda_ForkMerge
 config['adaloss_mode'] = args.adaloss_mode
 config['train_mode'] = args.train_mode
 config['if_adaptive'] = args.if_adaptive
+config['freeze_mlp'] = args.freeze_mlp
 #备注
 config['comment'] = args.comment
 #加载预训练的embedding
@@ -91,6 +92,7 @@ config['tag'] = args.tag
 config['notes'] = args.notes
 config['group'] = args.group
 config['job_type'] = args.job_type
+config['c'] = args.c
 
 #打印在TensorboardX的参数信息
 log = {}
