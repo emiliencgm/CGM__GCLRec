@@ -347,16 +347,16 @@ class Adaptive_softmax_loss(torch.nn.Module):
             #Adaptive coef between User and Item
             if world.config['if_adaptive']:
                 pos_ratings_margin = self.get_coef_adaptive(batch_target, batch_pos, method=method, mode=mode)
+                theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
+                M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
+                # M = torch.ones_like(M) - M
+                # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
+                ratings_diag = torch.cos(theta + M)#TODO + or -
+                # ratings_diag = ratings_diag * pos_ratings_margin
+                #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
             else:
-                pos_ratings_margin = torch.ones_like(ratings_diag)
+                pass
                 
-            theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
-            M = torch.arccos(torch.clamp(pos_ratings_margin,-1+1e-7,1-1e-7))
-            # M = torch.ones_like(M) - M
-            # M = torch.clamp(M, torch.zeros_like(M), math.pi-theta)
-            ratings_diag = torch.cos(theta + M)#TODO + or -
-            # ratings_diag = ratings_diag * pos_ratings_margin
-            #reliable / important ==> big margin ==> small theta ==> big simi between u,i 
             if world.config['adaloss_mode'] in ['pos_neg', 'pos_neg_cl']:
                 neg_ratings_margin = self.get_coef_adaptive_negative(batch_target, batch_pos, method=method, mode=mode, epoch=epoch).squeeze()
                 theta = torch.arccos(torch.clamp(ratings,-1+1e-7,1-1e-7))
