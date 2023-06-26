@@ -34,7 +34,7 @@ def parse_args():
     parser.add_argument('--lambda_ForkMerge', type=float, default=0.5, help="lambda between theta(0) and theta(1) in ForkMerge")
     #===========================================================================================================================================
 
-    parser.add_argument('--early_stop_steps', type=int, default=30, help="early stop steps")
+    parser.add_argument('--early_stop_steps', type=int, default=50, help="early stop steps")
     parser.add_argument('--edge_drop_prob', type=float, default=0.1, help="prob to dropout egdes")
     parser.add_argument('--latent_dim_rec', type=int, default=64, help="latent dim for rec")
     parser.add_argument('--num_layers', type=int, default=3, help="num layers of LightGCN")
@@ -83,12 +83,12 @@ def parse_args():
     parser.add_argument('--if_SVD', type=int, default=1, help="whether use SVD for augmentation")
     parser.add_argument('--svd_q', type=int, default=5, help="keep first q singular values for SVD recontrust")
     parser.add_argument('--if_projector', type=int, default=0, help="whether use Projector(a 2-Layer MLP) for augmented-view embedding")
-    parser.add_argument('--comment', type=str, default='_', help="comment for the experiment")
+    parser.add_argument('--comment', type=str, default='6.25', help="comment for the experiment")
     parser.add_argument('--if_valid', type=int, default=0, help="whether use validtion set")
     parser.add_argument('--adaloss_mode', type=str, default='pos', help="mode of AdaLoss: pos, pos+neg, pos+neg+cl")
     parser.add_argument('--train_mode', type=str, default='origin', help="mode of training")
     parser.add_argument('--if_adaptive', type=int, default=1, help="=1: use adaptive coef. =0: use +1.")
-    parser.add_argument('--freeze_mlp', type=int, default=2, help="freeze MLP parameters after n epochs")
+    parser.add_argument('--freeze_mlp', type=int, default=200, help="freeze MLP parameters after n epochs")
     #===========================================================================================================================================
     parser.add_argument('--c', type=str, default='nothing', help="note something for this experiment")
 

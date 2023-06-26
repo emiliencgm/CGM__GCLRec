@@ -1,0 +1,80 @@
+diff --git a/code/loss.py b/code/loss.py
+index 285d219..a84a8ad 100755
+--- a/code/loss.py
++++ b/code/loss.py
+@@ -491,9 +491,10 @@ class Adaptive_softmax_loss(torch.nn.Module):
+         elif method == 'mlp':
+             # batch_weight_emb_user, batch_weight_emb_item = self.get_embs_perturb(batch_user, batch_pos_item)
+             batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
+-            batch_weight_pop_user = torch.ones_like(batch_weight_pop_user)*math.log(self.precal.popularity.max_pop_u)-torch.log(batch_weight_pop_user)#TODO problem of grandeur and +-
+-            batch_weight_pop_item = torch.ones_like(batch_weight_pop_item)*math.log(self.precal.popularity.max_pop_i)-torch.log(batch_weight_pop_item)
++            # batch_weight_pop_user = torch.ones_like(batch_weight_pop_user)*math.log(self.precal.popularity.max_pop_u)-torch.log(batch_weight_pop_user)#TODO problem of grandeur and +-
++            # batch_weight_pop_item = torch.ones_like(batch_weight_pop_item)*math.log(self.precal.popularity.max_pop_i)-torch.log(batch_weight_pop_item)
+             #batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
++            batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)
+             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
+             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
+             features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
+diff --git a/code/models/BCloss.py b/code/models/BCloss.py
+deleted file mode 100644
+index a84aa2e..0000000
+--- a/code/models/BCloss.py
++++ /dev/null
+@@ -1,28 +0,0 @@
+-import os
+-import argparse
+-def parse_args():
+-    parser = argparse.ArgumentParser(description="Go GCLRec")
+-    parser.add_argument('--task', type=str, default='yelp2018', help="dataset")
+-    parser.add_argument('--device', type=int, default=0, help="device")
+-    parser.add_argument('--visual', type=int, default=0, help="visualization")
+-    parser.add_argument('--valid', type=int, default=1, help="validation")
+-    parser.add_argument('--temp_tau', type=float, default=0.1, help="temp_tau")
+-    return parser.parse_args()
+-args = parse_args()
+-if args.valid == 1:
+-    project = 'GCLRec_Valid'
+-else:
+-    project = 'GCLRec_No_Valid'
+-#hyperparameters: temp_tau, temp_tau_pop, alpha(weight between loss_1 and loss_pop_2)
+-
+-if args.task == 'yelp2018':
+-    os.system(f'python main.py --alpha 0.5 --temp_tau_pop {args.temp_tau} --temp_tau {args.temp_tau} --notes tau1=tau2 --project {project} --name LightGCN+BC_loss --model LightGCN --loss BC --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag BC_loss --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 5')
+-
+-elif args.task == 'gowalla':
+-    os.system(f'python main.py --alpha 0.5 --temp_tau_pop {args.temp_tau} --temp_tau {args.temp_tau} --notes tau1=tau2 --project {project} --name LightGCN+BC_loss --model LightGCN --loss BC --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag BC_loss --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 5')
+-    
+-elif args.task == 'amazon-book':
+-    os.system(f'python main.py --alpha 0.5 --temp_tau_pop {args.temp_tau} --temp_tau {args.temp_tau} --notes tau1=tau2 --project {project} --name LightGCN+BC_loss --model LightGCN --loss BC --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag BC_loss --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 5')
+-    
+-elif args.task == 'ifashion':
+-    os.system(f'python main.py --alpha 0.5 --temp_tau_pop {args.temp_tau} --temp_tau {args.temp_tau} --notes tau1=tau2 --project {project} --name LightGCN+BC_loss --model LightGCN --loss BC --dataset {args.task} --init_method Normal --lr 0.001 --weight_decay 1e-4 --cuda {args.device} --num_layers 3 --latent_dim_rec 64 --batch_size 2048 --comment _ --if_valid {args.valid} --tag BC_loss --group baseline --job_type {args.task} --if_visual {args.visual} --visual_epoch 5')
+\ No newline at end of file
+diff --git a/code/parse.py b/code/parse.py
+index dc0af38..22cd38f 100755
+--- a/code/parse.py
++++ b/code/parse.py
+@@ -34,7 +34,7 @@ def parse_args():
+     parser.add_argument('--lambda_ForkMerge', type=float, default=0.5, help="lambda between theta(0) and theta(1) in ForkMerge")
+     #===========================================================================================================================================
+ 
+-    parser.add_argument('--early_stop_steps', type=int, default=30, help="early stop steps")
++    parser.add_argument('--early_stop_steps', type=int, default=50, help="early stop steps")
+     parser.add_argument('--edge_drop_prob', type=float, default=0.1, help="prob to dropout egdes")
+     parser.add_argument('--latent_dim_rec', type=int, default=64, help="latent dim for rec")
+     parser.add_argument('--num_layers', type=int, default=3, help="num layers of LightGCN")
+@@ -83,12 +83,12 @@ def parse_args():
+     parser.add_argument('--if_SVD', type=int, default=1, help="whether use SVD for augmentation")
+     parser.add_argument('--svd_q', type=int, default=5, help="keep first q singular values for SVD recontrust")
+     parser.add_argument('--if_projector', type=int, default=0, help="whether use Projector(a 2-Layer MLP) for augmented-view embedding")
+-    parser.add_argument('--comment', type=str, default='_', help="comment for the experiment")
++    parser.add_argument('--comment', type=str, default='6.25', help="comment for the experiment")
+     parser.add_argument('--if_valid', type=int, default=0, help="whether use validtion set")
+     parser.add_argument('--adaloss_mode', type=str, default='pos', help="mode of AdaLoss: pos, pos+neg, pos+neg+cl")
+     parser.add_argument('--train_mode', type=str, default='origin', help="mode of training")
+     parser.add_argument('--if_adaptive', type=int, default=1, help="=1: use adaptive coef. =0: use +1.")
+-    parser.add_argument('--freeze_mlp', type=int, default=2, help="freeze MLP parameters after n epochs")
++    parser.add_argument('--freeze_mlp', type=int, default=200, help="freeze MLP parameters after n epochs")
+     #===========================================================================================================================================
+     parser.add_argument('--c', type=str, default='nothing', help="note something for this experiment")
+ 

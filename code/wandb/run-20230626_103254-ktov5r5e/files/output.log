@@ -1,0 +1,507 @@
+==========config==========
+{'GTN_K': 3,
+ 'GTN_alpha': 0.3,
+ 'adaloss_mode': 'pos',
+ 'adaptive_method': 'mlp',
+ 'alpha': 0.5,
+ 'augment': 'No',
+ 'batch_size': 2048,
+ 'c': 'nothing',
+ 'centroid_mode': 'pagerank',
+ 'comment': '_',
+ 'commonNeighbor_mode': 'SC',
+ 'cores': 10,
+ 'dataset': 'last-fm',
+ 'device': device(type='cuda'),
+ 'early_stop_steps': 50,
+ 'edge_drop_prob': 0.1,
+ 'epoch_only_pop_for_BCloss': 5,
+ 'epochs': 1000,
+ 'eps_SimGCL': 0.1,
+ 'epsilon_GCLRec': 0.1,
+ 'freeze_mlp': 200,
+ 'group': 'Ours',
+ 'if_SVD': 1,
+ 'if_adaptive': 1,
+ 'if_big_matrix': 0,
+ 'if_double_label': 1,
+ 'if_load_embedding': 0,
+ 'if_multicore': 1,
+ 'if_pretrain': 0,
+ 'if_projector': 0,
+ 'if_tensorboard': 1,
+ 'if_tsne': 1,
+ 'if_valid': 0,
+ 'if_visual': 0,
+ 'init_method': 'Normal',
+ 'item_emb': 0,
+ 'job_type': 'last-fm',
+ 'k_aug': 0,
+ 'lambda1': 0.1,
+ 'lambda_ForkMerge': 0.5,
+ 'latent_dim_rec': 64,
+ 'loss': 'Adaptive',
+ 'lr': 0.001,
+ 'model': 'LightGCN',
+ 'n_cluster': 10,
+ 'n_fold': 2,
+ 'name': 'LightGCN+AdaLoss',
+ 'notes': 'LGN_+_AdaLoss_mlp',
+ 'num_layers': 3,
+ 'p_drop': 0.1,
+ 'perplexity': 50,
+ 'pop_gamma': 0.02,
+ 'pop_group': 10,
+ 'project': 'GCLRec_No_Valid',
+ 'seed': 2023,
+ 'sigma_gausse': 1.0,
+ 'svd_q': 5,
+ 'tag': ['Adaptive_loss'],
+ 'tau_plus': 0.1,
+ 'temp_tau': 0.1,
+ 'temp_tau_pop': 0.1,
+ 'test_u_batch_size': 2048,
+ 'topks': [20, 40],
+ 'train_mode': 'origin',
+ 'tsne_group': [0, 9],
+ 'tsne_points': 2000,
+ 'user_emb': 0,
+ 'visual_epoch': 3,
+ 'w_GCLRec': 0.1,
+ 'weight_decay': 0.0001}
+==========config==========
+[DATALOADER--START]
+loading [/home/cgm/code/CGM__GCLRec/data/last-fm]
+2418427 interactions for training
+616336 interactions for testing
+last-fm Sparsity : 0.0026760006439057356
+loading adjacency matrix
+generating adjacency matrix --- All train data
+costing 48.15142488479614s, saved norm_mat...
+last-fm is ready to go
+[DATALOADER--END]
+[PRECALCULATE--START]
+Calculating importance of users to item in sparse mode SC:   0%|▏                                                                                                 | 110/48123 [00:01<11:24, 70.17it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Calculating importance of users to item in sparse mode SC: 100%|███████████████████████████████████████████████████████████████████████████████████████████████| 48123/48123 [05:11<00:00, 154.53it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Calculating importance of items to user in sparse mode SC:  99%|██████████████████████████████████████████████████████████████████████████████████████████████▍| 23416/23566 [04:17<00:01, 112.35it/s]
+Save CommonNeighbor_sp.pt to /home/cgm/code/CGM__GCLRec/code/precalculate/last-fm/CommonNeighbor/SC/CommonNeighbor_sp.pt
+CN_simi_unsymmetry_mat_sp cost:  570.5425176620483
+shape test : 2578006 == 4836854
+precal cost :  571.867803812027
+[PRECALCULATE--END]
+user:23566, item:48123
+use NORMAL distribution UI for Embedding
+Calculating importance of items to user in sparse mode SC: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 23566/23566 [04:18<00:00, 91.01it/s]
+training: 0it [00:00, ?it/s]
+[AUGMENT]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 1173it [02:14,  8.72it/s]
+EPOCH[0]:loss 5.522
+
+training: 1180it [02:15,  8.74it/s]
+{'precision': array([0.02224391, 0.01675613]), 'recall': array([0.04702632, 0.06520304]), 'recall_pop': {0: array([0.00140492, 0.00227776]), 1: array([0.00148731, 0.00284776]), 2: array([0.00185649, 0.0036292 ]), 3: array([0.00378383, 0.006034  ]), 4: array([0.00499708, 0.00810316]), 5: array([0.00602319, 0.00975512]), 6: array([0.00842257, 0.01334535]), 7: array([0.01234344, 0.01973732]), 8: array([0.01949427, 0.03088333]), 9: array([0.04817687, 0.0650077 ])}, 'recall_pop_Contribute': {0: array([0.00040422, 0.00059681]), 1: array([0.00043016, 0.00074215]), 2: array([0.00039662, 0.00070614]), 3: array([0.0009312 , 0.00143157]), 4: array([0.00116309, 0.00173264]), 5: array([0.00145264, 0.00223056]), 6: array([0.00241904, 0.00348766]), 7: array([0.00356006, 0.00535791]), 8: array([0.00643748, 0.00944637]), 9: array([0.0298318 , 0.03947123])}, 'ndcg': array([0.04335845, 0.04839637])}
+[5mfind a better recall[25m 0.0470263194399686 ++0.0470263194399686
+total time cost of epoch 0:  141.7271523475647
+[AUGMENT]
+[TRAIN]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+training: 892it [01:41,  8.91it/s]
+
+training: 896it [01:41,  8.80it/s]

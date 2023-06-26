@@ -1,0 +1,88 @@
+2023-06-26 10:27:24,085 INFO    MainThread:2225619 [wandb_setup.py:_flush():76] Current SDK version is 0.15.3
+2023-06-26 10:27:24,085 INFO    MainThread:2225619 [wandb_setup.py:_flush():76] Configure stats pid to 2225619
+2023-06-26 10:27:24,085 INFO    MainThread:2225619 [wandb_setup.py:_flush():76] Loading settings from /home/cgm/.config/wandb/settings
+2023-06-26 10:27:24,085 INFO    MainThread:2225619 [wandb_setup.py:_flush():76] Loading settings from /home/cgm/code/CGM__GCLRec/code/wandb/settings
+2023-06-26 10:27:24,085 INFO    MainThread:2225619 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-06-26 10:27:24,085 INFO    MainThread:2225619 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-06-26 10:27:24,085 INFO    MainThread:2225619 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'code/main.py', 'program': '/home/cgm/code/CGM__GCLRec/code/main.py'}
+2023-06-26 10:27:24,086 INFO    MainThread:2225619 [wandb_init.py:_log_setup():507] Logging user logs to /home/cgm/code/CGM__GCLRec/code/wandb/run-20230626_102724-wt6rsni0/logs/debug.log
+2023-06-26 10:27:24,086 INFO    MainThread:2225619 [wandb_init.py:_log_setup():508] Logging internal logs to /home/cgm/code/CGM__GCLRec/code/wandb/run-20230626_102724-wt6rsni0/logs/debug-internal.log
+2023-06-26 10:27:24,086 INFO    MainThread:2225619 [wandb_init.py:init():547] calling init triggers
+2023-06-26 10:27:24,086 INFO    MainThread:2225619 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {'temp_tau': 0.12, 'edge_drop_prob': 0.1, 'latent_dim_rec': 64, 'num_layers': 3, 'if_pretrain': 0, 'dataset': 'gowalla', 'lr': 0.001, 'weight_decay': 0.0001, 'seed': 2023, 'model': 'LightGCN', 'if_load_embedding': 0, 'if_tensorboard': 1, 'epochs': 1000, 'if_multicore': 1, 'early_stop_steps': 50, 'batch_size': 2048, 'lambda1': 0.1, 'topks': [20, 40], 'test_u_batch_size': 2048, 'pop_group': 10, 'if_big_matrix': 0, 'n_fold': 2, 'p_drop': 0.1, 'perplexity': 50, 'visual_epoch': 3, 'if_double_label': 1, 'if_tsne': 1, 'tsne_group': [0, 9], 'eps_SimGCL': 0.1, 'init_method': 'Normal', 'tsne_points': 2000, 'loss': 'Adaptive', 'augment': 'No', 'alpha': 0.5, 'epoch_only_pop_for_BCloss': 5, 'centroid_mode': 'eigenvector', 'commonNeighbor_mode': 'SC', 'n_cluster': 10, 'sigma_gausse': 1.0, 'adaptive_method': 'mlp', 'epsilon_GCLRec': 0.1, 'w_GCLRec': 0.1, 'k_aug': 0, 'if_visual': 0, 'GTN_K': 3, 'GTN_alpha': 0.3, 'if_SVD': 1, 'svd_q': 5, 'tau_plus': 0.1, 'pop_gamma': 0.02, 'if_projector': 0, 'if_valid': 0, 'temp_tau_pop': 0.1, 'lambda_ForkMerge': 0.5, 'adaloss_mode': 'pos', 'train_mode': 'origin', 'if_adaptive': 1, 'freeze_mlp': 200, 'comment': '_', 'user_emb': 0, 'item_emb': 0, 'project': 'GCLRec_No_Valid', 'name': 'LightGCN+AdaLoss', 'tag': ['Adaptive_loss'], 'notes': 'LGN_+_AdaLoss_mlp', 'group': 'Ours', 'job_type': 'gowalla', 'c': 'nothing', 'device': device(type='cuda'), 'cores': 10}
+2023-06-26 10:27:24,086 INFO    MainThread:2225619 [wandb_init.py:init():596] starting backend
+2023-06-26 10:27:24,086 INFO    MainThread:2225619 [wandb_init.py:init():600] setting up manager
+2023-06-26 10:27:24,087 INFO    MainThread:2225619 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-06-26 10:27:24,088 INFO    MainThread:2225619 [wandb_init.py:init():606] backend started and connected
+2023-06-26 10:27:24,091 INFO    MainThread:2225619 [wandb_init.py:init():700] updated telemetry
+2023-06-26 10:27:24,105 INFO    MainThread:2225619 [wandb_init.py:init():737] communicating run to backend with 60.0 second timeout
+2023-06-26 10:27:52,607 INFO    Thread-1  :2225619 [retry.py:__call__():172] Retry attempt failed:
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/util/connection.py", line 95, in create_connection
+    raise err
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    sock.connect(sa)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/connection.py", line 358, in connect
+    self.sock = conn = self._new_conn()
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/connection.py", line 179, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x7fde885db790>, 'Connection to api.wandb.ai timed out. (connect timeout=10)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7fde885db790>, 'Connection to api.wandb.ai timed out. (connect timeout=10)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/wandb/sdk/internal/internal_api.py", line 285, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/wandb/sdk/lib/gql_request.py", line 55, in execute
+    request = self.session.post(self.url, **post_args)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/requests/sessions.py", line 635, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/cgm/anaconda3/lib/python3.9/site-packages/requests/adapters.py", line 553, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7fde885db790>, 'Connection to api.wandb.ai timed out. (connect timeout=10)'))
+2023-06-26 10:28:23,456 INFO    MainThread:2225619 [wandb_run.py:_on_init():2177] communicating current version
+2023-06-26 10:28:23,861 INFO    MainThread:2225619 [wandb_run.py:_on_init():2186] got version response upgrade_message: "wandb version 0.15.4 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2023-06-26 10:28:23,861 INFO    MainThread:2225619 [wandb_init.py:init():787] starting run threads in backend
+2023-06-26 10:28:28,890 INFO    MainThread:2225619 [wandb_run.py:_console_start():2158] atexit reg
+2023-06-26 10:28:28,890 INFO    MainThread:2225619 [wandb_run.py:_redirect():2013] redirect: SettingsConsole.WRAP_RAW
+2023-06-26 10:28:28,890 INFO    MainThread:2225619 [wandb_run.py:_redirect():2078] Wrapping output streams.
+2023-06-26 10:28:28,890 INFO    MainThread:2225619 [wandb_run.py:_redirect():2103] Redirects installed.
+2023-06-26 10:28:28,891 INFO    MainThread:2225619 [wandb_init.py:init():829] run started, returning control to user process
+2023-06-26 10:28:40,313 INFO    MainThread:2225619 [wandb_watch.py:watch():51] Watching
+2023-06-26 10:28:40,314 INFO    MainThread:2225619 [wandb_watch.py:watch():51] Watching
+2023-06-26 10:28:40,387 INFO    MainThread:2225619 [wandb_watch.py:watch():51] Watching
