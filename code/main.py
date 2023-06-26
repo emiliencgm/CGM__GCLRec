@@ -44,7 +44,7 @@ def plot_MLP(epoch, precal, total_loss):
             input_mlp_batch = []
             for i in pop_i:
                 a = [0.]*(5+2*0)
-                a[1] = max_pop_i-math.log(i)
+                a[1] = math.log(i)
                 input_mlp_batch.append(a)
             input_mlp_batch = torch.Tensor(input_mlp_batch).to(world.device)
             output_mlp_batch = total_loss.MLP_model(input_mlp_batch)
