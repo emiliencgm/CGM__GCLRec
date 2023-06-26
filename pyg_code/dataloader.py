@@ -19,6 +19,7 @@ import world
 from world import cprint
 from time import time
 import networkx as nx
+from torch_geometric.data import Data
 
 class dataset(Dataset):
     """
@@ -152,6 +153,7 @@ class dataset(Dataset):
         self._edge_indices = self.get_edge_indices()
         #将计算邻接矩阵的过程提前
         # self.getSparseGraph()
+        self.get_edge_index()
 
         print(f"{config['dataset']} is ready to go")
 
@@ -220,6 +222,7 @@ class dataset(Dataset):
         '''
         self.edge_index = torch.tensor([list(np.append(self.trainUser, self.trainItem+self.n_user)), 
                                         list(np.append(self.trainItem+self.n_user, self.trainUser))]).to(world.device)
+        self.graph_pyg = Data(edge_index=self.edge_index.contiguous())
         return self.edge_index
 
 

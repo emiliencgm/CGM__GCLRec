@@ -90,8 +90,8 @@ PRECALPATH = join(CODE_PATH, f"precalculate/{config['dataset']}")
 import sys
 sys.path.append(join(CODE_PATH, 'sources'))
 
-if not os.path.exists(FILE_PATH):
-    os.makedirs(FILE_PATH, exist_ok=True)
+# if not os.path.exists(FILE_PATH):
+#     os.makedirs(FILE_PATH, exist_ok=True)
 if not os.path.exists(LOG_FILE):
     os.makedirs(LOG_FILE, exist_ok=True)
 if not os.path.exists(PRECALPATH):

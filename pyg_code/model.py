@@ -37,6 +37,7 @@ class GCN_Encoder(torch.nn.Module):
         self.num_users, self.num_items = num_users, num_items
         self.convs = ModuleList([GCNConv(self.dim,self.dim) for _ in range(n_layers)])
         self.alpha = 1. / (n_layers + 1)
+        bn = torch.nn.BatchNorm1d(self.dim)
 
     def forward(self, x, edge_index):
         # out = x * self.alpha
@@ -86,7 +87,8 @@ class LightGCN(nn.Module):
         #     self.Graph = self.dataset.Graph
         
         #TODO num_node = num_users + num_items
-        self.edge_index = self.dataset.get_edge_index()
+        self.edge_index = self.dataset.edge_index
+        self.graph = self.dataset.graph_pyg
 
         print(f"GCL Model is ready to go!")
 

@@ -36,6 +36,11 @@ class InfoNCE_loss():
         contrastloss = self.info_nce_loss_overall(aug_users1[batch_user], aug_users2[batch_user], aug_users2) \
                         + self.info_nce_loss_overall(aug_items1[batch_pos], aug_items2[batch_pos], aug_items2)
         return contrastloss
+    
+    def infonce_loss_batch(self, aug_users1, aug_items1, aug_users2, aug_items2):
+        
+        contrastloss = self.cal_infonce_loss(aug_users1, aug_users2) + self.cal_infonce_loss(aug_items1, aug_items2)
+        return contrastloss
 
     def info_nce_loss_overall(self, z1, z2, z_all):
         '''
@@ -50,6 +55,21 @@ class InfoNCE_loss():
         loss = torch.sum(-torch.log(positive_pairs / negative_pairs))#TODO softplus
         #print('positive_pairs / negative_pairs',max(positive_pairs / negative_pairs))
         loss = loss/world.config['batch_size']
+        return loss
+    
+    def cal_infonce_loss(self, z1, z2):
+        '''
+        BC implementation
+        '''
+        z1 = F.normalize(z1, dim=1)
+        z2 = F.normalize(z2, dim=1)
+        
+        ratings = torch.matmul(z1, torch.transpose(z2, 0, 1))
+        ratings_diag = torch.diag(ratings)
+        
+        numerator = torch.exp(ratings_diag / self.tau)
+        denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
+        loss = torch.mean(torch.negative(torch.log(numerator/denominator)))
         return loss
 
 
