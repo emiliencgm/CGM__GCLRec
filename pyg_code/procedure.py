@@ -15,6 +15,7 @@ from model import LightGCN
 from augment import Projector
 from collections import OrderedDict
 import loss
+import time
 
 class Train():
     def __init__(self, loss_cal):
@@ -37,9 +38,8 @@ class Train():
             batch_pos = train_data[1].long().to(world.device)
             batch_neg = train_data[2].long().to(world.device)
             
-            loss_aug, loss_emb = self.train_all(Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch)
+            l_all = self.blindly_train(Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch)
 
-            l_all = (loss_aug + loss_emb)/2
             aver_loss += l_all.cpu().item()
         aver_loss = aver_loss / (total_batch)
         print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
@@ -112,10 +112,50 @@ class Train():
         return loss_aug, loss_emb
     
     def train_all(self, Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch):
+        #========================train Embeddings==========================
+        #使用BPR_Contrast来训练Embedding
+        Recmodel.train()
+        augmentation.eval()
+        Recmodel.zero_grad()
+        for param in Recmodel.parameters():
+                param.requires_grad = True
+        for param in augmentation.parameters():
+                param.requires_grad = False
+        for param in self.loss.MLP_model.parameters():
+                param.requires_grad = False
+
+        users_emb0 = Recmodel.embedding_user.weight
+        items_emb0 = Recmodel.embedding_item.weight
+
+        userEmb0,  posEmb0 = users_emb0[batch_users], items_emb0[batch_pos]
+        reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
+
+        x = torch.cat([users_emb0, items_emb0])
+        edge_index = Recmodel.edge_index
+        users, items = Recmodel.view_computer(x, edge_index, edge_weight=None)
+
+        users_emb, pos_emb, neg_emb = users[batch_users], items[batch_pos], items[batch_neg]
+        loss_bpr = self.BPR.bpr_loss(users_emb, pos_emb, neg_emb)
+
+        aug_users1, aug_items1 = users, items
+
+        edge_weight = augmentation.forward()
+        aug_users2, aug_items2 = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight.detach())#TODO .detach()
+
+        loss_infonce = self.INFONCE.infonce_loss(batch_users, batch_pos, aug_users1, aug_items1, aug_users2, aug_items2)            
+        
+        loss_emb = world.config['weight_decay']*reg + loss_bpr + world.config['lambda1']*loss_infonce
+        loss_emb.requires_grad_(True)
+        #固定Learner_Aug的参数再更新Embedding
+        optimizer['emb'].zero_grad()
+        loss_emb.backward()
+        optimizer['emb'].step()
+        
         #========================train Augmentation==========================
         #计算增强视图下的表示
         Recmodel.eval()
         augmentation.train()
+        augmentation.zero_grad()
         for param in Recmodel.parameters():
                 param.requires_grad = False
         for param in augmentation.parameters():
@@ -124,8 +164,8 @@ class Train():
                 param.requires_grad = True
 
 
-        users_emb0 = Recmodel.embedding_user.weight.clone()
-        items_emb0 = Recmodel.embedding_item.weight.clone()
+        users_emb0 = Recmodel.embedding_user.weight.detach()
+        items_emb0 = Recmodel.embedding_item.weight.detach()
         x = torch.cat([users_emb0, items_emb0])
         edge_index = Recmodel.edge_index
         edge_weight = augmentation.forward()#参数更新 TODO .detach()  batch_fashion
@@ -134,59 +174,38 @@ class Train():
         #使用增强表示进行推荐，计算Adaloss来更新Learner_Aug
         #TODO Learner_Aug的参数正则化项
         loss_aug = self.loss.adaptive_softmax_loss(batch_aug_users, batch_aug_items, None, batch_users, batch_pos, None, None, None, None, None, epoch)
-        print('aug', loss_aug)
+        
         optimizer['aug'].zero_grad()
-        loss_aug.backward(retain_graph=True)
+        loss_aug.backward()
         optimizer['aug'].step()
-
-
-        #========================train Embeddings==========================
-        #使用BPR_Contrast来训练Embedding
-        Recmodel.train()
-        augmentation.eval()
-        for param in Recmodel.parameters():
-                param.requires_grad = True
-        for param in augmentation.parameters():
-                param.requires_grad = False
-        for param in self.loss.MLP_model.parameters():
-                param.requires_grad = False
-
-        users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
-        reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
-        loss_bpr = self.BPR.bpr_loss(users_emb, pos_emb, neg_emb)
-        aug_users1, aug_items1 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
-        users_emb0 = Recmodel.embedding_user.weight
-        items_emb0 = Recmodel.embedding_item.weight
-        x = torch.cat([users_emb0, items_emb0])
-        aug_users2, aug_items2 = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight.detach())#TODO .detach()
-        loss_infonce = self.INFONCE.infonce_loss(batch_users, batch_pos, aug_users1, aug_items1, aug_users2, aug_items2)            
-        loss_emb = world.config['weight_decay']*reg + loss_bpr + world.config['lambda1']*loss_infonce
-        loss_emb.requires_grad_(True)
-        print('emb',loss_emb)
-        #固定Learner_Aug的参数再更新Embedding
-        optimizer['emb'].zero_grad()
-        loss_emb.backward()
-        optimizer['emb'].step()
-
-        return loss_aug, loss_emb
+        return loss_aug + loss_emb
     
     def blindly_train(self, Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch):
         '''
         搁这瞎训
         '''
-        with torch.no_grad():
-            users_emb0 = Recmodel.embedding_user.weight.clone()
-            items_emb0 = Recmodel.embedding_item.weight.clone()
-            x = torch.cat([users_emb0, items_emb0])
-        edge_index = Recmodel.edge_index
-        edge_weight = augmentation.forward()#参数更新 TODO .detach()  batch_fashion
-        aug_users, aug_items = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight.detach())
         users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
         reg = (1/2)*(userEmb0.norm(2).pow(2) + posEmb0.norm(2).pow(2) + negEmb0.norm(2).pow(2))/len(batch_pos)
         loss_bpr = self.BPR.bpr_loss(users_emb, pos_emb, neg_emb)
-        aug_users2, aug_items2 = embs_per_layer_or_all_embs[0], embs_per_layer_or_all_embs[1]
-        loss_infonce = self.INFONCE.infonce_loss(batch_users, batch_pos, aug_users, aug_items, aug_users2, aug_items2)            
-        loss_emb = world.config['weight_decay']*reg + loss_bpr + world.config['lambda1']*loss_infonce
+
+        aug_users2, aug_items2 = embs_per_layer_or_all_embs[0].detach(), embs_per_layer_or_all_embs[1].detach()
+
+        edge_weight = augmentation.forward()#参数更新 TODO .detach()  batch_fashion
+        users_emb0 = Recmodel.embedding_user.weight.detach()
+        items_emb0 = Recmodel.embedding_item.weight.detach()
+        x = torch.cat([users_emb0, items_emb0])
+        edge_index = Recmodel.edge_index
+        # print(min(edge_weight))
+        aug_users, aug_items = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight)
+        loss_infonce = self.INFONCE.infonce_loss(batch_users, batch_pos, aug_users, aug_items, aug_users2, aug_items2)
+        # 添加L2正则化项
+        l2_regularization = torch.tensor(0.).to(world.device)  # 初始化正则化项为0
+        for param in augmentation.parameters():
+            l2_regularization += torch.norm(param, p=2)  # 计算参数的L2范数并累加            
+        loss_emb = world.config['weight_decay']*reg + loss_bpr + world.config['lambda1']*loss_infonce + l2_regularization*world.config['weight_decay']
+        optimizer['emb'].zero_grad()
+        loss_emb.backward()
+        optimizer['emb'].step()
 
         return loss_emb
 

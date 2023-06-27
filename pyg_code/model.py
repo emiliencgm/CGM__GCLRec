@@ -99,10 +99,9 @@ class LightGCN(nn.Module):
         users_emb0 = self.embedding_user.weight
         items_emb0 = self.embedding_item.weight
         x = torch.cat([users_emb0, items_emb0])
-        x, edge_index = x.to(world.device), self.edge_index.to(world.device)
         out = x * self.alpha
         for i in range(self.n_layers):
-            x = self.convs[i](x, edge_index)
+            x = self.convs[i](x, self.edge_index)
             out = out + x * self.alpha
         users, items = torch.split(out, [self.num_users, self.num_items])
         return users, items
@@ -116,7 +115,7 @@ class LightGCN(nn.Module):
 
         out = x * self.alpha
         for i in range(self.n_layers):
-            x = self.convs[i](x, edge_index, edge_weight)
+            x = self.convs[i](x, edge_index, edge_weight=edge_weight)
             out = out + x * self.alpha
         users, items = torch.split(out, [self.num_users, self.num_items])
         return users, items

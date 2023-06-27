@@ -93,6 +93,10 @@ def grouped_recall(epoch, result):
     return current_best_recall_group
 
 def main():
+    print('DEVICE:',world.device, world.args.cuda)
+    #print(torch.cuda.get_device_name(torch.cuda.current_device()))
+    print(torch.cuda.get_device_name(world.device))
+
     project = world.config['project']
     name = world.config['name']
     tag = world.config['tag']

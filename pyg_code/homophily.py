@@ -1,7 +1,7 @@
 import world
 from model import LightGCN
 import torch
-import faiss
+# import faiss
 from kmeans_gpu import kmeans
 import torch.nn.functional as F
 
@@ -23,10 +23,11 @@ class Homophily:
                 embs_KMeans = torch.cat((self.model.embedding_user.weight, self.model.embedding_item.weight), dim=0)
             
             if ncluster > 64:
-                embs_KMeans_numpy = embs_KMeans.detach().cpu().numpy()
-                kmeans_faiss = faiss.Kmeans(world.config['latent_dim_rec'], ncluster, gpu=True)
-                kmeans_faiss.train(embs_KMeans_numpy)
-                centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
+                # embs_KMeans_numpy = embs_KMeans.detach().cpu().numpy()
+                # kmeans_faiss = faiss.Kmeans(world.config['latent_dim_rec'], ncluster, gpu=True)
+                # kmeans_faiss.train(embs_KMeans_numpy)
+                # centroids = torch.tensor(kmeans_faiss.centroids).to(world.device)
+                pass
             else:
                 # cluster_ids_x, cluster_centers = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device, tqdm_flag=False)
                 cluster_ids_x, cluster_centers, dis = kmeans(X=embs_KMeans, num_clusters=ncluster, distance='euclidean', device=world.device)

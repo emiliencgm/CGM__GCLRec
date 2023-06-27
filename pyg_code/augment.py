@@ -33,11 +33,12 @@ class Augment_Learner(torch.nn.Module):
         self.input_dim = self.config['latent_dim_rec']
         mlp_edge_model_dim = self.config['latent_dim_rec']
 
-        self.GNN_encoder = LGN_Encoder(config['num_layers'], self.num_users, self.num_items)#TODO GCN or LGN encoder
+        self.GNN_encoder = GCN_Encoder(config['num_layers'], self.num_users, self.num_items)#TODO GCN or LGN encoder
         self.mlp_edge_model = torch.nn.Sequential(
             torch.nn.Linear(self.input_dim * 2, mlp_edge_model_dim),
             torch.nn.ReLU(),
-            torch.nn.Linear(mlp_edge_model_dim, 1)
+            torch.nn.Linear(mlp_edge_model_dim, 1),
+            torch.nn.Sigmoid()
         )
         self.init_emb()
         
@@ -57,10 +58,10 @@ class Augment_Learner(torch.nn.Module):
         ''''
         返回增强后的边权重
         '''           
-        users_emb0 = self.Recmodel.embedding_user.weight.clone()
-        items_emb0 = self.Recmodel.embedding_item.weight.clone()
+        users_emb0 = self.Recmodel.embedding_user.weight.detach()
+        items_emb0 = self.Recmodel.embedding_item.weight.detach()
         x = torch.cat([users_emb0, items_emb0])
-        x, edge_index = x.to(world.device), self.Recmodel.edge_index.to(world.device)
+        edge_index =self.Recmodel.edge_index
         users_emb, items_emb = self.GNN_encoder.forward(x, edge_index)
         nodes_emb = torch.cat([users_emb, items_emb])
 

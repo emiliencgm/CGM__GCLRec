@@ -138,6 +138,7 @@ class dataset(Dataset):
 
 
         self.Graph = None
+        print(f"{self.n_user} users and {self.m_item} items")
         print(f"{self.trainDataSize} interactions for training")
         print(f"{self.testDataSize} interactions for testing")
         print(f"{config['dataset']} Sparsity : {(self.trainDataSize + self.testDataSize) / self.n_users / self.m_items}")#针对无验证集时的稀疏度计算公式
@@ -150,7 +151,7 @@ class dataset(Dataset):
         self.__testDict = self.__build_test()
         if world.config['if_valid']:
             self.__validDict = self.__build_valid()
-        self._edge_indices = self.get_edge_indices()
+        # self._edge_indices = self.get_edge_indices()
         #将计算邻接矩阵的过程提前
         # self.getSparseGraph()
         self.get_edge_index()
@@ -220,7 +221,7 @@ class dataset(Dataset):
         '''
         graph: (n_user+n_item) * (n_user+n_item)
         '''
-        self.edge_index = torch.tensor([list(np.append(self.trainUser, self.trainItem+self.n_user)), 
+        self.edge_index = torch.LongTensor([list(np.append(self.trainUser, self.trainItem+self.n_user)), 
                                         list(np.append(self.trainItem+self.n_user, self.trainUser))]).to(world.device)
         self.graph_pyg = Data(edge_index=self.edge_index.contiguous())
         return self.edge_index

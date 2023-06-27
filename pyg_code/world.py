@@ -101,9 +101,9 @@ if not os.path.exists(PRECALPATH):
 GPU = torch.cuda.is_available()
 device = torch.device('cuda' if GPU else "cpu")
 config['device'] = device
-print('DEVICE:',device, args.cuda)
-#print(torch.cuda.get_device_name(torch.cuda.current_device()))
-print(torch.cuda.get_device_name(device))
+# print('DEVICE:',device, args.cuda)
+# #print(torch.cuda.get_device_name(torch.cuda.current_device()))
+# print(torch.cuda.get_device_name(device))
 
 CORES = multiprocessing.cpu_count() // 2
 config['cores'] = CORES
