@@ -38,7 +38,7 @@ class Train():
             batch_pos = train_data[1].long().to(world.device)
             batch_neg = train_data[2].long().to(world.device)
             
-            l_all = self.blindly_train(Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch)
+            l_all = self.train_all(Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch)
 
             aver_loss += l_all.cpu().item()
         aver_loss = aver_loss / (total_batch)
@@ -115,69 +115,124 @@ class Train():
         #========================train Embeddings==========================
         #使用BPR_Contrast来训练Embedding
         Recmodel.train()
+        self.loss.MLP_model.train()
         augmentation.eval()
-        Recmodel.zero_grad()
-        for param in Recmodel.parameters():
-                param.requires_grad = True
-        for param in augmentation.parameters():
-                param.requires_grad = False
-        for param in self.loss.MLP_model.parameters():
-                param.requires_grad = False
+        optimizer['emb'].zero_grad()
+        # for param in Recmodel.parameters():
+        #         param.requires_grad = True
+        # for param in augmentation.parameters():
+        #         param.requires_grad = False
+        # for param in self.loss.MLP_model.parameters():
+        #         param.requires_grad = False
 
         users_emb0 = Recmodel.embedding_user.weight
         items_emb0 = Recmodel.embedding_item.weight
 
         userEmb0,  posEmb0 = users_emb0[batch_users], items_emb0[batch_pos]
-        reg = (0.5 * torch.norm(userEmb0) ** 2 + len(batch_pos) * 0.5 * torch.norm(posEmb0) ** 2)/len(batch_pos)
+        reg = torch.mean(0.5 * torch.norm(userEmb0) ** 2 +  0.5 * torch.norm(posEmb0) ** 2)
 
         x = torch.cat([users_emb0, items_emb0])
         edge_index = Recmodel.edge_index
         users, items = Recmodel.view_computer(x, edge_index, edge_weight=None)
 
         users_emb, pos_emb, neg_emb = users[batch_users], items[batch_pos], items[batch_neg]
-        loss_bpr = self.BPR.bpr_loss(users_emb, pos_emb, neg_emb)
+        # loss_bpr = self.BPR.bpr_loss(users_emb, pos_emb, neg_emb)
+        loss_ada = self.loss.adaptive_softmax_loss(users_emb, pos_emb, None, batch_users, batch_pos, None, None, None, None, None, epoch)
 
         aug_users1, aug_items1 = users, items
 
-        edge_weight = augmentation.forward()
+        edge_weight = augmentation.forward(x.detach(), edge_index)#TODO detach()
         aug_users2, aug_items2 = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight.detach())#TODO .detach()
+        batch_aug_users, batch_aug_items = aug_users2[batch_users], aug_items2[batch_pos]
 
-        loss_infonce = self.INFONCE.infonce_loss(batch_users, batch_pos, aug_users1, aug_items1, aug_users2, aug_items2)            
+        # loss_infonce = self.INFONCE.infonce_loss(batch_users, batch_pos, aug_users1, aug_items1, aug_users2, aug_items2)  
+        loss_ada_aug = self.loss.adaptive_softmax_loss(batch_aug_users, batch_aug_items, None, batch_users, batch_pos, None, None, None, None, None, epoch)          
         
-        loss_emb = world.config['weight_decay']*reg + loss_bpr + world.config['lambda1']*loss_infonce
+        loss_emb = world.config['weight_decay']*reg + 0.1* loss_ada + 0.1* loss_ada_aug #+ world.config['lambda1']*loss_infonce
         loss_emb.requires_grad_(True)
         #固定Learner_Aug的参数再更新Embedding
-        optimizer['emb'].zero_grad()
         loss_emb.backward()
         optimizer['emb'].step()
         
         #========================train Augmentation==========================
         #计算增强视图下的表示
         Recmodel.eval()
+        self.loss.MLP_model.eval()
         augmentation.train()
-        augmentation.zero_grad()
-        for param in Recmodel.parameters():
-                param.requires_grad = False
-        for param in augmentation.parameters():
-                param.requires_grad = True
-        for param in self.loss.MLP_model.parameters():
-                param.requires_grad = True
+        optimizer['aug'].zero_grad()
+        # for param in Recmodel.parameters():
+        #         param.requires_grad = False
+        # for param in augmentation.parameters():
+        #         param.requires_grad = True
+        # for param in self.loss.MLP_model.parameters():
+        #         param.requires_grad = True
 
+
+        # users_emb0 = Recmodel.embedding_user.weight.detach()
+        # items_emb0 = Recmodel.embedding_item.weight.detach()
+        # x = torch.cat([users_emb0, items_emb0])
+        # edge_index = Recmodel.edge_index
+        # edge_weight = augmentation.forward()#参数更新 TODO .detach()  batch_fashion
+        # aug_users, aug_items = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight)
+        # batch_aug_users, batch_aug_items = aug_users[batch_users], aug_items[batch_pos]
+        # #使用增强表示进行推荐，计算Adaloss来更新Learner_Aug
+        # #TODO Learner_Aug的参数正则化项
+        # loss_aug = self.loss.adaptive_softmax_loss(batch_aug_users, batch_aug_items, None, batch_users, batch_pos, None, None, None, None, None, epoch)
+        
+        # optimizer['aug'].zero_grad()
+        # loss_aug.backward()
+        # optimizer['aug'].step()
 
         users_emb0 = Recmodel.embedding_user.weight.detach()
         items_emb0 = Recmodel.embedding_item.weight.detach()
+
         x = torch.cat([users_emb0, items_emb0])
         edge_index = Recmodel.edge_index
-        edge_weight = augmentation.forward()#参数更新 TODO .detach()  batch_fashion
+        users, items = Recmodel.view_computer(x, edge_index, edge_weight=None)
+        edge_weight = augmentation.forward(x, edge_index)#TODO detach()
         aug_users, aug_items = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight)
-        batch_aug_users, batch_aug_items = aug_users[batch_users], aug_items[batch_pos]
-        #使用增强表示进行推荐，计算Adaloss来更新Learner_Aug
-        #TODO Learner_Aug的参数正则化项
-        loss_aug = self.loss.adaptive_softmax_loss(batch_aug_users, batch_aug_items, None, batch_users, batch_pos, None, None, None, None, None, epoch)
+
+        loss_infonce = -self.INFONCE.infonce_loss(batch_users, batch_pos, users, items, aug_users, aug_items)
+
+        loss_instance = self.calc_instance_loss(users[batch_users], aug_users[batch_users]) + self.calc_instance_loss(items[batch_pos], aug_items[batch_pos])
+
+        # # current parameter
+        # fast_weights = OrderedDict((name, param) for (name, param) in Recmodel.named_parameters())
+
+        # # create_graph flag for computing second-derivative
+        # grads = torch.autograd.grad(loss_infonce, Recmodel.parameters(), create_graph=True)
+        # data = [p.data for p in list(Recmodel.parameters())]
+
+        # # compute parameter' by applying sgd on multi-task loss
+        # fast_weights = OrderedDict( (name, param - world.config['lr'] * grad) for ((name, param), grad, data) in zip(fast_weights.items(), grads, data) )
         
-        optimizer['aug'].zero_grad()
+        # # compute primary loss with the updated parameter'
+        # with torch.no_grad():
+        #     users_emb0 = fast_weights['embedding_user.weight']
+        #     items_emb0 = fast_weights['embedding_item.weight']
+        #     x = torch.cat([users_emb0, items_emb0])
+        #     edge_index = Recmodel.edge_index
+        #     users, items = Recmodel.view_computer(x, edge_index, edge_weight=None)
+        # aug_users, aug_items = Recmodel.view_computer(x, edge_index, edge_weight=edge_weight.detach())
+        
+        # loss_aug = self.calc_instance_loss(users[batch_users], aug_users[batch_users]) + self.calc_instance_loss(items[batch_pos], aug_items[batch_pos])
+        loss_aug = 0.* loss_infonce + 0.1* loss_instance
+        loss_aug.requires_grad_(True)
         loss_aug.backward()
         optimizer['aug'].step()
+
+        # print('grad', grads)
+        # print('')
+        # for (name, param) in augmentation.named_parameters():
+        #      print(name, param.grad)
+        # print('')
+        # print('reg',reg)
+        # print('loss_ada',loss_ada)
+        # print('loss_ada_aug',loss_ada_aug)
+        # print('loss_infonce', loss_infonce)
+        # print('loss_instance',loss_instance)
+        # print('loss_emb', loss_emb)
+        # print('loss_aug', loss_aug)
         return loss_aug + loss_emb
     
     def blindly_train(self, Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch):
@@ -219,6 +274,20 @@ class Train():
         loss_emb.backward()
         optimizer['emb'].step()
         return loss_emb
+
+    def calc_instance_loss(self, x, x_aug):
+
+        batch_size, _ = x.size()
+        x_abs = x.norm(dim=1)
+        x_aug_abs = x_aug.norm(dim=1)
+
+        sim_matrix = torch.einsum('ik,jk->ij', x, x_aug) / torch.einsum('i,j->ij', x_abs, x_aug_abs)
+
+        pos_sim = sim_matrix[range(batch_size), range(batch_size)]
+
+        loss = 2 * pos_sim.sum().div(batch_size * batch_size) - sim_matrix.sum().div(batch_size * batch_size)
+
+        return loss
 
 class Test():
     def __init__(self):

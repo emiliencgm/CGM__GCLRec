@@ -186,7 +186,7 @@ def main():
 
     emb_optimizer = torch.optim.Adam(Recmodel.parameters(), lr=world.config['lr'])
     aug_optimizer = torch.optim.Adam(augmentation.parameters(), lr=world.config['lr'])    
-    aug_optimizer.add_param_group({'params':total_loss.MLP_model.parameters()})
+    emb_optimizer.add_param_group({'params':total_loss.MLP_model.parameters()})#TODO Adaloss 在哪一步更新
     # aug_optimizer = torch.optim.Adam([{'params':augmentation.GNN_encoder.parameters()}, 
     #                                 {'params':augmentation.mlp_edge_model.parameters()}], lr=world.config['lr'])
     optimizer = {'emb':emb_optimizer, 'aug':aug_optimizer}

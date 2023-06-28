@@ -20,7 +20,7 @@ class Augment_Learner(torch.nn.Module):
     def __init__(self, config, Recmodel:LightGCN, precal:precalculate, homophily:Homophily, dataset:dataset):
         super(Augment_Learner, self).__init__()
         self.config = config
-        self.Recmodel = Recmodel        
+        # self.Recmodel = Recmodel        
         self.num_users = dataset.n_users
         self.num_items = dataset.m_items
         self.trainUser = dataset._trainUser
@@ -54,14 +54,14 @@ class Augment_Learner(torch.nn.Module):
                 if m.bias is not None:
                     m.bias.data.fill_(0.0)
 
-    def forward(self):
+    def forward(self, x, edge_index):
         ''''
         返回增强后的边权重
         '''           
-        users_emb0 = self.Recmodel.embedding_user.weight.detach()
-        items_emb0 = self.Recmodel.embedding_item.weight.detach()
-        x = torch.cat([users_emb0, items_emb0])
-        edge_index =self.Recmodel.edge_index
+        # users_emb0 = self.Recmodel.embedding_user.weight.detach()
+        # items_emb0 = self.Recmodel.embedding_item.weight.detach()
+        # x = torch.cat([users_emb0, items_emb0])
+        # edge_index =self.Recmodel.edge_index
         users_emb, items_emb = self.GNN_encoder.forward(x, edge_index)
         nodes_emb = torch.cat([users_emb, items_emb])
 
