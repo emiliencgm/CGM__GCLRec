@@ -1,0 +1,32 @@
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_setup.py:_flush():76] Current SDK version is 0.15.2
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_setup.py:_flush():76] Configure stats pid to 22280
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_setup.py:_flush():76] Loading settings from C:\Users\a716\.config\wandb\settings
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ChenZiyi\GCLRec\pyg_code\wandb\settings
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_setup.py:_flush():76] Loading settings from environment variables: {'mode': 'dryrun'}
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'pyg_code\\main.py', 'program': 'C:\\Users\\ChenZiyi\\GCLRec\\pyg_code\\main.py'}
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:_log_setup():507] Logging user logs to C:\Users\ChenZiyi\GCLRec\pyg_code\wandb\offline-run-20230629_154917-8t5zvghe\logs\debug.log
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:_log_setup():508] Logging internal logs to C:\Users\ChenZiyi\GCLRec\pyg_code\wandb\offline-run-20230629_154917-8t5zvghe\logs\debug-internal.log
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:init():547] calling init triggers
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {'temp_tau': 0.1, 'latent_dim_rec': 64, 'num_layers': 3, 'dataset': 'yelp2018', 'lr': 0.001, 'weight_decay': 0.0001, 'seed': 2023, 'model': 'LightGCN', 'epochs': 500, 'if_multicore': 1, 'early_stop_steps': 50, 'batch_size': 2048, 'lambda1': 0.1, 'topks': [20, 40], 'test_u_batch_size': 2048, 'pop_group': 10, 'perplexity': 50, 'visual_epoch': 1, 'if_double_label': 1, 'if_tsne': 1, 'tsne_group': [0, 9], 'init_method': 'Normal', 'tsne_points': 2000, 'loss': 'Adaptive', 'augment': 'Learner', 'alpha': 0.5, 'centroid_mode': 'eigenvector', 'commonNeighbor_mode': 'SC', 'n_cluster': 10, 'sigma_gausse': 1.0, 'adaptive_method': 'mlp', 'if_visual': 0, 'if_projector': 0, 'if_valid': 0, 'adaloss_mode': 'pos', 'if_adaptive': 1, 'freeze_mlp': 500, 'comment': 'pyg_implementation', 'project': 'project', 'name': 'name', 'tag': 'test', 'notes': 'testing in main.py', 'group': 'Ours', 'job_type': 'yelp2018', 'c': 'testing', 'device': device(type='cuda'), 'cores': 12}
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:init():596] starting backend
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:init():600] setting up manager
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=spawn, using: spawn
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:init():606] backend started and connected
+2023-06-29 15:49:17,333 INFO    MainThread:22280 [wandb_init.py:init():700] updated telemetry
+2023-06-29 15:49:17,364 INFO    MainThread:22280 [wandb_init.py:init():787] starting run threads in backend
+2023-06-29 15:49:29,642 INFO    MainThread:22280 [wandb_run.py:_console_start():2158] atexit reg
+2023-06-29 15:49:29,642 INFO    MainThread:22280 [wandb_run.py:_redirect():2013] redirect: SettingsConsole.WRAP_RAW
+2023-06-29 15:49:29,642 INFO    MainThread:22280 [wandb_run.py:_redirect():2078] Wrapping output streams.
+2023-06-29 15:49:29,642 INFO    MainThread:22280 [wandb_run.py:_redirect():2103] Redirects installed.
+2023-06-29 15:49:29,642 INFO    MainThread:22280 [wandb_init.py:init():829] run started, returning control to user process
+2023-06-29 15:49:34,151 INFO    MainThread:22280 [wandb_watch.py:watch():51] Watching
+2023-06-29 15:49:34,167 INFO    MainThread:22280 [wandb_watch.py:watch():51] Watching
+2023-06-29 15:49:34,167 INFO    MainThread:22280 [wandb_watch.py:watch():51] Watching
+2023-06-29 15:50:54,949 INFO    MainThread:22280 [wandb_run.py:_finish():1893] finishing run project/8t5zvghe
+2023-06-29 15:50:54,949 INFO    MainThread:22280 [wandb_run.py:_atexit_cleanup():2127] got exitcode: 0
+2023-06-29 15:50:54,949 INFO    MainThread:22280 [wandb_run.py:_restore():2110] restore
+2023-06-29 15:50:54,949 INFO    MainThread:22280 [wandb_run.py:_restore():2116] restore done
+2023-06-29 15:50:56,001 INFO    MainThread:22280 [wandb_run.py:_footer_history_summary_info():3469] rendering history
+2023-06-29 15:50:56,001 INFO    MainThread:22280 [wandb_run.py:_footer_history_summary_info():3501] rendering summary

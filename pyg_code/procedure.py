@@ -288,7 +288,7 @@ class Train():
         loss = 2 * pos_sim.sum().div(batch_size * batch_size) - sim_matrix.sum().div(batch_size * batch_size)
 
         return loss
-
+    
 class Test():
     def __init__(self):
         pass
