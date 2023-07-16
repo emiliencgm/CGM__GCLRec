@@ -46,7 +46,7 @@ def parse_args():
     parser.add_argument('--dataset', type=str, default='yelp2018', help="dataset:[yelp2018,  gawalla, ifashion, amazon-book, last-fm, MIND]") 
     parser.add_argument('--seed', type=int, default=2023, help="random seed")
     parser.add_argument('--loss', type=str, default='Adaptive', help="loss function: Adaptive")
-    parser.add_argument('--augment', type=str, default='Learner', help="Augmentation: No, Adaptive, Learner")    
+    parser.add_argument('--augment', type=str, default='No', help="Augmentation: No, Adaptive, Learner")    
     parser.add_argument('--centroid_mode', type=str, default='eigenvector', help="Centroid mode: degree, pagerank, eigenvector")
     parser.add_argument('--commonNeighbor_mode', type=str, default='SC', help="Common Neighbor mode: JS, SC, CN, LHN")
     parser.add_argument('--adaptive_method', type=str, default='mlp', help="Adaptive coef method: centroid, commonNeighbor, homophily, mlp")
@@ -58,6 +58,7 @@ def parse_args():
     parser.add_argument('--adaloss_mode', type=str, default='pos', help="mode of AdaLoss: pos, pos+neg, pos+neg+cl")
     parser.add_argument('--if_adaptive', type=int, default=1, help="=1: use adaptive coef. =0: use +1.")
     parser.add_argument('--freeze_mlp', type=int, default=500, help="freeze MLP parameters after n epochs")
+    parser.add_argument('--sampling', type=str, default='uij', help="sampling method")
     #===========================================================================================================================================
     parser.add_argument('--c', type=str, default='testing', help="note something for this experiment")
 

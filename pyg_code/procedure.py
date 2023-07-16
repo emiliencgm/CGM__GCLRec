@@ -25,26 +25,71 @@ class Train():
         self.INFONCE = loss.InfoNCE_loss()
         self.BPR = loss.BPR()
 
-    def train(self, dataset, Recmodel, augmentation, epoch, optimizer):
+    def train(self, sampler, Recmodel, augmentation, epoch, optimizer):
         Recmodel:LightGCN = Recmodel
         batch_size = world.config['batch_size']
-        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=True, num_workers=0)#每个batch为batch_size对(user, pos_item, neg_item), 见Dataset.__getitem__
+        dataloader = DataLoader(sampler, batch_size=batch_size, shuffle=True, drop_last=True, num_workers=0)#每个batch为batch_size对(user, pos_item, neg_item), 见Dataset.__getitem__
 
         total_batch = len(dataloader)
         aver_loss = 0.
 
         for batch_i, train_data in tqdm(enumerate(dataloader), desc='training'):
-            batch_users = train_data[0].long().to(world.device)
-            batch_pos = train_data[1].long().to(world.device)
-            batch_neg = train_data[2].long().to(world.device)
+            if world.config['sampling'] == 'uij':
+                batch_users = train_data[0].long().to(world.device)
+                batch_pos = train_data[1].long().to(world.device)
+                batch_neg = train_data[2].long().to(world.device)
+            elif world.config['sampling'] == 'uiij':
+                batch_users = train_data[0].long().to(world.device)
+                batch_pos1 = train_data[1].long().to(world.device)
+                batch_pos2 = train_data[2].long().to(world.device)
+                # batch_neg = train_data[3].long().to(world.device)
+            else:
+                pass
+            # batch_users = train_data[0].long().to(world.device)
+            # batch_pos = train_data[1].long().to(world.device)
+            # batch_neg = train_data[2].long().to(world.device)
             
-            l_all = self.train_all(Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch)
+            l_all = self.train_now(Recmodel, augmentation, batch_users, batch_pos1, batch_pos2, optimizer, epoch)
 
             aver_loss += l_all.cpu().item()
         aver_loss = aver_loss / (total_batch)
         print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
         return aver_loss
-    
+
+    def train_now(self, Recmodel, augmentation, batch_users, batch_pos1, batch_pos2, optimizer, epoch):
+        all_users, all_items = Recmodel.computer()
+        users_emb = all_users[batch_users]
+        pos_emb1 = all_items[batch_pos1]
+        pos_emb2 = all_items[batch_pos2]
+        # neg_emb = all_items[batch_neg]
+        users_emb_ego = Recmodel.embedding_user(batch_users)
+        pos_emb_ego1 = Recmodel.embedding_item(batch_pos1)
+        pos_emb_ego2 = Recmodel.embedding_item(batch_pos2)
+
+        reg = (1/6)*(users_emb_ego.norm(2).pow(2) + pos_emb_ego1.norm(2).pow(2) + pos_emb_ego2.norm(2).pow(2))/len(batch_users)
+
+        # cl = self.INFONCE.cal_infonce_loss(users_emb, pos_emb1) + self.INFONCE.cal_infonce_loss(users_emb, pos_emb2) + self.INFONCE.cal_infonce_loss(users_emb, pos_aug)
+        # cl = cl*(1/3)
+
+        # loss = cl + world.config['weight_decay']*reg
+
+        ada_coef1 = self.loss.get_coef_adaptive(batch_users, batch_pos1, method='mlp', mode=world.config['centroid_mode'])
+        ada_coef2 = self.loss.get_coef_adaptive(batch_users, batch_pos2, method='mlp', mode=world.config['centroid_mode'])
+
+        pos_aug, ada_coef3 = self.mixup(pos_emb1, pos_emb2, ada_coef1, ada_coef2)
+
+        loss_ada1 = self.loss.adaptive_loss(users_emb, pos_emb1, ada_coef1)
+        loss_ada2 = self.loss.adaptive_loss(users_emb, pos_emb2, ada_coef2)
+        loss_ada3 = self.loss.adaptive_loss(users_emb, pos_aug, ada_coef3)
+
+        loss = world.config['weight_decay']*reg + loss_ada1 + loss_ada2 + loss_ada3 * self.coef_mixup(epoch)
+        optimizer['emb'].zero_grad()
+        loss.backward()
+        optimizer['emb'].step()
+
+        return loss
+
+
     def train_batch(self, Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch):
         #========================train Augmentation==========================
         #计算增强视图下的表示
@@ -288,6 +333,24 @@ class Train():
         loss = 2 * pos_sim.sum().div(batch_size * batch_size) - sim_matrix.sum().div(batch_size * batch_size)
 
         return loss
+    
+    def mixup(self, x1, x2, y1=None, y2=None):
+        alpha = 2.
+        beta = 2.
+        size = [len(x1), 1]
+        l = np.random.beta(alpha, beta, size)
+        mixed_x = torch.tensor(l, dtype=torch.float32).to(x1.device) * x1 + torch.tensor(1-l, dtype=torch.float32).to(x2.device) * x2
+        if y1 is None:
+            return mixed_x, None
+        else:
+            mixed_y = torch.tensor(l, dtype=torch.float32).to(y1.device) * y1 + torch.tensor(1-l, dtype=torch.float32).to(y2.device) * y2
+            return mixed_x, mixed_y
+        
+    def coef_mixup(self, epcoh):
+        if epcoh>45:
+            return 0.1
+        else:
+            return 0.
     
 class Test():
     def __init__(self):

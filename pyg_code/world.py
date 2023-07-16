@@ -59,6 +59,7 @@ config['if_valid'] = args.if_valid
 config['adaloss_mode'] = args.adaloss_mode
 config['if_adaptive'] = args.if_adaptive
 config['freeze_mlp'] = args.freeze_mlp
+config['sampling'] = args.sampling
 config['comment'] = args.comment
 #WandB
 config['project'] = args.project

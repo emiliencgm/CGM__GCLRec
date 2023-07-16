@@ -1,0 +1,77 @@
+2023-07-15 21:40:35,989 INFO    StreamThr :10184 [internal.py:wandb_internal():86] W&B internal server running at pid: 10184, started at: 2023-07-15 21:40:35.989207
+2023-07-15 21:40:35,990 DEBUG   HandlerThread:10184 [handler.py:handle_request():144] handle_request: status
+2023-07-15 21:40:35,992 INFO    WriterThread:10184 [datastore.py:open_for_write():85] open: /home/cgm/code/CGM__GCLRec/pyg_code/wandb/run-20230715_214035-4mvidb6k/run-4mvidb6k.wandb
+2023-07-15 21:40:35,993 DEBUG   SenderThread:10184 [sender.py:send():369] send: header
+2023-07-15 21:40:35,995 DEBUG   SenderThread:10184 [sender.py:send():369] send: run
+2023-07-15 21:40:40,997 DEBUG   HandlerThread:10184 [handler.py:handle_request():144] handle_request: keepalive
+2023-07-15 21:40:45,999 DEBUG   HandlerThread:10184 [handler.py:handle_request():144] handle_request: keepalive
+2023-07-15 21:40:46,500 DEBUG   HandlerThread:10184 [handler.py:handle_request():144] handle_request: shutdown
+2023-07-15 21:40:46,500 INFO    HandlerThread:10184 [handler.py:finish():854] shutting down handler
+2023-07-15 21:40:46,997 INFO    WriterThread:10184 [datastore.py:close():298] close: /home/cgm/code/CGM__GCLRec/pyg_code/wandb/run-20230715_214035-4mvidb6k/run-4mvidb6k.wandb
+2023-07-15 21:41:09,303 INFO    SenderThread:10184 [retry.py:__call__():172] Retry attempt failed:
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/util/connection.py", line 95, in create_connection
+    raise err
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    sock.connect(sa)
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/connectionpool.py", line 714, in urlopen
+    httplib_response = self._make_request(
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/connectionpool.py", line 403, in _make_request
+    self._validate_conn(conn)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/connectionpool.py", line 1053, in _validate_conn
+    conn.connect()
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/connection.py", line 179, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x7fe9829ada20>, 'Connection to api.wandb.ai timed out. (connect timeout=10)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/requests/adapters.py", line 487, in send
+    resp = conn.urlopen(
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/connectionpool.py", line 798, in urlopen
+    retries = retries.increment(
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7fe9829ada20>, 'Connection to api.wandb.ai timed out. (connect timeout=10)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 320, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/wandb/sdk/lib/gql_request.py", line 55, in execute
+    request = self.session.post(self.url, **post_args)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/requests/sessions.py", line 635, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/cgm/anaconda3/envs/cgm/lib/python3.10/site-packages/requests/adapters.py", line 508, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7fe9829ada20>, 'Connection to api.wandb.ai timed out. (connect timeout=10)'))
+2023-07-15 21:41:37,680 INFO    SenderThread:10184 [dir_watcher.py:__init__():211] watching files in: /home/cgm/code/CGM__GCLRec/pyg_code/wandb/run-20230715_214035-4mvidb6k/files
+2023-07-15 21:41:37,680 INFO    SenderThread:10184 [sender.py:_start_run_threads():1100] run started: 4mvidb6k with start time 1689428435.98894
+2023-07-15 21:41:37,680 INFO    SenderThread:10184 [sender.py:finish():1526] shutting down sender
+2023-07-15 21:41:37,680 INFO    SenderThread:10184 [dir_watcher.py:finish():359] shutting down directory watcher
+2023-07-15 21:41:38,681 INFO    SenderThread:10184 [dir_watcher.py:finish():389] scan: /home/cgm/code/CGM__GCLRec/pyg_code/wandb/run-20230715_214035-4mvidb6k/files
+2023-07-15 21:41:38,682 INFO    SenderThread:10184 [dir_watcher.py:finish():403] scan save: /home/cgm/code/CGM__GCLRec/pyg_code/wandb/run-20230715_214035-4mvidb6k/files/config.yaml config.yaml
+2023-07-15 21:41:38,682 INFO    SenderThread:10184 [file_pusher.py:finish():159] shutting down file pusher
+2023-07-15 21:41:38,682 INFO    SenderThread:10184 [file_pusher.py:join():164] waiting for file pusher
+2023-07-15 21:41:39,686 INFO    wandb-upload_0:10184 [upload_job.py:push():133] Uploaded file /home/cgm/code/CGM__GCLRec/pyg_code/wandb/run-20230715_214035-4mvidb6k/files/config.yaml

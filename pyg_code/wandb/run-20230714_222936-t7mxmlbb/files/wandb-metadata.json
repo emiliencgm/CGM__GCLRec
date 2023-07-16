@@ -1,0 +1,190 @@
+{
+    "os": "Linux-5.4.0-150-generic-x86_64-with-glibc2.27",
+    "python": "3.10.11",
+    "heartbeatAt": "2023-07-14T14:29:37.332231",
+    "startedAt": "2023-07-14T14:29:36.193958",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--notes",
+        "3InfoNCE",
+        "--sampling",
+        "uiij",
+        "--temp_tau",
+        "0.1",
+        "--project",
+        "GCLRec_No_Valid",
+        "--name",
+        "mixup",
+        "--model",
+        "LightGCN",
+        "--loss",
+        "simple_Adaptive",
+        "--dataset",
+        "yelp2018",
+        "--init_method",
+        "Normal",
+        "--lr",
+        "0.001",
+        "--weight_decay",
+        "1e-4",
+        "--cuda",
+        "0",
+        "--num_layers",
+        "3",
+        "--latent_dim_rec",
+        "64",
+        "--batch_size",
+        "2048",
+        "--comment",
+        "_",
+        "--if_valid",
+        "0",
+        "--tag",
+        "mixup",
+        "--group",
+        "Ours",
+        "--job_type",
+        "yelp2018",
+        "--if_visual",
+        "0",
+        "--visual_epoch",
+        "3"
+    ],
+    "state": "running",
+    "program": "/home/cgm/code/CGM__GCLRec/pyg_code/main.py",
+    "codePath": "pyg_code/main.py",
+    "git": {
+        "remote": "https://github.com/emiliencgm/CGM__GCLRec.git",
+        "commit": "1d6b4c73114aa81f25b27f8b88d157df7510899c"
+    },
+    "email": "13121570706@163.com",
+    "root": "/home/cgm/code/CGM__GCLRec",
+    "host": "Desc-sys",
+    "username": "cgm",
+    "executable": "/home/cgm/anaconda3/envs/cgm/bin/python",
+    "cpu_count": 10,
+    "cpu_count_logical": 20,
+    "cpu_freq": {
+        "current": 4.299799999999999,
+        "min": 800.0,
+        "max": 5300.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.301,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.299,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.299,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.299,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.299,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.298,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.302,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.3,
+            "min": 800.0,
+            "max": 5300.0
+        },
+        {
+            "current": 4.299,
+            "min": 800.0,
+            "max": 5300.0
+        }
+    ],
+    "disk": {
+        "total": 915.32763671875,
+        "used": 860.5784645080566
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        }
+    ],
+    "memory": {
+        "total": 46.91425323486328
+    }
+}

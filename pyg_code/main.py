@@ -45,6 +45,7 @@ def plot_MLP(epoch, precal, total_loss):
             for i in pop_i:
                 a = [0.]*(5+2*0)
                 a[1] = math.log(i)
+                # a[1] = i
                 input_mlp_batch.append(a)
             input_mlp_batch = torch.Tensor(input_mlp_batch).to(world.device)
             output_mlp_batch = total_loss.MLP_model(input_mlp_batch)
@@ -103,7 +104,7 @@ def main():
     notes = world.config['notes']
     group = world.config['group']
     job_type = world.config['job_type']
-    os.environ['WANDB_MODE'] = 'dryrun'#TODO WandB上传
+    # os.environ['WANDB_MODE'] = 'dryrun'#TODO WandB上传
     wandb.init(project=project, name=name, tags=tag, group=group, job_type=job_type, config=world.config, save_code=True, sync_tensorboard=False, notes=notes)
     wandb.define_metric("custom_epoch")
     wandb.define_metric(f"{world.config['dataset']}"+'/loss', step_metric='custom_epoch')
@@ -137,6 +138,11 @@ def main():
     print('precal cost : ',end-start)
     cprint('[PRECALCULATE--END]')
 
+    cprint('[SAMPLER--START]')
+    sampler = precalcul.sampler(dataset=dataset, precal=precal)
+    cprint('[SAMPLER--END]')
+    
+
     models = {'LightGCN':model.LightGCN}
     Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
 
@@ -161,7 +167,7 @@ def main():
         pass
     
 
-    losss = {'Adaptive':loss.Adaptive_softmax_loss}
+    losss = {'Adaptive':loss.Adaptive_softmax_loss, 'simple_Adaptive':loss.Adaptive_loss}
     total_loss = losss[world.config['loss']](world.config, Recmodel, precal, homophily)
     
     try:
@@ -185,11 +191,15 @@ def main():
     #     optimizer.add_param_group({'params':augmentation.mlp_edge_model.parameters()})
 
     emb_optimizer = torch.optim.Adam(Recmodel.parameters(), lr=world.config['lr'])
-    aug_optimizer = torch.optim.Adam(augmentation.parameters(), lr=world.config['lr'])    
+    if world.config['augment'] in ['Learner']:
+        aug_optimizer = torch.optim.Adam(augmentation.parameters(), lr=world.config['lr'])    
     emb_optimizer.add_param_group({'params':total_loss.MLP_model.parameters()})#TODO Adaloss 在哪一步更新
     # aug_optimizer = torch.optim.Adam([{'params':augmentation.GNN_encoder.parameters()}, 
     #                                 {'params':augmentation.mlp_edge_model.parameters()}], lr=world.config['lr'])
-    optimizer = {'emb':emb_optimizer, 'aug':aug_optimizer}
+    if world.config['augment'] in ['Learner']:
+        optimizer = {'emb':emb_optimizer, 'aug':aug_optimizer}
+    else:
+        optimizer = {'emb':emb_optimizer}
     quantify = visual.Quantify(dataset, Recmodel, precal)
 
 
@@ -223,7 +233,7 @@ def main():
                     
             cprint('[TRAIN]')
             start_train = time.time()
-            avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer)
+            avg_loss = train.train(sampler, Recmodel, augmentation, epoch, optimizer)
             end_train = time.time()
             wandb.log({ f"{world.config['dataset']}"+'/loss': avg_loss})
             wandb.log({f"{world.config['dataset']}"+f"/training_time": end_train - start_train})
@@ -289,9 +299,9 @@ def main():
             during = time.time() - start
             print(f"total time cost of epoch {epoch}: ", during)
 
-            if world.config['loss'] == 'Adaptive' and world.config['if_adaptive']==1:
+            if world.config['loss'] in ['Adaptive', 'simple_Adaptive'] and world.config['if_adaptive']==1:
                 #plot MLP(pop)
-                # plot_MLP(epoch, precal, total_loss)
+                # plot_MLP(epoch, precal, total_loss)TODO
                 pass
                 
 

@@ -321,6 +321,7 @@ class Adaptive_softmax_loss(torch.nn.Module):
             #batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
             batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)
             batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
+            batch_weight_centroid = torch.ones_like(batch_weight_centroid)- batch_weight_centroid#TODO
             batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
             features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
             
@@ -387,3 +388,109 @@ class Adaptive_softmax_loss(torch.nn.Module):
 
         
         return batch_weight
+    
+class Adaptive_loss(torch.nn.Module):
+    def __init__(self, config, model:LightGCN, precal:precalculate, homophily:Homophily):
+        super(Adaptive_loss, self).__init__()
+
+        self.config = config
+        self.model = model
+        self.precal = precal
+        self.homophily = homophily
+        self.tau = config['temp_tau']
+        self.alpha = config['alpha']
+        self.f = lambda x: torch.exp(x / self.tau)
+        self.MLP_model = MLP(5+2*0).to(world.device)
+
+    def adaptive_loss(self, users_emb, pos_emb, ada_coef):
+        '''
+        '''
+        users_emb = F.normalize(users_emb, dim=1)
+        pos_emb = F.normalize(pos_emb, dim=1)
+        ratings = torch.matmul(users_emb, torch.transpose(pos_emb, 0, 1))
+        ratings_diag = torch.diag(ratings)
+        theta = torch.arccos(torch.clamp(ratings_diag,-1+1e-7,1-1e-7))
+        M = torch.arccos(torch.clamp(ada_coef,-1+1e-7,1-1e-7))
+        ratings_diag = torch.cos(theta + M)
+        numerator = torch.exp(ratings_diag / self.tau)
+        denominator = torch.sum(torch.exp(ratings / self.tau), dim = 1)
+        loss = torch.mean(torch.negative((2*self.alpha * torch.log(numerator) -  2*(1-self.alpha) * torch.log(denominator))))
+
+        return loss
+
+    def get_popdegree(self, batch_user, batch_pos_item):
+        with torch.no_grad():
+            pop_user = torch.tensor(self.precal.popularity.user_pop_degree_label).to(world.device)[batch_user]
+            pop_item = torch.tensor(self.precal.popularity.item_pop_degree_label).to(world.device)[batch_pos_item]
+        return pop_user, pop_item
+
+    def get_homophily(self, batch_user, batch_pos_item):
+        with torch.no_grad():
+            batch_user_prob, batch_item_prob = self.homophily.get_homophily_batch(batch_user, batch_pos_item)
+            batch_weight = torch.sum(torch.mul(batch_user_prob, batch_item_prob) ,dim=1)
+        return batch_weight    
+    
+    def get_centroid(self, batch_user, batch_pos_item, centroid='eigenvector', aggr='mean', mode='GCA'):
+        with torch.no_grad():
+            batch_weight = self.precal.centroid.cal_centroid_weights_batch(batch_user, batch_pos_item, centroid=centroid, aggr=aggr, mode=mode)
+        return batch_weight
+    
+    def get_commonNeighbor(self, batch_user, batch_pos_item):
+        with torch.no_grad():
+            n_users = self.model.num_users
+            csr_matrix_CN_simi = self.precal.common_neighbor.CN_simi_mat_sp
+            batch_user, batch_pos_item = np.array(batch_user.cpu()), np.array(batch_pos_item.cpu())
+            batch_weight1 = csr_matrix_CN_simi[batch_user, batch_pos_item+n_users]
+            batch_weight2 = csr_matrix_CN_simi[batch_pos_item+n_users, batch_user]
+            batch_weight1 = torch.tensor(np.array(batch_weight1).reshape((-1,))).to(world.device)
+            batch_weight2 = torch.tensor(np.array(batch_weight2).reshape((-1,))).to(world.device)
+        return batch_weight1, batch_weight2
+
+    def get_mlp_input(self, features):
+        '''
+        features = [tensor, tensor, ...]
+        '''
+        U = features[0].unsqueeze(0)
+        for i in range(1,len(features)):
+            U = torch.cat((U, features[i].unsqueeze(0)), dim=0)
+        return U.T
+
+
+    def get_coef_adaptive(self, batch_user, batch_pos_item, method='mlp', mode='eigenvector'):
+        '''
+        input: index batch_user & batch_pos_item\n
+        return tensor([adaptive coefficient of u_n-i_n])\n
+        the bigger, the more reliable, the more important
+        '''
+        if method == 'mlp':
+            batch_weight_pop_user, batch_weight_pop_item = self.get_popdegree(batch_user, batch_pos_item)
+            # batch_weight_pop_user = torch.ones_like(batch_weight_pop_user)*math.log(self.precal.popularity.max_pop_u)-torch.log(batch_weight_pop_user)#TODO problem of grandeur and +-
+            # batch_weight_pop_item = torch.ones_like(batch_weight_pop_item)*math.log(self.precal.popularity.max_pop_i)-torch.log(batch_weight_pop_item)
+            #batch_weight_homophily = self.get_homophily(batch_user, batch_pos_item)
+            batch_weight_pop_user, batch_weight_pop_item = torch.log(batch_weight_pop_user), torch.log(batch_weight_pop_item)
+            batch_weight_centroid = self.get_centroid(batch_user, batch_pos_item, centroid=mode, aggr='mean', mode='GCA')
+            batch_weight_centroid = torch.ones_like(batch_weight_centroid) - batch_weight_centroid#TODO 反向centroid
+            batch_weight_commonNeighbor1, batch_weight_commonNeighbor2 = self.get_commonNeighbor(batch_user, batch_pos_item)
+            features = [batch_weight_pop_user, batch_weight_pop_item, batch_weight_centroid, batch_weight_commonNeighbor1, batch_weight_commonNeighbor2]
+            
+            # for i in range(self.config['latent_dim_rec']):
+            #     features.append(batch_weight_emb_user[:,i])
+            # for i in range(self.config['latent_dim_rec']):
+            #     features.append(batch_weight_emb_item[:,i])
+            
+            batch_weight = self.get_mlp_input(features)
+            batch_weight = self.MLP_model(batch_weight)
+
+        else:
+            batch_weight = None
+            raise TypeError('adaptive method not implemented')
+        
+        self.batch_weight = batch_weight
+        return batch_weight
+    
+
+class IRM():
+    def __init__(self, loss):
+        self.loss = loss
+    def irm_reg(self, batch):
+        return 

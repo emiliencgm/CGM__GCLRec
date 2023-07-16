@@ -31,6 +31,9 @@ def randint_choice(high, size=None, replace=False, p=None, exclusion=None):
     sample = np.random.choice(a, size=size, replace=replace, p=p)
     return sample
 
+def freeze(Recmodel, idx):
+    pass
+
 
 def set_seed(seed):
     np.random.seed(seed)

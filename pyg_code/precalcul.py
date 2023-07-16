@@ -16,6 +16,8 @@ import os
 import time
 from scipy.sparse import csr_matrix
 import torch_sparse
+from torch.utils.data import Dataset
+import random
 
 #=============================================================Overall Precalculate============================================================#
 class precalculate():
@@ -664,3 +666,58 @@ class SVD():
         num_nodes = graph.shape[0]
         adj = torch.sparse.FloatTensor(graph.indices(), val, torch.Size([num_nodes, num_nodes]))
         return adj
+    
+
+class sampler(Dataset):
+    def __init__(self, dataset, precal):
+        super(sampler, self).__init__()
+        self.traindataSize = dataset.traindataSize
+        self.trainUser = dataset.trainUser
+        self.m_item = dataset.m_item
+        self._allPos = dataset._allPos
+        self.reverse_ItemPopGroupDict = precal.popularity.reverse_ItemPopGroupDict
+        self.ItemPopGroupDict = precal.popularity.ItemPopGroupDict
+
+    def __len__(self):
+        return self.traindataSize
+
+    def __getitem__(self, idx):
+        '''
+        input: user在trainUser列表中的idx
+        output: 随机三元组(user, pos, neg) or (user, pos, pos', neg)
+        pos'的popgroup和pos不同
+        '''
+        if world.config['sampling'] == 'uij':
+            user = self.trainUser[idx]
+            pos = random.choice(self._allPos[user])
+            while True:
+                neg = np.random.randint(0, self.m_item)
+                if neg in self._allPos[user]:
+                    continue
+                else:
+                    break
+            return user, pos, neg
+        
+        elif world.config['sampling'] == 'uiij':
+            user = self.trainUser[idx]
+            pos1 = random.choice(self._allPos[user])
+            group1 = self.reverse_ItemPopGroupDict[pos1]
+            
+            for i in range(20):#若20次采样都没有获得不同pop分组的另一个正样本则随机采样pos2
+                pos2 = random.choice(self._allPos[user])
+                if pos2 in self.ItemPopGroupDict[group1]:
+                    continue
+                else:
+                    break
+
+            # while True:
+            #     neg = np.random.randint(0, self.m_item)
+            #     if neg in self._allPos[user]:
+            #         continue
+            #     else:
+            #         break
+            # return user, pos1, pos2, neg
+            return user, pos1, pos2
+        
+        else:
+            raise(TypeError)    

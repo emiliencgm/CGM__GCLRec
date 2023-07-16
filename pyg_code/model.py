@@ -12,6 +12,7 @@ from precalcul import precalculate
 from torch_geometric.nn import LGConv
 from torch_geometric.nn import GCNConv
 from torch.nn import ModuleList
+import numpy as np
 
 class LGN_Encoder(torch.nn.Module):
     def __init__(self, n_layers, num_users, num_items):
@@ -109,6 +110,34 @@ class LightGCN(nn.Module):
         users, items = torch.split(out, [self.num_users, self.num_items])
         return users, items
     
+    def computer_per_layer(self):
+        """
+        vanilla LightGCN. No dropout used, return final embedding for rec. 
+        """
+        users_emb0 = self.embedding_user.weight
+        items_emb0 = self.embedding_item.weight
+        x = torch.cat([users_emb0, items_emb0])
+        embs_per_layer = []
+        embs_per_layer.append(x)
+        out = x * self.alpha
+        for i in range(self.n_layers):
+            x = self.convs[i](x, self.edge_index)
+            embs_per_layer.append(x)
+            out = out + x * self.alpha
+        users, items = torch.split(out, [self.num_users, self.num_items])
+        return users, items, embs_per_layer
+    
+    # def mixup(self, x1, x2, y1=None, y2=None):
+    #     alpha = 2.
+    #     beta = 2.
+    #     size = [len(x1), 1]
+    #     l = np.random.beta(alpha, beta, size)
+    #     mixed_x = torch.tensor(l, dtype=torch.float32).to(x1.device) * x1 + torch.tensor(1-l, dtype=torch.float32).to(x2.device) * x2
+    #     if y1 is None:
+    #         return mixed_x, None
+    #     else:
+    #         mixed_y = torch.tensor(l, dtype=torch.float32).to(y1.device) * y1 + torch.tensor(1-l, dtype=torch.float32).to(y2.device) * y2
+    #         return mixed_x, mixed_y
 
     def view_computer(self, x, edge_index, edge_weight=None):
         try:
@@ -165,3 +194,7 @@ class LightGCN(nn.Module):
         # mean or sum
         loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))#TODO SOFTPLUS()!!!
         return loss, reg_loss
+    
+
+class classifier():
+    pass

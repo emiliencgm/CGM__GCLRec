@@ -21,7 +21,7 @@ from time import time
 import networkx as nx
 from torch_geometric.data import Data
 
-class dataset(Dataset):
+class dataset():
     """
     Dataset type for pytorch \n
     Incldue graph information
@@ -355,24 +355,3 @@ class dataset(Dataset):
         edge_indice = torch.sparse.FloatTensor(index, val, (self.n_user, self.m_item))
         edge_indice = edge_indice.coalesce()
         return edge_indice
-
-    '''
-    Dataset的所有子类都应该重写方法__len__(), __getitem__()
-    '''
-    def __len__(self):
-        return self.traindataSize
-
-    def __getitem__(self, idx):
-        '''
-        input: user在trainUser列表中的idx
-        output: 随机三元组(user, pos, neg)
-        '''
-        user = self.trainUser[idx]
-        pos = random.choice(self._allPos[user])
-        while True:
-            neg = np.random.randint(0, self.m_item)
-            if neg in self._allPos[user]:
-                continue
-            else:
-                break
-        return user, pos, neg
