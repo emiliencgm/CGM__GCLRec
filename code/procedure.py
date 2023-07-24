@@ -24,7 +24,7 @@ class Train():
         self.test = Test()
         self.INFONCE = loss.InfoNCE_loss()
 
-    def train(self, dataset, Recmodel, augmentation, epoch, optimizer, w:SummaryWriter=None):
+    def train(self, dataset, Recmodel, augmentation, epoch, optimizer, pop_class, w:SummaryWriter=None):
         Recmodel = Recmodel
         Recmodel.train()
         batch_size = world.config['batch_size']
@@ -32,6 +32,7 @@ class Train():
 
         total_batch = len(dataloader)
         aver_loss = 0.
+        aver_pop_acc = 0.
 
         for batch_i, train_data in tqdm(enumerate(dataloader), desc='training'):
             batch_users = train_data[0].long().to(world.device)
@@ -45,7 +46,7 @@ class Train():
                 l_all = self.PD_train(batch_users, batch_pos, batch_neg)          
             
             elif world.config['loss'] == 'BPR_Contrast':
-                l_all = self.BPR_Contrast_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation)
+                l_all, pop_acc = self.BPR_Contrast_train(Recmodel, batch_users, batch_pos, batch_neg, augmentation, pop_class)
 
             elif world.config['loss'] == 'Softmax':
                 l_all = self.Softmax_train(Recmodel, batch_users, batch_pos, batch_neg)
@@ -72,12 +73,14 @@ class Train():
             optimizer.step()
             
             aver_loss += l_all.cpu().item()
+            aver_pop_acc += pop_acc.cpu().item()
             w.add_scalar(f"{world.config['loss']}_Loss/{world.config['dataset']}", l_all, epoch * int(len(batch_users) / world.config['batch_size']) + batch_i)
         aver_loss = aver_loss / (total_batch)
+        aver_pop_acc = aver_pop_acc / (total_batch)
         w.add_scalar(f"Average_{world.config['loss']}_Loss/{world.config['dataset']}", aver_loss, epoch)
-        print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
+        print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}    pop_classifier_acc: {aver_pop_acc}')
         # return f"loss {aver_loss:.3f}"
-        return aver_loss
+        return aver_loss, aver_pop_acc
     def AllWeightInfoNCE_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
         users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs = Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
         #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
@@ -196,7 +199,7 @@ class Train():
 
         return l_all
 
-    def BPR_Contrast_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
+    def BPR_Contrast_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation, pop_class):
         #前向计算-原视图
         users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, embs_per_layer_or_all_embs= Recmodel.getEmbedding(batch_users.long(), batch_pos.long(), batch_neg.long())
         #if Recmodel == 'GCLRec', then users_emb is [layer0, layer1, layer2]
@@ -237,7 +240,14 @@ class Train():
         else:
             l_all = self.loss.bpr_contrast_loss(users_emb, pos_emb, neg_emb, userEmb0,  posEmb0, negEmb0, batch_users, batch_pos, batch_neg, aug_users1, aug_items1, aug_users2, aug_items2)
 
-        return l_all
+
+        classifier_loss, classifier_acc = pop_class['classifier'].cal_loss_and_test(pos_emb.detach(), batch_pos)
+        pop_class['optimizer'].zero_grad()
+        classifier_loss.backward()
+        pop_class['optimizer'].step()
+
+
+        return l_all, classifier_acc
     
     def InfoNCE_train(self, Recmodel, batch_users, batch_pos, batch_neg, augmentation):
         #前向计算-原视图

@@ -25,13 +25,14 @@ class Train():
         self.INFONCE = loss.InfoNCE_loss()
         self.BPR = loss.BPR()
 
-    def train(self, sampler, Recmodel, augmentation, epoch, optimizer):
+    def train(self, sampler, Recmodel, augmentation, epoch, optimizer, classifier):
         Recmodel:LightGCN = Recmodel
         batch_size = world.config['batch_size']
         dataloader = DataLoader(sampler, batch_size=batch_size, shuffle=True, drop_last=True, num_workers=0)#每个batch为batch_size对(user, pos_item, neg_item), 见Dataset.__getitem__
 
         total_batch = len(dataloader)
         aver_loss = 0.
+        aver_pop_acc = 0.
 
         for batch_i, train_data in tqdm(enumerate(dataloader), desc='training'):
             if world.config['sampling'] == 'uij':
@@ -42,6 +43,7 @@ class Train():
                 batch_users = train_data[0].long().to(world.device)
                 batch_pos1 = train_data[1].long().to(world.device)
                 batch_pos2 = train_data[2].long().to(world.device)
+                batch_neg = train_data[3].long().to(world.device)
                 # batch_neg = train_data[3].long().to(world.device)
             else:
                 pass
@@ -49,45 +51,61 @@ class Train():
             # batch_pos = train_data[1].long().to(world.device)
             # batch_neg = train_data[2].long().to(world.device)
             
-            l_all = self.train_now(Recmodel, augmentation, batch_users, batch_pos1, batch_pos2, optimizer, epoch)
+            l_all, pop_acc_all = self.train_now(Recmodel, augmentation, batch_users, batch_pos1, batch_pos2, batch_neg, optimizer, epoch, classifier)
 
             aver_loss += l_all.cpu().item()
-        aver_loss = aver_loss / (total_batch)
-        print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}')
-        return aver_loss
+            aver_pop_acc += pop_acc_all.cpu().item()
 
-    def train_now(self, Recmodel, augmentation, batch_users, batch_pos1, batch_pos2, optimizer, epoch):
+        aver_loss = aver_loss / (total_batch)
+        aver_pop_acc = aver_pop_acc / (total_batch)
+        print(f'EPOCH[{epoch}]:loss {aver_loss:.3f}    pop_classifier_acc: {aver_pop_acc}')
+        return aver_loss, aver_pop_acc
+
+    def train_now(self, Recmodel, augmentation, batch_users, batch_pos1, batch_pos2, batch_neg, optimizer, epoch, classifier):
         all_users, all_items = Recmodel.computer()
         users_emb = all_users[batch_users]
         pos_emb1 = all_items[batch_pos1]
         pos_emb2 = all_items[batch_pos2]
-        # neg_emb = all_items[batch_neg]
+        neg_emb = all_items[batch_neg]
         users_emb_ego = Recmodel.embedding_user(batch_users)
         pos_emb_ego1 = Recmodel.embedding_item(batch_pos1)
         pos_emb_ego2 = Recmodel.embedding_item(batch_pos2)
+        neg_emb_ego = Recmodel.embedding_item(batch_neg)
 
-        reg = (1/6)*(users_emb_ego.norm(2).pow(2) + pos_emb_ego1.norm(2).pow(2) + pos_emb_ego2.norm(2).pow(2))/len(batch_users)
-
+        # reg = (1/6)*(users_emb_ego.norm(2).pow(2) + pos_emb_ego1.norm(2).pow(2) + neg_emb_ego.norm(2).pow(2))/len(batch_users)
+        reg = (0.5 * torch.norm(users_emb_ego) ** 2 + len(batch_users) * 0.5 * torch.norm(pos_emb_ego1) ** 2)/len(batch_users)
         # cl = self.INFONCE.cal_infonce_loss(users_emb, pos_emb1) + self.INFONCE.cal_infonce_loss(users_emb, pos_emb2) + self.INFONCE.cal_infonce_loss(users_emb, pos_aug)
         # cl = cl*(1/3)
 
         # loss = cl + world.config['weight_decay']*reg
 
-        ada_coef1 = self.loss.get_coef_adaptive(batch_users, batch_pos1, method='mlp', mode=world.config['centroid_mode'])
-        ada_coef2 = self.loss.get_coef_adaptive(batch_users, batch_pos2, method='mlp', mode=world.config['centroid_mode'])
+        # ada_coef1 = self.loss.get_coef_adaptive(batch_users, batch_pos1, method='mlp', mode=world.config['centroid_mode'])
+        # ada_coef2 = self.loss.get_coef_adaptive(batch_users, batch_pos2, method='mlp', mode=world.config['centroid_mode'])
 
-        pos_aug, ada_coef3 = self.mixup(pos_emb1, pos_emb2, ada_coef1, ada_coef2)
+        # pos_aug, ada_coef3 = self.mixup(pos_emb1, pos_emb2, ada_coef1, ada_coef2)
+        # pos_aug, _ = self.mixup(pos_emb1, pos_emb2)
 
-        loss_ada1 = self.loss.adaptive_loss(users_emb, pos_emb1, ada_coef1)
-        loss_ada2 = self.loss.adaptive_loss(users_emb, pos_emb2, ada_coef2)
-        loss_ada3 = self.loss.adaptive_loss(users_emb, pos_aug, ada_coef3)
+        # loss_ada1 = self.loss.adaptive_loss(users_emb, pos_emb1, ada_coef1)
+        # loss_ada2 = self.loss.adaptive_loss(users_emb, pos_emb2, ada_coef2)
+        # loss_ada3 = self.loss.adaptive_loss(users_emb, pos_aug, ada_coef3)
 
-        loss = world.config['weight_decay']*reg + loss_ada1 + loss_ada2 + loss_ada3 * self.coef_mixup(epoch)
+        loss_bpr = self.BPR.bpr_loss(users_emb, pos_emb1, neg_emb)
+
+        loss = world.config['weight_decay']*reg + loss_bpr #+ loss_bpr * self.coef_mixup(epoch) #+ loss_ada2 + loss_ada3 * self.coef_mixup(epoch)
         optimizer['emb'].zero_grad()
         loss.backward()
         optimizer['emb'].step()
 
-        return loss
+        classifier_loss1, classifier_acc1 = classifier.cal_loss_and_test(pos_emb1.detach(), batch_pos1)
+        classifier_loss2, classifier_acc2 = classifier.cal_loss_and_test(pos_emb2.detach(), batch_pos2)
+        classifier_loss = (classifier_loss1 + classifier_loss2)*0.5
+        classifier_acc = (classifier_acc1 + classifier_acc2)*0.5
+        optimizer['pop'].zero_grad()
+        classifier_loss.backward()
+        optimizer['pop'].step()
+        
+
+        return loss, classifier_acc
 
 
     def train_batch(self, Recmodel, augmentation, batch_users, batch_pos, batch_neg, optimizer, epoch):
@@ -347,10 +365,7 @@ class Train():
             return mixed_x, mixed_y
         
     def coef_mixup(self, epcoh):
-        if epcoh>45:
-            return 0.1
-        else:
-            return 0.
+        return 1/(epcoh+1)
     
 class Test():
     def __init__(self):

@@ -710,13 +710,13 @@ class sampler(Dataset):
                 else:
                     break
 
-            # while True:
-            #     neg = np.random.randint(0, self.m_item)
-            #     if neg in self._allPos[user]:
-            #         continue
-            #     else:
-            #         break
-            # return user, pos1, pos2, neg
+            while True:
+                neg = np.random.randint(0, self.m_item)
+                if neg in self._allPos[user]:
+                    continue
+                else:
+                    break
+            return user, pos1, pos2, neg
             return user, pos1, pos2
         
         else:

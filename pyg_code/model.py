@@ -63,6 +63,9 @@ class LightGCN(nn.Module):
         self.convs = ModuleList([LGConv() for _ in range(self.n_layers)])
         self.alpha = 1. / (self.n_layers + 1)
 
+        self.projector_user = Projector()#TODO 投影头
+        self.projector_item = Projector()
+
     def __init_weight(self):
         self.num_users  = self.dataset.n_users
         self.num_items  = self.dataset.m_items
@@ -196,5 +199,65 @@ class LightGCN(nn.Module):
         return loss, reg_loss
     
 
-class classifier():
-    pass
+class Classifier(torch.nn.Module):
+    def __init__(self, input_dim, out_dim, precal:precalculate):
+        super(Classifier, self).__init__()
+        self.input_dim = input_dim
+
+        self.all_label = precal.popularity.item_pop_group_label
+        
+        self.net = torch.nn.Sequential(
+            torch.nn.Linear(input_dim, input_dim*4),
+            torch.nn.BatchNorm1d(input_dim*4),
+            torch.nn.ReLU(inplace=False),
+            torch.nn.Linear(input_dim*4, input_dim*4),
+            torch.nn.BatchNorm1d(input_dim*4), 
+            torch.nn.ReLU(inplace=False),
+            torch.nn.Linear(input_dim*4, out_dim),
+            torch.nn.Softmax()
+        ).to(world.device)
+
+        self.criterion = nn.CrossEntropyLoss()
+
+    # def forward(self, x):
+    #     return self.net(x)
+    
+    def cal_loss_and_test(self, inputs, batch_item):
+        '''
+        return loss and test accuracy of the same batch before update
+        '''
+        batch_item = batch_item.cpu()
+        batch_label = torch.tensor(self.all_label[batch_item]).to(world.device)
+        outputs = self.net(inputs)
+        CE_loss = self.criterion(outputs, batch_label)
+
+        predicted_labels = torch.argmax(outputs, dim=1)
+        accuracy = torch.mean((predicted_labels == batch_label).float())
+
+        return CE_loss, accuracy
+    
+    # def test(self, inputs, batch_item):
+    #     true_labels = self.all_label[batch_item]
+    #     model_output = self.net(inputs)
+    #     predicted_labels = torch.argmax(model_output, dim=1)
+    #     accuracy = torch.mean((predicted_labels == true_labels).float())
+
+    #     return accuracy
+
+
+
+class Projector(torch.nn.Module):
+    def __init__(self, input_dim=world.config['latent_dim_rec']):
+        super(Projector, self).__init__()        
+        self.net = torch.nn.Sequential(
+            torch.nn.Linear(input_dim, input_dim*4),
+            torch.nn.BatchNorm1d(input_dim*4),
+            torch.nn.ReLU(inplace=False),
+            torch.nn.Linear(input_dim*4, input_dim*4),
+            torch.nn.BatchNorm1d(input_dim*4), 
+            torch.nn.ReLU(inplace=False),
+            torch.nn.Linear(input_dim*4, input_dim)
+        ).to(world.device)
+
+    def forward(self, embs):
+        return self.net(embs)

@@ -109,7 +109,9 @@ def main():
         wandb.define_metric(f"{world.config['dataset']}"+f'/precision@{str(k)}', step_metric='custom_epoch')
         for group in range(world.config['pop_group']):
             wandb.define_metric(f"{world.config['dataset']}"+f"/groups/recall_group_{group+1}@{str(k)}", step_metric='custom_epoch')
-    wandb.define_metric(f"{world.config['dataset']}"+f"/time_cost_s", step_metric='custom_epoch')
+    wandb.define_metric(f"{world.config['dataset']}"+f"/training_time", step_metric='custom_epoch')
+
+    wandb.define_metric(f"{world.config['dataset']}"+'/pop_classifier_acc', step_metric='custom_epoch')
 
 
     world.make_print_to_file()
@@ -134,6 +136,8 @@ def main():
 
     models = {'LightGCN':model.LightGCN, 'GTN':model.GTN, 'SGL':model.SGL, 'SimGCL':model.SimGCL, 'GCLRec':model.GCLRec, 'LightGCN_PyG':model.LightGCN_PyG}
     Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
+
+    classifier = model.Classifier(input_dim=world.config['latent_dim_rec'], out_dim=world.config['pop_group'], precal=precal)
 
     try:
         wandb.watch(Recmodel, log='all')
@@ -178,6 +182,10 @@ def main():
     if world.config['augment'] in ['Learner']:
         optimizer.add_param_group({'params':augmentation.GNN_encoder.parameters()})
         optimizer.add_param_group({'params':augmentation.mlp_edge_model.parameters()})
+    #TODOpop分类器
+    pop_optimizer = torch.optim.Adam(classifier.parameters(), lr=world.config['lr'])
+
+    pop_class = {'classifier':classifier, 'optimizer':pop_optimizer}
     # optimizer = 0
 
 
@@ -219,12 +227,14 @@ def main():
             cprint('[TRAIN]')
             start_train = time.time()
             if world.config['train_mode']=='origin':
-                avg_loss = train.train(dataset, Recmodel, augmentation, epoch, optimizer, w)
+                avg_loss, avg_pop_acc = train.train(dataset, Recmodel, augmentation, epoch, optimizer, pop_class, w)
             elif world.config['train_mode']=='forkmerge':
                 avg_loss = train.ForkMerge_train(dataset, Recmodel, augmentation, epoch, optimizer, w)
             end_train = time.time()
             wandb.log({ f"{world.config['dataset']}"+'/loss': avg_loss})
             wandb.log({f"{world.config['dataset']}"+f"/training_time": end_train - start_train})
+
+            wandb.log({ f"{world.config['dataset']}"+'/pop_classifier_acc': avg_pop_acc})
 
             if epoch % 1== 0:
                 #====================VALID====================

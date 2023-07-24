@@ -104,7 +104,7 @@ def main():
     notes = world.config['notes']
     group = world.config['group']
     job_type = world.config['job_type']
-    # os.environ['WANDB_MODE'] = 'dryrun'#TODO WandB上传
+    # os.environ['WANDB_MODE'] = 'dryrun'#TODO WandB上传 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     wandb.init(project=project, name=name, tags=tag, group=group, job_type=job_type, config=world.config, save_code=True, sync_tensorboard=False, notes=notes)
     wandb.define_metric("custom_epoch")
     wandb.define_metric(f"{world.config['dataset']}"+'/loss', step_metric='custom_epoch')
@@ -114,7 +114,9 @@ def main():
         wandb.define_metric(f"{world.config['dataset']}"+f'/precision@{str(k)}', step_metric='custom_epoch')
         for group in range(world.config['pop_group']):
             wandb.define_metric(f"{world.config['dataset']}"+f"/groups/recall_group_{group+1}@{str(k)}", step_metric='custom_epoch')
-    wandb.define_metric(f"{world.config['dataset']}"+f"/time_cost_s", step_metric='custom_epoch')
+    wandb.define_metric(f"{world.config['dataset']}"+f"/training_time", step_metric='custom_epoch')
+    
+    wandb.define_metric(f"{world.config['dataset']}"+'/pop_classifier_acc', step_metric='custom_epoch')
 
 
     world.make_print_to_file()
@@ -145,6 +147,8 @@ def main():
 
     models = {'LightGCN':model.LightGCN}
     Recmodel = models[world.config['model']](world.config, dataset, precal).to(world.device)
+
+    classifier = model.Classifier(input_dim=world.config['latent_dim_rec'], out_dim=world.config['pop_group'], precal=precal)
 
     try:
         wandb.watch(Recmodel, log='all')
@@ -191,15 +195,19 @@ def main():
     #     optimizer.add_param_group({'params':augmentation.mlp_edge_model.parameters()})
 
     emb_optimizer = torch.optim.Adam(Recmodel.parameters(), lr=world.config['lr'])
+    #TODORecmodel中的投影头
+    # emb_optimizer.add_param_group({'params':Recmodel.projector_user.parameters()})
+    # emb_optimizer.add_param_group({'params':Recmodel.projector_item.parameters()})
     if world.config['augment'] in ['Learner']:
         aug_optimizer = torch.optim.Adam(augmentation.parameters(), lr=world.config['lr'])    
     emb_optimizer.add_param_group({'params':total_loss.MLP_model.parameters()})#TODO Adaloss 在哪一步更新
+    pop_optimizer = torch.optim.Adam(classifier.parameters(), lr=world.config['lr'])
     # aug_optimizer = torch.optim.Adam([{'params':augmentation.GNN_encoder.parameters()}, 
     #                                 {'params':augmentation.mlp_edge_model.parameters()}], lr=world.config['lr'])
     if world.config['augment'] in ['Learner']:
-        optimizer = {'emb':emb_optimizer, 'aug':aug_optimizer}
+        optimizer = {'emb':emb_optimizer, 'aug':aug_optimizer, 'pop':pop_optimizer}
     else:
-        optimizer = {'emb':emb_optimizer}
+        optimizer = {'emb':emb_optimizer, 'pop':pop_optimizer}
     quantify = visual.Quantify(dataset, Recmodel, precal)
 
 
@@ -233,10 +241,12 @@ def main():
                     
             cprint('[TRAIN]')
             start_train = time.time()
-            avg_loss = train.train(sampler, Recmodel, augmentation, epoch, optimizer)
+            avg_loss, avg_pop_acc = train.train(sampler, Recmodel, augmentation, epoch, optimizer, classifier)
             end_train = time.time()
             wandb.log({ f"{world.config['dataset']}"+'/loss': avg_loss})
             wandb.log({f"{world.config['dataset']}"+f"/training_time": end_train - start_train})
+
+            wandb.log({ f"{world.config['dataset']}"+'/pop_classifier_acc': avg_pop_acc})
 
             if epoch % 1== 0:
                 #====================VALID====================

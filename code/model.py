@@ -659,3 +659,38 @@ class LightGCN_PyG(nn.Module):
         # mean or sum
         loss = torch.sum(torch.nn.functional.softplus(-(pos_scores - neg_scores)))#TODO SOFTPLUS()!!!
         return loss, reg_loss
+    
+    
+class Classifier(torch.nn.Module):
+    def __init__(self, input_dim, out_dim, precal:precalculate):
+        super(Classifier, self).__init__()
+        self.input_dim = input_dim
+
+        self.all_label = precal.popularity.item_pop_group_label
+        
+        self.net = torch.nn.Sequential(
+            torch.nn.Linear(input_dim, input_dim*4),
+            torch.nn.BatchNorm1d(input_dim*4),
+            torch.nn.ReLU(inplace=False),
+            torch.nn.Linear(input_dim*4, input_dim*4),
+            torch.nn.BatchNorm1d(input_dim*4), 
+            torch.nn.ReLU(inplace=False),
+            torch.nn.Linear(input_dim*4, out_dim),
+            torch.nn.Softmax()
+        ).to(world.device)
+
+        self.criterion = nn.CrossEntropyLoss()
+    
+    def cal_loss_and_test(self, inputs, batch_item):
+        '''
+        return loss and test accuracy of the same batch before update
+        '''
+        batch_item = batch_item.cpu()
+        batch_label = torch.tensor(self.all_label[batch_item]).to(world.device)
+        outputs = self.net(inputs)
+        CE_loss = self.criterion(outputs, batch_label)
+
+        predicted_labels = torch.argmax(outputs, dim=1)
+        accuracy = torch.mean((predicted_labels == batch_label).float())
+
+        return CE_loss, accuracy
